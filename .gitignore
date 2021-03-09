@@ -7,3 +7,9 @@ images/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Python virtual environment
+venv/
+
+# Jupyter-lab
+.ipynb_checkpoints
