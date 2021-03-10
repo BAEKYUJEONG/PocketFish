@@ -23,9 +23,13 @@
 > 주요 기능
 
 - 로그인/로그아웃   로컬 이외의 기기 접근 or 랭킹일 경우   :   필수
+
 - 사진   1마리 추가, 물고기 정보제공   :   필수
+
 - 도감 페이지   전체, 상세   :   필수
+
 - 랭킹 페이지     :    부가
+
 - 회원 간의 도감 구경   sns 유사 기능   :   부가
 
 
@@ -35,3 +39,39 @@
 
 
 ###### 2021-03-10
+
+> 기능 확정
+
+![기능](C:\Users\multicampus\Desktop\기능.png)
+
+
+
+> CNN 인공지능 공부
+
+- 참고자료
+
+  - 인공지능 CNN 강의 
+
+    https://www.youtube.com/watch?v=9fldE3-yJpg&list=PLQ28Nx3M4Jrguyuwg4xe9d9t2XE639e5C&index=35
+
+
+
+> Redis DB 공부하기
+
+- 참고자료
+
+  - 개발자를 위한 레디스 튜토리얼
+
+    https://medium.com/garimoo/%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A0%88%EB%94%94%EC%8A%A4-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-01-92aaa24ca8cc
+
+  - Redis Sorted Set
+
+    https://jupiny.com/2020/03/28/redis-sorted-set/
+
+    
+
+> Logo
+
+- 미확정본
+
+![pocketfish](C:\Users\multicampus\Desktop\pocketfish.png)
