@@ -62,8 +62,28 @@ __CNN__ Convolutional Neural Network
       - 필터 = Conv Layer의 가중치(W)에 해당
       - __연산__
         - 필터의 윈도우를 일정한 간격으로 이동해가며 계산
-        - FMA Fused Multiply-Add : 입력 데이터와 필터간에 서로 대응하는 원소끼리 곱한 후의 총합
-        - 
+        - FMA Fused Multiply-Add (입력 데이터와 필터간에 서로 대응하는 원소끼리 곱한 후의 총합) 계산 
+        - 편한(bias)는 필터를 적용한 후 더한다
+      
+   6. 패딩(padding)
+
+      - 패딩 : 합성곱 연산을 수행하기 전, 입력데이터 주변을 특정값으로 채워 늘리는 것
+      - 패딩으로 출력데이터의 공간적(spatial) 크기를 조절
+      - 패딩을 할 때, 채울 값은 hyper-parameter로 어떤 값을 채울지 결정
+        - 주로 zero-padding을 사용
+      - 패딩의 사용 이유
+        - 패딩을 사용하지 않을 경우, 데이터의 spatial 크기는 conv layer를 지날때마다 작아지게 되므로, 가장자리의 정보들이 사라지는 문제가 발생하기 때문에 패딩을 사용한다
+        - 주로 합성곱 계층의 출력이 입력 데이터의 공간적 크기와 동일하게 맞추기 위해 사용
+
+   7. 스트라이드(stride)
+
+      - 스트라이드 : 입력데이터에 필터를 적용할 때 이동할 간격을 조절하는것 = 필터가 이동할 간격
+      - 출력 데이터의 크기를 조절하기 위해 사용
+      - 1과 같은 작은 값으로 더 잘 작동
+
+   8. 출력 크기 계산
+
+      1. 
 
 2. 풀링층 pooling layer
 
@@ -74,3 +94,56 @@ __CNN__ Convolutional Neural Network
 [참고사이트] 
 
 https://excelsior-cjh.tistory.com/180
+
+
+
+
+
+# 강의
+
+### 기본적인 ML의 용어와 개념 설명
+
+__explicit programing__ : 일반적인 프로그램. 개발자가 판단 기준을 명시하여 작동하는 것.
+
+__ML__ : 스스로 학습하여 판단 기준을 만드는 것
+
+- 학습
+  - 학습 방법으로 분류
+    - supervised learning : 레이블 데이터로 학습을 하는 것
+      - regression : x값에 따른 y값 예측
+      - classification 
+        - binary classification :  y값이 그룹(P,NP)일 경우,  y 값 예측
+      - multi-label classification : y값이 그룹(A,B,C,D)일 경우, y 값 예측
+    - unsupervised learning : 레이블 되지 않은 데이터로 학습하는 것
+      - new grouping / word clustering 
+
+- training data
+
+
+
+### simple linear regression
+
+__linear regression 선형회귀__ : 데이터를 가장 잘 나타내는 직선의 방정식을 찾는 것
+
+- 직선의 방정식  y=ax+b
+- H(x)=Wx+b
+  - Hypothesis [H(x)] : 가설 함수, 모델, 예측
+  - cost : 실제데이터와 예측값의 차이
+    - = loss = error
+    - H(x)-y : 음수 & 양수 => 최소가 되는 합을 찾는 것이 무의미해질 수 있다 
+    - => H(x)-y의 값을 제곱하여 평균을 구해 그 값을 cost로 사용한다. 
+
+
+
+=> __학습의 목적 : minimize cost__
+
+__gradient descent 경사 하강법__ 
+
+
+
+
+
+__How to minimize cost__
+
+
+
