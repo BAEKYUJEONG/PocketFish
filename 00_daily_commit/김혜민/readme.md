@@ -147,3 +147,24 @@ __How to minimize cost__
 
 
 
+---
+
+# React Native
+
+### expo vs react native cli
+
+__expo__ = create react app [추천]
+
+- react native를 위한 설정 파일같은 것들이 없는 방식으로 모든 것이 셋업
+- native 파일을 숨기고 관리해줌
+- 휴대폰에서 테스트가 가능함
+- native file를 많이 손대지 못한다는 것. 
+- native file은 그렇게 필요없다 하지만, 큰 회사는 필요하다. 분석이나 그런 것 때문에
+- 지원이 더 쉽다
+
+__react native cli__
+
+- react native를 수동으로 작업하고 싶을 때  사용
+- native files들을 더많이 컨트롤 하고 싶을 때를 위한 것
+- [ios] 테스트 경우 계정도 필요하고 개발자 계정도 필요함.
+- 내가 직접 구현해야된다
