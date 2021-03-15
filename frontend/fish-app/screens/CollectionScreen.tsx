@@ -3,10 +3,10 @@ import { StyleSheet } from "react-native";
 
 import { Text, View } from "../components/Themed";
 
-export default function FishBookScreen() {
+export default function CollectionScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>FishBook</Text>
+      <Text style={styles.title}>Collection</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

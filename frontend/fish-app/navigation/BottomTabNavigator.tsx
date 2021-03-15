@@ -5,13 +5,13 @@ import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import FishBookScreen from "../screens/FishBookScreen";
+import CollectionScreen from "../screens/CollectionScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import {
   BottomTabParamList,
-  FishBookParamList,
+  CollectionParamList,
   RankingParamList,
   HomeParamList,
   ProfileParamList,
@@ -35,8 +35,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="FishBook"
-        component={FishBookNavigator}
+        name="Collection"
+        component={CollectionNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIconFontAwesome5 name="fish" color={color} />
@@ -93,17 +93,17 @@ function HomeNavigator() {
   );
 }
 
-const FishBookStack = createStackNavigator<FishBookParamList>();
+const CollectionStack = createStackNavigator<CollectionParamList>();
 
-function FishBookNavigator() {
+function CollectionNavigator() {
   return (
-    <FishBookStack.Navigator>
-      <FishBookStack.Screen
-        name="FishBookScreen"
-        component={FishBookScreen}
-        options={{ headerTitle: "FishBook" }}
+    <CollectionStack.Navigator>
+      <CollectionStack.Screen
+        name="CollectionScreen"
+        component={CollectionScreen}
+        options={{ headerTitle: "Collection" }}
       />
-    </FishBookStack.Navigator>
+    </CollectionStack.Navigator>
   );
 }
 

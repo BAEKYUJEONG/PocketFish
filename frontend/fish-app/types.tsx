@@ -5,7 +5,7 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Home: undefined;
-  FishBook: undefined;
+  Collection: undefined;
   Ranking: undefined;
   Profile: undefined;
 };
@@ -14,8 +14,8 @@ export type HomeParamList = {
   HomeScreen: undefined;
 };
 
-export type FishBookParamList = {
-  FishBookScreen: undefined;
+export type CollectionParamList = {
+  CollectionScreen: undefined;
 };
 
 export type RankingParamList = {
