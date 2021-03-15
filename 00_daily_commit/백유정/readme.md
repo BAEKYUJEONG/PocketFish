@@ -75,3 +75,27 @@
 - 미확정본
 
 ![pocketfish](C:\Users\multicampus\Desktop\pocketfish.png)
+
+
+
+*****
+
+
+
+###### 2021-03-11
+
+> 기능 세부 정리
+
+![image-20210311231315436](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210311231315436.png)
+
+
+
+> ERD 완성
+
+- draw.io 로 완성 : 공유 문서 참고
+
+
+
+> 와이어프레임
+
+- draw.io 진행 중 : 공유 문서 참고

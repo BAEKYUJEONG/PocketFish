@@ -10,3 +10,9 @@
 - Redis 참고 자료
   - https://yunzema.tistory.com/22
 
+
+
+### 0312
+
+- CNN 공부
+- 와이어프레임 만들기
