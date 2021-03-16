@@ -40,6 +40,6 @@
 
 ## Train
 
-![image-20210315021856381](image\image-20210315021856381.png)
+![image-20210315021856381](image/image-20210315021856381.png)
 
 - 9:30 https://www.youtube.com/watch?v=RLlI9q6Uojk
