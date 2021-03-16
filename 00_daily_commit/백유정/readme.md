@@ -130,6 +130,16 @@
 
 ###### 2021-03-16
 
+> ERD 수정
+
+- 자주 upload되는 항목에 관하여 정규화 : profile, collection-img
+
+
+
+> REST API 명세서 작성
+
+- 기능명들에 대한 url, request, response 등 규약 정함
+
 
 
 *****
