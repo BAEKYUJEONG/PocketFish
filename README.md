@@ -2,6 +2,8 @@
 
 
 
+
+
 [아키텍처](#아키텍처)
 
 [시퀸스 다이어그램](#시퀀스-다이어그램)
@@ -13,6 +15,11 @@
 [ERD](#ERD)
 
 [와이어프레임](#와이어프레임)
+
+
+
+
+<br>
 
 
 
@@ -58,25 +65,25 @@
 
 ## 아키텍처
 
-<img src="C:/Users/user/Documents/GIT/s04p22a202/resources/architecture.jpg" alt="1" style="zoom:50%;" />
+<img src="./resources/architecture.jpg" alt="1" style="zoom:50%;" />
 
 ## 시퀸스 다이어그램
 
 ### 인증
 
-<img src="C:/Users/user/Documents/GIT/s04p22a202/resources/Sequence diagram certification.jpg" alt="1" style="zoom:50%;" />
+<img src="./resources/Sequence diagram certification.jpg" alt="1" style="zoom:50%;" />
 
 ### 분석
 
 
 
-<img src="C:/Users/user/Documents/GIT/s04p22a202/resources/Sequence diagram analysis.jpg" alt="1" style="zoom:50%;" />
+<img src="./resources/Sequence diagram analysis.jpg" alt="1" style="zoom:50%;" />
 
 ## ERD
 
 - 자주 update이 되는 부분 세부 정규화
 
-<img src="C:/Users/user/Documents/GIT/s04p22a202/resources/ERD.jpg" alt="1" style="zoom:50%;" />
+<img src="./resources/ERD.jpg" alt="1" style="zoom:50%;" />
 
 
 
@@ -86,61 +93,61 @@
 
   - 소셜 로그인 확정 : 카카오
 
-  <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - User-Signup.jpg" alt="1" style="zoom:50%;" />
+  <img src="./resources/WireFrame - User-Signup.jpg" alt="1" style="zoom:50%;" />
 
 - 로그인 
 
   - 소셜 로그인 대체 전 와이어프레임
 
-  <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - User-login.jpg" alt="1" style="zoom:50%;" />
+  <img src="./resources/WireFrame - User-login.jpg" alt="1" style="zoom:50%;" />
 
 - 회원 정보
 
-  <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - userinfo.jpg" alt="1" style="zoom:50%;" />
+  <img src="./resources/WireFrame - userinfo.jpg" alt="1" style="zoom:50%;" />
 
 - 물고기 보관함
 
   - 사진, 메모, 내용이 간략히 들어감
 
-  <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - Collection_Fish tank.jpg" alt="1" style="zoom:50%;" />
+  <img src="./resources/WireFrame - Collection_Fish tank.jpg" alt="1" style="zoom:50%;" />
 
 - 물고기 상세보기
 
   - User 입장
 
-    <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - Collection-Collection_User.jpg" alt="1" style="zoom:50%;" />
+    <img src="./resources/WireFrame - Collection-Collection_User.jpg" alt="1" style="zoom:50%;" />
 
   - Others 입장 
 
-    <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - Collection-Collection_Others.jpg" alt="1" style="zoom:50%;" />
+    <img src="./resources/WireFrame - Collection-Collection_Others.jpg" alt="1" style="zoom:50%;" />
 
 - 카메라
 
   - 글을 등록하기 위한 사진 촬영 과정
 
-  <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame-Camera.jpg" alt="1" style="zoom:50%;" />
+  <img src="./resources/WireFrame-Camera.jpg" alt="1" style="zoom:50%;" />
 
 - 물고기 등록
 
   - 글 작성 1
 
-    <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame-Writing 1.jpg" alt="1" style="zoom:50%;" />
+    <img src="./resources/WireFrame-Writing 1.jpg" alt="1" style="zoom:50%;" />
 
   - 글 작성 2
 
-    <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame-Writing 2.jpg" alt="1" style="zoom:50%;" />
+    <img src="./resources/WireFrame-Writing 2.jpg" alt="1" style="zoom:50%;" />
 
   - 글 작성 3
 
-    <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame-Writing 3.jpg" alt="1" style="zoom:50%;" />
+    <img src="./resources/WireFrame-Writing 3.jpg" alt="1" style="zoom:50%;" />
 
   - 글 작성 4
 
-    <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame-Writing 4.jpg" alt="1" style="zoom:50%;" />
+    <img src="./resources/WireFrame-Writing 4.jpg" alt="1" style="zoom:50%;" />
 
 - 랭킹
 
   - Top 1-3, Top 4-50 가 보여짐
 
-  <img src="C:/Users/user/Documents/GIT/s04p22a202/resources/WireFrame - Ranking-Rank.jpg" alt="1" style="zoom:50%;" />
+  <img src="./resources/WireFrame - Ranking-Rank.jpg" alt="1" style="zoom:50%;" />
 
