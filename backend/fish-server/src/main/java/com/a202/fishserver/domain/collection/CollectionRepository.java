@@ -1,4 +1,6 @@
 package com.a202.fishserver.domain.collection;
 
-public interface CollectionRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CollectionRepository extends JpaRepository<Collection, Integer> {
 }
