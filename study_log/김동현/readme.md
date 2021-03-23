@@ -1,1 +1,1 @@
-커밋 규칙 및 팀 룰 정의
+fish classification AI modeling
