@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "../Themed";
 
 export default function RankerSmallView(props: any) {
-  const { rank } = props;
+  const { rank, title } = props;
   return (
     <TouchableOpacity
       style={[
@@ -19,7 +19,9 @@ export default function RankerSmallView(props: any) {
       ]}
       onPress={() => alert("랭커 페이지 이동")}
     >
-      <Text>{rank}등입니다.</Text>
+      <Text>
+        {rank}등 {title}
+      </Text>
     </TouchableOpacity>
   );
 }

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { rankingApi } from "../utils/axios";
 
 import { Text, View } from "../components/Themed";
 
@@ -8,7 +9,14 @@ import RankerSmallView from "../components/ranking/RankerSmallView";
 
 export default function Home() {
   const [rankerView, setRankerView] = React.useState(0);
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [rankers, setRankers] = React.useState([]);
+  const [cache, setCache] = React.useState({});
+  if (cache.todos === undefined) {
+    rankingApi.getRanking("todos").then((response: []) => {
+      setRankers(response);
+      setCache({ ...cache, todos: response });
+    });
+  }
   return (
     <View style={styles.container}>
       <View style={styles.headerView}>
@@ -16,19 +24,27 @@ export default function Home() {
           포켓피쉬 영광의 Top 3를 만나보세요!
         </Text>
       </View>
-      <View style={styles.contentView}>
-        {!rankerView ? (
-          <>
-            <RankerBigView rank="1" />
-            <RankerBigView rank="2" />
-            <RankerBigView rank="3" />
-          </>
-        ) : (
-          arr.map((value) => (
-            <RankerSmallView key={value} rank={String(value)} />
-          ))
-        )}
-      </View>
+      {!rankerView ? (
+        <View style={styles.contentView}>
+          {rankers.slice(0, 3).map((ranker: Record<string, any>) => (
+            <RankerBigView
+              key={ranker.id}
+              rank={String(ranker.id)}
+              title={ranker.title}
+            />
+          ))}
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {rankers.slice(0, 50).map((ranker: Record<string, any>) => (
+            <RankerSmallView
+              key={ranker.id}
+              rank={String(ranker.id)}
+              title={ranker.title}
+            />
+          ))}
+        </ScrollView>
+      )}
       <View style={styles.footerView}>
         <TouchableOpacity
           onPress={() => {
@@ -61,6 +77,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  scrollView: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   footerView: {
     marginBottom: 5,
     alignItems: "center",
@@ -84,6 +104,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
+    marginTop: 15,
     backgroundColor: "#0560CF",
     width: "90%",
     padding: 10,
