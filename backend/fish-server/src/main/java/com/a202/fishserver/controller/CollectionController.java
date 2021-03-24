@@ -26,7 +26,7 @@ public class CollectionController {
     @GetMapping
     @ApiOperation(value = "내 보관함 조회")
     public Response getMyCollection(@RequestBody CollectionGetRequestDto dto) {
-        int userId = dto.getUser_id();
+        long userId = dto.getUser_id();
         List<CollectionGetResponseDto> result = collectionService.getMyCollections(userId);
 
         return Response.builder()

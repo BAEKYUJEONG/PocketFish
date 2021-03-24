@@ -23,7 +23,7 @@ public class CollectionService {
     /**
      * 내 보관함 조회
      */
-    public List<CollectionGetResponseDto> getMyCollections(int userId){
+    public List<CollectionGetResponseDto> getMyCollections(long userId){
         List<Collection> list = collectionRepository.findByUser(new User(userId));
         List<CollectionGetResponseDto> result = new ArrayList<>();
 
@@ -39,7 +39,6 @@ public class CollectionService {
         }
         return result;
     }
-    Collection c = new Collection(1);
 
     /**
      * 도감 상세 조회

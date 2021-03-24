@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CollectionGetRequestDto {
-    public Integer user_id;
+    public long user_id;
 }
