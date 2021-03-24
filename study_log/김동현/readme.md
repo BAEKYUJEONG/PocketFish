@@ -1,1 +1,1 @@
-api 명세서 작성
+JPA study
