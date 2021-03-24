@@ -1,16 +1,14 @@
 package com.a202.fishserver.controller;
 
 import com.a202.fishserver.dto.Response;
+import com.a202.fishserver.dto.collection.CollectionGetDetailResponseDto;
 import com.a202.fishserver.dto.collection.CollectionGetRequestDto;
 import com.a202.fishserver.dto.collection.CollectionGetResponseDto;
 import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +32,29 @@ public class CollectionController {
         return Response.builder()
                 .status(true)
                 .message("물고기 전체 조회 성공")
+                .data(result)
+                .build();
+    }
+
+    /**
+     * 도감 상세보기
+     */
+    @GetMapping("/{id}")
+    @ApiOperation(value = "도감 상세보기")
+    public Response getCollectionDetail(@PathVariable("id") int collectionId) {
+        CollectionGetDetailResponseDto result;
+        try {
+            result = collectionService.getCollectionDetail(collectionId);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message(e.getMessage())
+                    .data(null)
+                    .build();
+        }
+        return Response.builder()
+                .status(true)
+                .message("물고기 상세 조회 성공")
                 .data(result)
                 .build();
     }

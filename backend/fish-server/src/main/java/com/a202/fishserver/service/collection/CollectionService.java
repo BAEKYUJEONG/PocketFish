@@ -5,6 +5,7 @@ import com.a202.fishserver.domain.collection.CollectionRepository;
 import com.a202.fishserver.domain.fishImage.FishImage;
 import com.a202.fishserver.domain.fishImage.FishImageRepository;
 import com.a202.fishserver.domain.user.User;
+import com.a202.fishserver.dto.collection.CollectionGetDetailResponseDto;
 import com.a202.fishserver.dto.collection.CollectionGetResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,30 @@ public class CollectionService {
                     .build());
         }
         return result;
+    }
+    Collection c = new Collection(1);
+
+    /**
+     * 도감 상세 조회
+     */
+    public CollectionGetDetailResponseDto getCollectionDetail (int collectionId) throws Exception{
+        Optional<Collection> collection = collectionRepository.findById(collectionId);
+        if (!collection.isPresent()) throw new Exception("도감이 존재하지 않습니다.");
+
+        Optional<FishImage> fishImage = fishImageRepository.findByCollection(collection.get());
+        String imagePath = "";
+        if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
+
+        return CollectionGetDetailResponseDto.builder()
+                .collectionId(collectionId)
+                .fishName(collection.get().getFish().getName())
+                .fishImage(imagePath)
+                .fishLength(collection.get().getLength())
+                .fishLocation(collection.get().getLocation())
+                .fishMemo(collection.get().getMemo())
+                .fishBait(collection.get().getBait())
+                .fishingInfo(collection.get().getFishingInfo())
+                .regDate(collection.get().getRegDate())
+                .build();
     }
 }
