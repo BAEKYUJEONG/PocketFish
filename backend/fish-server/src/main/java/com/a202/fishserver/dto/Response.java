@@ -1,8 +1,12 @@
 package com.a202.fishserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class Response {
     @ApiModelProperty(value = "status", position = 1)
     public boolean status;
@@ -12,7 +16,7 @@ public class Response {
     public Object data;
 
     @Builder
-    public Response(boolean status, String message, Object data) {
+    public Response(boolean status, String message, @JsonProperty("data") Object data) {
         this.status = status;
         this.message = message;
         this.data = data;
