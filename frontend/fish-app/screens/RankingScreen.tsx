@@ -11,38 +11,48 @@ export default function Home() {
   const [rankerView, setRankerView] = React.useState(0);
   const [rankers, setRankers] = React.useState([]);
   const [cache, setCache] = React.useState({});
-  if (cache.todos === undefined) {
-    rankingApi.getRanking("todos").then((response: []) => {
-      setRankers(response);
-      setCache({ ...cache, todos: response });
+  if (cache.fishes === undefined) {
+    rankingApi.getRanking(1).then((response: []) => {
+      setRankers(response.data);
+      setCache({ ...cache, fishes: response.data });
     });
   }
   return (
     <View style={styles.container}>
       <View style={styles.headerView}>
         <Text style={styles.instructions}>
-          포켓피쉬 영광의 Top 3를 만나보세요!
+          포켓피쉬 영광의 {!rankerView ? "Top 3를" : "Top 50을"} 만나보세요!
         </Text>
       </View>
       {!rankerView ? (
         <View style={styles.contentView}>
-          {rankers.slice(0, 3).map((ranker: Record<string, any>) => (
-            <RankerBigView
-              key={ranker.id}
-              rank={String(ranker.id)}
-              title={ranker.title}
-            />
-          ))}
+          {rankers
+            ? rankers
+                .slice(0, 3)
+                .map((ranker: Record<string, any>, index) => (
+                  <RankerBigView
+                    key={index}
+                    rank={String(index + 1)}
+                    user={ranker.nickname}
+                    length={ranker.length}
+                  />
+                ))
+            : ""}
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {rankers.slice(0, 50).map((ranker: Record<string, any>) => (
-            <RankerSmallView
-              key={ranker.id}
-              rank={String(ranker.id)}
-              title={ranker.title}
-            />
-          ))}
+          {rankers
+            ? rankers
+                .slice(0, 50)
+                .map((ranker: Record<string, any>, index) => (
+                  <RankerSmallView
+                    key={index}
+                    rank={String(index + 1)}
+                    user={ranker.nickname}
+                    length={ranker.length}
+                  />
+                ))
+            : ""}
         </ScrollView>
       )}
       <View style={styles.footerView}>
@@ -56,7 +66,9 @@ export default function Home() {
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Top 50 보기</Text>
+          <Text style={styles.buttonText}>
+            {!rankerView ? "Top 50 보기" : "Top 3 보기"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

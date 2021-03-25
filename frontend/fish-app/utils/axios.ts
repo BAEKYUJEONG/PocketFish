@@ -13,15 +13,15 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 // };
 
 const request: AxiosInstance = axios.create({
-  baseURL: "https://jsonplaceholder.typicode.com/",
+  baseURL: "https://j4a202.p.ssafy.io",
   // headers: authHeader(),
 });
 
 // 랭킹 Api
 export const rankingApi: Record<string, any> = {
-  async getRanking(fish: string): Promise<void | AxiosResponse<any>> {
-    console.log("getRanking called");
-    const response = await request.get(fish);
+  async getRanking(fish_id: number): Promise<void | AxiosResponse<any>> {
+    const response = await request.get(`ranking/${String(fish_id)}`);
+    console.log(response);
     return response.data;
   },
 };
