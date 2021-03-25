@@ -34,6 +34,9 @@ public class CollectionServiceImpl implements CollectionService{
         List<HashMap<String, Object>> result = new ArrayList<>();
 
         for (Collection c : list) {
+            // 삭제여부 true인 것은 list에 담지 않음
+            if (c.getFlag()) continue;
+
             Optional<FishImage> fishImage = fishImageRepository.findByCollection(c);
             String imagePath = "";
             if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
@@ -116,5 +119,17 @@ public class CollectionServiceImpl implements CollectionService{
                 .regDate(LocalDateTime.now())
                 .flag(false)
                 .build());
+    }
+
+    /**
+     * 도감 정보 삭제
+     */
+    @Override
+    public void putCollectionFlag(long collectionID) throws Exception {
+        Optional<Collection> collection = collectionRepository.findById(collectionID);
+        if (!collection.isPresent()) throw new Exception("해당 도감 정보가 존재하지 않습니다.");
+
+        collection.get().setFlag(true);
+        collectionRepository.save(collection.get());
     }
 }
