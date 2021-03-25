@@ -2,10 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 
-export default function App() {
+import { createIconSetFromFontello, Ionicons } from "@expo/vector-icons";
+
+
+
+
+
+export default function CameraScreen() {
+  
   const [hasPermission, setHasPermission] = useState(false);
   // const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+
+  let cameraRef:any;
 
   useEffect(() => {
     (async () => {
@@ -14,16 +23,23 @@ export default function App() {
     })();
   }, []);
 
-
   if (hasPermission === false) {
-    console.log("false");
     return <Text>No access to camera</Text>;
   }
-  console.log("ture");
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
+      <Camera style={styles.camera} type={type} ref={ref=>{cameraRef=ref}}>
         <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={ async () => {
+              if(cameraRef){
+                const result =await cameraRef.takePictureAsync();
+                console.log({result});
+              }
+            }}>
+            <Text style={styles.text}> TAKE </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -55,7 +71,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   button: {
-    flex: 0.1,
+    flex: 0.2,
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
