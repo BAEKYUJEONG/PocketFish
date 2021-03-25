@@ -10,5 +10,5 @@ public interface CollectionService {
     HashMap<String,Object> getCollectionDetail(long collectionId) throws Exception;
     void postCollection(CollectionPostRequestDto dto) throws Exception;
     void putCollection(CollectionPostRequestDto dto, long collectionId) throws Exception;
-
+    void putCollectionFlag(long collectionID) throws Exception;
 }
