@@ -8,11 +8,12 @@ import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.Response;
 import com.a202.fishserver.dto.comment.CommentPostRequestDto;
+import com.a202.fishserver.dto.comment.CommentPutRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,49 +27,47 @@ public class CommentServiceImpl implements CommentService{
 
 
     @Override
-    public List<JSONObject> getComments(int collectionId) {
+    public List<HashMap<String, Object>> getComments(long collectionId) {
 
-        List<JSONObject> result = new ArrayList<>();
+        List<HashMap<String, Object>> result = new ArrayList<>();
+
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         if (collection.isPresent()) {
             List<Comment> comments = commentRepository.findByCollection(collection);
             for (Comment c : comments) {
-                JSONObject comment = new JSONObject();
 
+                HashMap<String, Object> comment = new HashMap<>();
                 comment.put("nickname", c.getUser().getNickname());
                 comment.put("content", c.getContent());
-                comment.put("regDate", c.getReg_date());
-                comment.put("updatedAt", c.getUpdated_at());
-
-//                System.out.println(comment.toString());
+                comment.put("reg_date", c.getReg_date());
+                comment.put("updated_at", c.getUpdated_at());
 
                 result.add(comment);
             }
             return result;
         }
-
         return null;
     }
 
     @Override
-    public Response writeComment(CommentPostRequestDto dto) {
+    public Response writeComment(CommentPostRequestDto writeRequest) {
 
-        Optional<User> user = userRepository.findById(dto.getUser_Id());
-        Optional<Collection> collection = collectionRepository.findById(dto.getCollectionId());
+        Optional<User> user = userRepository.findById(writeRequest.getUser_id());
+        Optional<Collection> collection = collectionRepository.findById(writeRequest.getCollection_id());
 
         if (user.isPresent() && collection.isPresent()) {
 
             Comment comment = new Comment();
-//            BeanUtils.copyProperties(dto, comment);
 
-            comment.setContent(dto.getContent());
-            comment.setReg_date(dto.getReg_date());
+            comment.setContent(writeRequest.getContent());
+            comment.setReg_date(writeRequest.getReg_date());
             comment.setCollection(collection.get());
             comment.setUser(user.get());
+            comment.setFlag(true);
 
             System.out.println("Comment to post: " + comment.toString());
 
-            comment = commentRepository.save(comment);
+            commentRepository.save(comment);
 
             return Response.builder()
                     .status(true)
@@ -83,4 +82,55 @@ public class CommentServiceImpl implements CommentService{
                 .build();
 
     }
+
+    @Override
+    public Response updateComment(CommentPutRequestDto updateRequest) {
+
+        Optional<Comment> foundComment = commentRepository.findById(updateRequest.getId());
+        if (foundComment.isPresent()) {
+            Comment comment = foundComment.get();
+
+            comment.setContent(updateRequest.getContent());
+            comment.setUpdated_at(updateRequest.getUpdated_at());
+
+            System.out.println("Updated comment: "+comment.toString());
+
+            commentRepository.save(comment);
+
+            return Response.builder()
+                    .status(true)
+                    .message("댓글 수정 성공")
+                    .data(null)
+                    .build();
+
+        }
+        return Response.builder()
+                .status(false)
+                .message("댓글 수정 실패")
+                .data(null)
+                .build();
+    }
+
+    @Override
+    public Response deleteComment(long comment_id) {
+        Optional<Comment> foundComment = commentRepository.findById(comment_id);
+        if (foundComment.isPresent()) {
+            Comment comment = foundComment.get();
+            comment.setFlag(false);
+            commentRepository.save(comment);
+            
+            return Response.builder()
+                    .status(true)
+                    .message("댓글 삭제 성공")
+                    .data(null)
+                    .build();
+        }
+        return Response.builder()
+                .status(false)
+                .message("댓글 삭제 실패")
+                .data(null)
+                .build();
+    }
+
+
 }
