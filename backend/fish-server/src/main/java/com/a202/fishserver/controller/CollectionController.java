@@ -6,6 +6,7 @@ import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,9 +24,9 @@ public class CollectionController {
     /**
      * 내 보관함 조회
      */
-    @GetMapping
+    @GetMapping("/user/{id}")
     @ApiOperation(value = "내 보관함 조회")
-    public Response getMyCollection(@RequestParam("user_id") long userId) {
+    public Response getMyCollection(@PathVariable("id") long userId) {
         List<HashMap<String, Object>> result = collectionService.getMyCollections(userId);
 
         return Response.builder()
@@ -98,6 +99,28 @@ public class CollectionController {
         return Response.builder()
                 .status(true)
                 .message("도감 정보 수정 성공")
+                .data(null)
+                .build();
+    }
+
+    /**
+     * 도감 정보 삭제
+     */
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "도감 정보 삭제")
+    public Response putCollectionFlag(@PathVariable("id") long collectionId) {
+        try {
+            collectionService.putCollectionFlag(collectionId);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message(e.getMessage())
+                    .data(null)
+                    .build();
+        }
+        return Response.builder()
+                .status(true)
+                .message("도감 정보 삭제 성공")
                 .data(null)
                 .build();
     }
