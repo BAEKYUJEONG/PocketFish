@@ -1,16 +1,14 @@
 package com.a202.fishserver.controller;
 
 import com.a202.fishserver.dto.Response;
-import com.a202.fishserver.dto.collection.CollectionGetDetailResponseDto;
-import com.a202.fishserver.dto.collection.CollectionGetRequestDto;
-import com.a202.fishserver.dto.collection.CollectionGetResponseDto;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
-import com.a202.fishserver.service.collection.CollectionServiceImpl;
+import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = {"*"})
@@ -20,15 +18,15 @@ import java.util.List;
 @Api(value = "물고기 도감 관리")
 public class CollectionController {
 
-    private final CollectionServiceImpl collectionService;
+    private final CollectionService collectionService;
 
     /**
      * 내 보관함 조회
      */
     @GetMapping
     @ApiOperation(value = "내 보관함 조회")
-    public Response getMyCollection(@RequestParam("user_id") int userId) {
-        List<CollectionGetResponseDto> result = collectionService.getMyCollections(userId);
+    public Response getMyCollection(@RequestParam("user_id") long userId) {
+        List<HashMap<String, Object>> result = collectionService.getMyCollections(userId);
 
         return Response.builder()
                 .status(true)
@@ -42,8 +40,8 @@ public class CollectionController {
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "도감 상세보기")
-    public Response getCollectionDetail(@PathVariable("id") int collectionId) {
-        CollectionGetDetailResponseDto result;
+    public Response getCollectionDetail(@PathVariable("id") long collectionId) {
+        HashMap<String, Object> result;
         try {
             result = collectionService.getCollectionDetail(collectionId);
         } catch (Exception e) {
@@ -87,7 +85,7 @@ public class CollectionController {
      */
     @PutMapping("/{id}")
     @ApiOperation(value = "도감 정보 수정")
-    public Response putCollection(@RequestBody CollectionPostRequestDto dto, @PathVariable("id") int collectionId) {
+    public Response putCollection(@RequestBody CollectionPostRequestDto dto, @PathVariable("id") long collectionId) {
         try {
             collectionService.putCollection(dto, collectionId);
         } catch (Exception e) {
