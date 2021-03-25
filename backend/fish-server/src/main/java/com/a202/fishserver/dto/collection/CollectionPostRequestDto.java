@@ -6,7 +6,7 @@ import lombok.Getter;
 public class CollectionPostRequestDto {
     public Integer length;
     public String location;
-    public int fish_id;
+    public long fish_id;
     public String memo;
     public String bait;
     public String fishing_info;

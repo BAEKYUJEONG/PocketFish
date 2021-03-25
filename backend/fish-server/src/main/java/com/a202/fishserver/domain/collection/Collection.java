@@ -16,7 +16,7 @@ public class Collection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
 
     private Integer length;
     private String location;
@@ -33,12 +33,12 @@ public class Collection {
     @ManyToOne
     private User user;
 
-    public Collection(Integer id) {
+    public Collection(long id) {
         this.id = id;
     }
 
     @Builder
-    public Collection(Integer id, Integer length, String location, Fish fish, String memo, String bait, String fishingInfo, LocalDateTime regDate, Boolean flag, User user) {
+    public Collection(long id, Integer length, String location, Fish fish, String memo, String bait, String fishingInfo, LocalDateTime regDate, Boolean flag, User user) {
         this.id = id;
         this.length = length;
         this.location = location;
