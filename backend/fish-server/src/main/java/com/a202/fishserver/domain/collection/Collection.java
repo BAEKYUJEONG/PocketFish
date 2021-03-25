@@ -2,9 +2,7 @@ package com.a202.fishserver.domain.collection;
 
 import com.a202.fishserver.domain.fish.Fish;
 import com.a202.fishserver.domain.user.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class Collection {
 
@@ -38,19 +37,17 @@ public class Collection {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Collection{" +
-                "id=" + id +
-                ", length=" + length +
-                ", location='" + location + '\'' +
-                ", fish=" + fish +
-                ", memo='" + memo + '\'' +
-                ", bait='" + bait + '\'' +
-                ", fishingInfo='" + fishingInfo + '\'' +
-                ", regDate=" + regDate +
-                ", flag=" + flag +
-                ", user=" + user +
-                '}';
+    @Builder
+    public Collection(Integer id, Integer length, String location, Fish fish, String memo, String bait, String fishingInfo, LocalDateTime regDate, Boolean flag, User user) {
+        this.id = id;
+        this.length = length;
+        this.location = location;
+        this.fish = fish;
+        this.memo = memo;
+        this.bait = bait;
+        this.fishingInfo = fishingInfo;
+        this.regDate = regDate;
+        this.flag = flag;
+        this.user = user;
     }
 }

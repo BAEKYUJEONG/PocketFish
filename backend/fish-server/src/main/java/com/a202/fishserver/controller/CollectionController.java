@@ -4,6 +4,7 @@ import com.a202.fishserver.dto.Response;
 import com.a202.fishserver.dto.collection.CollectionGetDetailResponseDto;
 import com.a202.fishserver.dto.collection.CollectionGetRequestDto;
 import com.a202.fishserver.dto.collection.CollectionGetResponseDto;
+import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
 import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,6 +57,28 @@ public class CollectionController {
                 .status(true)
                 .message("물고기 상세 조회 성공")
                 .data(result)
+                .build();
+    }
+
+    /**
+     * 물고기 등록
+     */
+    @PostMapping
+    @ApiOperation(value = "물고기 등록")
+    public Response postCollection(@RequestBody CollectionPostRequestDto dto) {
+        try {
+            collectionService.postCollection(dto);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message(e.getMessage())
+                    .data(null)
+                    .build();
+        }
+        return Response.builder()
+                .status(true)
+                .message("물고기 등록 성공")
+                .data(null)
                 .build();
     }
 }
