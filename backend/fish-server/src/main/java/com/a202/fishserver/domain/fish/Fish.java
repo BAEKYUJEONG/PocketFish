@@ -16,7 +16,7 @@ import javax.persistence.Id;
 public class Fish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
     private String name;
     private Integer fishLength;
     private String habitat;
