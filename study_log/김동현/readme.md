@@ -1,1 +1,1 @@
-JPA study
+fish classification AI modeling
