@@ -1,4 +1,4 @@
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -9,12 +9,14 @@ import CollectionScreen from "../screens/CollectionScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import CameraScreen from "../screens/CameraScreen";
 import {
   BottomTabParamList,
   CollectionParamList,
   RankingParamList,
   HomeParamList,
   ProfileParamList,
+  CameraParamList
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -41,6 +43,16 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIconFontAwesome5 name="fish" color={color} />
           ),
+        }}
+      />
+       <BottomTab.Screen
+        name="Camera"
+        component={CameraNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="camera" color={color} />
+          ),
+          unmountOnBlur:  true, // 클릭 시 새로고침. 
         }}
       />
       <BottomTab.Screen
@@ -106,6 +118,21 @@ function CollectionNavigator() {
     </CollectionStack.Navigator>
   );
 }
+
+
+const CameraStack = createStackNavigator<CameraParamList>();
+
+function CameraNavigator() {
+  return (
+    <CameraStack.Navigator>
+      <CameraStack.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+      />
+    </CameraStack.Navigator>
+  );
+}
+
 
 const RankingStack = createStackNavigator<RankingParamList>();
 

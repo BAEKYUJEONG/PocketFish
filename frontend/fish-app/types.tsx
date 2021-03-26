@@ -8,6 +8,7 @@ export type BottomTabParamList = {
   Collection: undefined;
   Ranking: undefined;
   Profile: undefined;
+  Camera: undefined;
 };
 
 export type HomeParamList = {
@@ -24,4 +25,8 @@ export type RankingParamList = {
 
 export type ProfileParamList = {
   ProfileScreen: undefined;
+};
+
+export type CameraParamList={
+  CameraScreen:undefined;
 };
