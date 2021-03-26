@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
-
-import { createIconSetFromFontello, Ionicons } from "@expo/vector-icons";
-
-
-
-
+import axios from "axios";
 
 export default function CameraScreen() {
   
@@ -34,8 +29,13 @@ export default function CameraScreen() {
             style={styles.button}
             onPress={ async () => {
               if(cameraRef){
-                const result =await cameraRef.takePictureAsync();
-                console.log({result});
+                console.log("\n\n");
+                const result =await cameraRef.takePictureAsync({ quality: 0.5, base64 :true });
+                console.log({"result":result});
+                await axios.post(`http://skeldtcan.iptime.org:5000`,JSON.stringify({file:result.base64}),{headers: {
+                  'Content-Type': 'application/JSON'
+                }}).then((res)=>console.log(res.data))
+                .catch((Error)=>{console.log(Error);});
               }
             }}>
             <Text style={styles.text}> TAKE </Text>
@@ -56,6 +56,7 @@ export default function CameraScreen() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
