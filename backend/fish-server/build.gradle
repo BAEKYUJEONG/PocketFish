@@ -34,6 +34,17 @@ dependencies {
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+	implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.5'
+
+	// https://mvnrepository.com/artifact/org.springframework/springloaded
+	implementation group: 'org.springframework', name: 'springloaded', version: '1.2.8.RELEASE'
+
+
 }
 
 test {

@@ -1,4 +1,14 @@
 package com.a202.fishserver.service.collection;
 
-public class CollectionService {
+import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+
+import java.util.HashMap;
+import java.util.List;
+
+public interface CollectionService {
+    List<HashMap<String, Object>> getMyCollections(long userId);
+    HashMap<String,Object> getCollectionDetail(long collectionId) throws Exception;
+    void postCollection(CollectionPostRequestDto dto) throws Exception;
+    void putCollection(CollectionPostRequestDto dto, long collectionId) throws Exception;
+    void putCollectionFlag(long collectionID) throws Exception;
 }
