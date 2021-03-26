@@ -9,10 +9,15 @@ import com.a202.fishserver.domain.fishImage.FishImageRepository;
 import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,4 +137,19 @@ public class CollectionServiceImpl implements CollectionService{
         collection.get().setFlag(true);
         collectionRepository.save(collection.get());
     }
+
+    /**
+     * 이미지 업로드 테스트
+     */
+    @Override
+    public void uploadImage(CollectionPostTestDto dto) throws IOException {
+        String rootPath = "/home/ubuntu/images/collection/";
+        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
+        MultipartFile file = dto.getFish_image();
+        System.out.println("file " + file.getOriginalFilename());
+        String filePath = rootPath + file.getOriginalFilename();
+        File dest = new File(filePath);
+        file.transferTo(dest);
+    }
+
 }
