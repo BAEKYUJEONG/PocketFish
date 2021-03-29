@@ -16,9 +16,6 @@ export default function CameraScreen({navigation}:{navigation:any}) {
 
   let cameraRef:any;
   
-  // const reduxState=useSelector((state:any)=>state);
-  // console.log("redux : ",reduxState);
-  
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -40,9 +37,7 @@ export default function CameraScreen({navigation}:{navigation:any}) {
                 const result =await cameraRef.takePictureAsync({ quality: 0.5, base64 :true });
                 dispatch(SetFishImage(result.base64));
                 navigation.navigate('ImageCheckScreen');
-                
-                // console.log({"result":result});
-                //console.log("state : ",fishState.fishImage);
+
                 // await axios.post(`http://skeldtcan.iptime.org:5000`,JSON.stringify({file:result.base64}),{headers: {
                 //   'Content-Type': 'application/JSON'
                 // }}).then((res)=>console.log(res.data))
