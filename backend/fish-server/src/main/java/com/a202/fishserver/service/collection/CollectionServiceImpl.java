@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -144,9 +145,10 @@ public class CollectionServiceImpl implements CollectionService{
     @Override
     public void uploadImage(CollectionPostTestDto dto) throws IOException {
         String rootPath = "/home/ubuntu/images/collection/";
-        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
+//        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
+        System.out.println("check "+ FileSystemView.getFileSystemView().getHomeDirectory().toString());
         MultipartFile file = dto.getFish_image();
-        System.out.println("file " + file.getOriginalFilename());
+        System.out.println("file " + file);
         String filePath = rootPath + file.getOriginalFilename();
         File dest = new File(filePath);
         file.transferTo(dest);
