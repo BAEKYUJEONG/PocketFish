@@ -3,7 +3,7 @@ import {combineReducers, createStore, Reducer, Store} from "redux";
 import {fishReducer} from "./fish";
 
 const rootReducer : Reducer = combineReducers({
-    first: fishReducer,
+    fish: fishReducer,
 });
 
 const store: Store = createStore(rootReducer);

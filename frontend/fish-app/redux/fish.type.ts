@@ -1,10 +1,10 @@
 export interface FishState {
-    exampleStringState: string | null;
+    fishImage: string | null ; //카메라로 촬영한 사진
 }
 
-export const SET_EXAMPLE_STRING = 'SET_EXAMPLE_STRING';
+export const SET_FISH_IMAGE='SET_FISH_IMAGE';
 
-export interface SetExampleStringAction {
-    type: typeof SET_EXAMPLE_STRING;
-    exampleStringState: string | null;
+export interface SetFishImageAction{
+    type: typeof SET_FISH_IMAGE;
+    fishImage: string | null ;
 }

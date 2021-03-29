@@ -10,13 +10,17 @@ import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
+import ImageCheckScreen from "../screens/ImageCheckScreen";
+import WaitResponseScreen from "../screens/WaitResponseScreen";
+import InputDetailScreen from "../screens/InputDetailScreen";
+
 import {
   BottomTabParamList,
   CollectionParamList,
   RankingParamList,
   HomeParamList,
   ProfileParamList,
-  CameraParamList
+  AddParamList
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -46,8 +50,8 @@ export default function BottomTabNavigator() {
         }}
       />
        <BottomTab.Screen
-        name="Camera"
-        component={CameraNavigator}
+        name="Add"
+        component={AddNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="camera" color={color} />
@@ -120,16 +124,28 @@ function CollectionNavigator() {
 }
 
 
-const CameraStack = createStackNavigator<CameraParamList>();
+const AddStack = createStackNavigator<AddParamList>();
 
-function CameraNavigator() {
+function AddNavigator() {
   return (
-    <CameraStack.Navigator>
-      <CameraStack.Screen
+    <AddStack.Navigator>
+      <AddStack.Screen
         name="CameraScreen"
         component={CameraScreen}
       />
-    </CameraStack.Navigator>
+      <AddStack.Screen
+        name="ImageCheckScreen"
+        component={ImageCheckScreen}
+      />
+      <AddStack.Screen
+        name="WaitResponseScreen"
+        component={WaitResponseScreen}
+      />
+      <AddStack.Screen
+        name="InputDetailScreen"
+        component={InputDetailScreen}
+      />
+    </AddStack.Navigator>
   );
 }
 
