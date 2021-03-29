@@ -26,6 +26,24 @@ export const rankingApi: Record<string, any> = {
   },
 };
 
+// 분석 Api
+export async function analysisApi(img:any){
+  console.log("api");
+  //const dispatch=useDispatch();
+
+  const result= await axios.post(`http://skeldtcan.iptime.org:5000`,
+    JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    // .then(
+    //   (res)=>{
+    //     console.log(res.data);
+    //     return res.data;
+    //   }
+    // )
+    // .catch((Error)=>{console.log(Error);});
+console.log(result.data);
+    return result.data;
+}
+
 // 로그인 Api
 // export const userApi: Record<string, any> = {
 //   async login(user: Record<string, any>): Promise<void | AxiosResponse<any>> {
