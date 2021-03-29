@@ -20,7 +20,7 @@ import {
   RankingParamList,
   HomeParamList,
   ProfileParamList,
-  AddParamList
+  AddParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -49,14 +49,14 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Add"
         component={AddNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="camera" color={color} />
+            <MaterialIcons name="camera" color={color} size={30} />
           ),
-          unmountOnBlur:  true, // 클릭 시 새로고침. 
+          unmountOnBlur: true, // 클릭 시 새로고침.
         }}
       />
       <BottomTab.Screen
@@ -123,32 +123,21 @@ function CollectionNavigator() {
   );
 }
 
-
 const AddStack = createStackNavigator<AddParamList>();
 
 function AddNavigator() {
   return (
     <AddStack.Navigator>
-      <AddStack.Screen
-        name="CameraScreen"
-        component={CameraScreen}
-      />
-      <AddStack.Screen
-        name="ImageCheckScreen"
-        component={ImageCheckScreen}
-      />
+      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
+      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
       <AddStack.Screen
         name="WaitResponseScreen"
         component={WaitResponseScreen}
       />
-      <AddStack.Screen
-        name="InputDetailScreen"
-        component={InputDetailScreen}
-      />
+      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </AddStack.Navigator>
   );
 }
-
 
 const RankingStack = createStackNavigator<RankingParamList>();
 
