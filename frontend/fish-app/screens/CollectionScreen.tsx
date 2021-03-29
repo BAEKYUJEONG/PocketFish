@@ -1,29 +1,17 @@
 import * as React from "react";
-import { Component } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image
-} from "react-native";
-//import { Text, View } from "../components/Themed";
-import { Icon, Container, Content, Header, Left, Body, Right, Button } from 'native-base';
+import { StyleSheet } from "react-native";
+
+import { Text, View } from "../components/Themed";
 
 export default function CollectionScreen() {
   return (
     <View style={styles.container}>
-      <Container>
-        <Header>
-          <Body><Text>내 수조</Text></Body>
-        </Header>
-        <Content>
-          <View>
-            <View style={{ flexDirection: 'row' }}>
-              
-            </View>
-          </View>
-        </Content>
-      </Container>
+      <Text style={styles.title}>Collection</Text>
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
     </View>
   );
 }
