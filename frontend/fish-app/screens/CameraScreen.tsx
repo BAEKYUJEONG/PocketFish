@@ -2,15 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { fishState, SetFishImage } from '../redux/fish';
+import { AddParamList } from '../types';
 
-export default function CameraScreen() {
+export default function CameraScreen({navigation}:{navigation:any}) {
   
+  const dispatch= useDispatch();
+
   const [hasPermission, setHasPermission] = useState(false);
-  // const [hasPermission, setHasPermission] = useState(null);
+
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   let cameraRef:any;
-
+  
+  // const reduxState=useSelector((state:any)=>state);
+  // console.log("redux : ",reduxState);
+  
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -29,13 +37,16 @@ export default function CameraScreen() {
             style={styles.button}
             onPress={ async () => {
               if(cameraRef){
-                console.log("\n\n");
                 const result =await cameraRef.takePictureAsync({ quality: 0.5, base64 :true });
-                console.log({"result":result});
-                await axios.post(`http://skeldtcan.iptime.org:5000`,JSON.stringify({file:result.base64}),{headers: {
-                  'Content-Type': 'application/JSON'
-                }}).then((res)=>console.log(res.data))
-                .catch((Error)=>{console.log(Error);});
+                dispatch(SetFishImage(result.base64));
+                navigation.navigate('ImageCheckScreen');
+                
+                // console.log({"result":result});
+                //console.log("state : ",fishState.fishImage);
+                // await axios.post(`http://skeldtcan.iptime.org:5000`,JSON.stringify({file:result.base64}),{headers: {
+                //   'Content-Type': 'application/JSON'
+                // }}).then((res)=>console.log(res.data))
+                // .catch((Error)=>{console.log(Error);});
               }
             }}>
             <Text style={styles.text}> TAKE </Text>
