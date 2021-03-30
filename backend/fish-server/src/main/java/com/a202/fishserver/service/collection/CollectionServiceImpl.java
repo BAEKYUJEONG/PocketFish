@@ -148,7 +148,7 @@ public class CollectionServiceImpl implements CollectionService{
         String rootPath = "/home/ubuntu/images/collection/";
 //        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
         String changeName = 1 + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
-//        System.out.println("check "+ FileSystemView.getFileSystemView().getHomeDirectory().toString());
+        System.out.println("check!!!! "+ FileSystemView.getFileSystemView().getHomeDirectory().toString());
         MultipartFile file = dto.getFish_image();
 //        System.out.println("file " + file);
         String filePath = rootPath + changeName;
