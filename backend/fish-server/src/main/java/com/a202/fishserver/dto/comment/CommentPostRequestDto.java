@@ -13,7 +13,7 @@ public class CommentPostRequestDto {
 
     public String content;
     public Date reg_date;
-    public long user_Id;
-    public int collectionId;
+    public long user_id;
+    public long collection_id;
 
 }

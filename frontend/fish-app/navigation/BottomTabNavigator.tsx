@@ -10,13 +10,17 @@ import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
+import ImageCheckScreen from "../screens/ImageCheckScreen";
+import WaitResponseScreen from "../screens/WaitResponseScreen";
+import InputDetailScreen from "../screens/InputDetailScreen";
+
 import {
   BottomTabParamList,
   CollectionParamList,
   RankingParamList,
   HomeParamList,
   ProfileParamList,
-  CameraParamList
+  AddParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -45,14 +49,14 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-       <BottomTab.Screen
-        name="Camera"
-        component={CameraNavigator}
+      <BottomTab.Screen
+        name="Add"
+        component={AddNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="camera" color={color} />
+            <MaterialIcons name="camera" color={color} size={30} />
           ),
-          unmountOnBlur:  true, // 클릭 시 새로고침. 
+          unmountOnBlur: true, // 클릭 시 새로고침.
         }}
       />
       <BottomTab.Screen
@@ -119,20 +123,21 @@ function CollectionNavigator() {
   );
 }
 
+const AddStack = createStackNavigator<AddParamList>();
 
-const CameraStack = createStackNavigator<CameraParamList>();
-
-function CameraNavigator() {
+function AddNavigator() {
   return (
-    <CameraStack.Navigator>
-      <CameraStack.Screen
-        name="CameraScreen"
-        component={CameraScreen}
+    <AddStack.Navigator>
+      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
+      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
+      <AddStack.Screen
+        name="WaitResponseScreen"
+        component={WaitResponseScreen}
       />
-    </CameraStack.Navigator>
+      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
+    </AddStack.Navigator>
   );
 }
-
 
 const RankingStack = createStackNavigator<RankingParamList>();
 
