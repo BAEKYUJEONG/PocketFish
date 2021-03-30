@@ -19,7 +19,7 @@ export default function ImageScreen({navigation}:{ navigation:any}) {
                             let result= await analysisApi(reduxState.fish.fishImage);
                             console.log(result);
                             dispatch(SetFishResult(result));
-                            //navigation.navigate('InputDetailScreen');
+                            navigation.navigate('ShowResultScreen');
                         }   
                     }>
                     <Text style={styles.btnText}>분석하기</Text>

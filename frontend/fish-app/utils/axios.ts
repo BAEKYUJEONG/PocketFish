@@ -33,15 +33,8 @@ export async function analysisApi(img:any){
 
   const result= await axios.post(`http://skeldtcan.iptime.org:5000`,
     JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
-    // .then(
-    //   (res)=>{
-    //     console.log(res.data);
-    //     return res.data;
-    //   }
-    // )
-    // .catch((Error)=>{console.log(Error);});
-console.log(result.data);
-    return result.data;
+  console.log(result.data);
+  return result.data;
 }
 
 // 로그인 Api
