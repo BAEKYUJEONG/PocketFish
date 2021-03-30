@@ -9,10 +9,16 @@ import com.a202.fishserver.domain.fishImage.FishImageRepository;
 import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,4 +138,23 @@ public class CollectionServiceImpl implements CollectionService{
         collection.get().setFlag(true);
         collectionRepository.save(collection.get());
     }
+
+    /**
+     * 이미지 업로드 테스트
+     */
+    // 도커 실행할때 ec2 서버를 마운트 시켜놓고 마운트된 폴더로 저장
+    @Override
+    public void uploadImage(CollectionPostTestDto dto) throws IOException {
+        String rootPath = "/home/ubuntu/images/collection/";
+//        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
+        String changeName = 1 + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
+//        System.out.println("check "+ FileSystemView.getFileSystemView().getHomeDirectory().toString());
+        MultipartFile file = dto.getFish_image();
+//        System.out.println("file " + file);
+        String filePath = rootPath + changeName;
+        System.out.println("filePath " + filePath);
+        File dest = new File(filePath);
+        file.transferTo(dest);
+    }
+
 }
