@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,java,java-web,vscode,gradle,reactnative,python,pycharm,react,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,java-web,vscode,gradle,reactnative,python,pycharm,react,windows,visualstudiocode
 
-### data
+# dataset
 dataset/
 
 # application.properties

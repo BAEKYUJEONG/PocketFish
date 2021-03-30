@@ -9,10 +9,11 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class CommentPostRequestDto {
+public class CommentPutRequestDto {
 
+    public long id;
     public String content;
-    public Date reg_date;
+    public Date updated_at;
     public long user_id;
     public long collection_id;
 
