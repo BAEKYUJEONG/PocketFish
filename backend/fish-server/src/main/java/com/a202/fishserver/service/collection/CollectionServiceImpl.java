@@ -8,20 +8,25 @@ import com.a202.fishserver.domain.fishImage.FishImage;
 import com.a202.fishserver.domain.fishImage.FishImageRepository;
 import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
-import com.a202.fishserver.dto.collection.CollectionGetDetailResponseDto;
-import com.a202.fishserver.dto.collection.CollectionGetResponseDto;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class CollectionServiceImpl {
+public class CollectionServiceImpl implements CollectionService{
     private final CollectionRepository collectionRepository;
     private final FishImageRepository fishImageRepository;
     private final FishRepository fishRepository;
@@ -30,19 +35,22 @@ public class CollectionServiceImpl {
     /**
      * 내 보관함 조회
      */
-    public List<CollectionGetResponseDto> getMyCollections(long userId){
+    public List<HashMap<String, Object>> getMyCollections(long userId){
         List<Collection> list = collectionRepository.findByUser(new User(userId));
-        List<CollectionGetResponseDto> result = new ArrayList<>();
+        List<HashMap<String, Object>> result = new ArrayList<>();
 
         for (Collection c : list) {
+            // 삭제여부 true인 것은 list에 담지 않음
+            if (c.getFlag()) continue;
+
             Optional<FishImage> fishImage = fishImageRepository.findByCollection(c);
             String imagePath = "";
             if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
 
-            result.add(CollectionGetResponseDto.builder()
-                    .collectionId(c.getId())
-                    .fishImage(imagePath)
-                    .build());
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("collectionId", c.getId());
+            map.put("fishImage", imagePath);
+            result.add(map);
         }
         return result;
     }
@@ -50,7 +58,7 @@ public class CollectionServiceImpl {
     /**
      * 도감 상세 조회
      */
-    public CollectionGetDetailResponseDto getCollectionDetail (int collectionId) throws Exception{
+    public HashMap<String, Object> getCollectionDetail (long collectionId) throws Exception{
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         if (!collection.isPresent()) throw new Exception("도감이 존재하지 않습니다.");
 
@@ -58,17 +66,18 @@ public class CollectionServiceImpl {
         String imagePath = "";
         if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
 
-        return CollectionGetDetailResponseDto.builder()
-                .collectionId(collectionId)
-                .fishName(collection.get().getFish().getName())
-                .fishImage(imagePath)
-                .fishLength(collection.get().getLength())
-                .fishLocation(collection.get().getLocation())
-                .fishMemo(collection.get().getMemo())
-                .fishBait(collection.get().getBait())
-                .fishingInfo(collection.get().getFishingInfo())
-                .regDate(collection.get().getRegDate())
-                .build();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("collectionId", collectionId);
+        map.put("fishName", collection.get().getFish().getName());
+        map.put("fishImage", imagePath);
+        map.put("fishLength", collection.get().getLength());
+        map.put("fishLocation", collection.get().getLocation());
+        map.put("fishMemo", collection.get().getMemo());
+        map.put("fishBait", collection.get().getBait());
+        map.put("fishingInfo", collection.get().getFishingInfo());
+        map.put("regDate", collection.get().getRegDate());
+
+        return map;
     }
 
     /**
@@ -96,7 +105,7 @@ public class CollectionServiceImpl {
     /**
      * 도감 정보 수정
      */
-    public void putCollection(CollectionPostRequestDto dto, int collectionId) throws Exception{
+    public void putCollection(CollectionPostRequestDto dto, long collectionId) throws Exception{
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         Optional<User> user = userRepository.findById(dto.getUser_id());
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
@@ -117,4 +126,35 @@ public class CollectionServiceImpl {
                 .flag(false)
                 .build());
     }
+
+    /**
+     * 도감 정보 삭제
+     */
+    @Override
+    public void putCollectionFlag(long collectionID) throws Exception {
+        Optional<Collection> collection = collectionRepository.findById(collectionID);
+        if (!collection.isPresent()) throw new Exception("해당 도감 정보가 존재하지 않습니다.");
+
+        collection.get().setFlag(true);
+        collectionRepository.save(collection.get());
+    }
+
+    /**
+     * 이미지 업로드 테스트
+     */
+    // 도커 실행할때 ec2 서버를 마운트 시켜놓고 마운트된 폴더로 저장
+    @Override
+    public void uploadImage(CollectionPostTestDto dto) throws IOException {
+        String rootPath = "/home/ubuntu/images/collection/";
+//        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
+        String changeName = 1 + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
+//        System.out.println("check "+ FileSystemView.getFileSystemView().getHomeDirectory().toString());
+        MultipartFile file = dto.getFish_image();
+//        System.out.println("file " + file);
+        String filePath = rootPath + changeName;
+        System.out.println("filePath " + filePath);
+        File dest = new File(filePath);
+        file.transferTo(dest);
+    }
+
 }

@@ -25,7 +25,7 @@ public class RankingController {
 
 
     @GetMapping("/{fish_id}")
-    public Object getRankByFishId(@PathVariable("fish_id") int fish_id) {
+    public Object getRankByFishId(@PathVariable("fish_id") long fish_id) {
         List<JSONObject> result = new ArrayList<>();
 
         Optional<Fish> foundFish = fishRepository.findById(fish_id);

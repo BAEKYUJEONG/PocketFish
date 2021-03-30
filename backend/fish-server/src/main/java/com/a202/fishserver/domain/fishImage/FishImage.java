@@ -15,7 +15,7 @@ public class FishImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
 
     @OneToOne
     private Collection collection;

@@ -171,3 +171,34 @@
 > react native 날씨앱 만들기
 
 - 노마드 코더 날씨앱 만들기 공부
+
+
+
+*****
+
+
+
+###### 2021-03-25
+
+> react native 날씨앱 만들기
+
+- 노마드 코더 날씨앱 만들기 공부
+
+
+
+> react native 공부
+
+- Flatlist, Button 공부 및 인스타그램 profile 클론 코딩
+
+
+
+*****
+
+
+
+###### 2021-03-26
+
+> react native : UI 추가
+
+- native-base 추가 및 적용
+

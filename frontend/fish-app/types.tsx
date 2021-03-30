@@ -1,3 +1,5 @@
+
+
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
@@ -8,7 +10,10 @@ export type BottomTabParamList = {
   Collection: undefined;
   Ranking: undefined;
   Profile: undefined;
+  Add: undefined;
 };
+
+
 
 export type HomeParamList = {
   HomeScreen: undefined;
@@ -24,4 +29,11 @@ export type RankingParamList = {
 
 export type ProfileParamList = {
   ProfileScreen: undefined;
+};
+
+export type AddParamList={
+  CameraScreen:undefined;
+  ImageCheckScreen:undefined;
+  WaitResponseScreen:undefined;
+  InputDetailScreen:undefined
 };

@@ -1,4 +1,4 @@
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -9,12 +9,18 @@ import CollectionScreen from "../screens/CollectionScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import CameraScreen from "../screens/CameraScreen";
+import ImageCheckScreen from "../screens/ImageCheckScreen";
+import WaitResponseScreen from "../screens/WaitResponseScreen";
+import InputDetailScreen from "../screens/InputDetailScreen";
+
 import {
   BottomTabParamList,
   CollectionParamList,
   RankingParamList,
   HomeParamList,
   ProfileParamList,
+  AddParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -41,6 +47,16 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIconFontAwesome5 name="fish" color={color} />
           ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Add"
+        component={AddNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="camera" color={color} size={30} />
+          ),
+          unmountOnBlur: true, // 클릭 시 새로고침.
         }}
       />
       <BottomTab.Screen
@@ -104,6 +120,22 @@ function CollectionNavigator() {
         options={{ headerTitle: "Collection" }}
       />
     </CollectionStack.Navigator>
+  );
+}
+
+const AddStack = createStackNavigator<AddParamList>();
+
+function AddNavigator() {
+  return (
+    <AddStack.Navigator>
+      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
+      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
+      <AddStack.Screen
+        name="WaitResponseScreen"
+        component={WaitResponseScreen}
+      />
+      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
+    </AddStack.Navigator>
   );
 }
 
