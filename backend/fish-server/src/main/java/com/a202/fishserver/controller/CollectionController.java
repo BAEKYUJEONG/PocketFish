@@ -6,7 +6,6 @@ import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -64,7 +63,7 @@ public class CollectionController {
      */
     @PostMapping
     @ApiOperation(value = "물고기 등록")
-    public Response postCollection(@RequestBody CollectionPostRequestDto dto) {
+    public Response postCollection(@ModelAttribute CollectionPostRequestDto dto) {
         try {
             collectionService.postCollection(dto);
         } catch (Exception e) {

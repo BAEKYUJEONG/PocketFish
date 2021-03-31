@@ -8,6 +8,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import CollectionScreen from "../screens/CollectionScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
+import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
@@ -103,6 +104,11 @@ function HomeNavigator() {
       <HomeStack.Screen
         name="HomeScreen"
         component={HomeScreen}
+        options={{ headerTitle: "Home" }}
+      />
+      <HomeStack.Screen
+        name="KakaoLoginScreen"
+        component={KakaoLoginScreen}
         options={{ headerTitle: "Home" }}
       />
     </HomeStack.Navigator>
