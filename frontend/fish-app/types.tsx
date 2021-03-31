@@ -1,5 +1,3 @@
-
-
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
@@ -13,10 +11,9 @@ export type BottomTabParamList = {
   Add: undefined;
 };
 
-
-
 export type HomeParamList = {
   HomeScreen: undefined;
+  KakaoLoginScreen: undefined;
 };
 
 export type CollectionParamList = {
@@ -31,9 +28,9 @@ export type ProfileParamList = {
   ProfileScreen: undefined;
 };
 
-export type AddParamList={
-  CameraScreen:undefined;
-  ImageCheckScreen:undefined;
-  WaitResponseScreen:undefined;
-  InputDetailScreen:undefined
+export type AddParamList = {
+  CameraScreen: undefined;
+  ImageCheckScreen: undefined;
+  WaitResponseScreen: undefined;
+  InputDetailScreen: undefined;
 };
