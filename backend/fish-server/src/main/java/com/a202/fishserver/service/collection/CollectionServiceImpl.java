@@ -145,10 +145,10 @@ public class CollectionServiceImpl implements CollectionService{
     // 도커 실행할때 ec2 서버를 마운트 시켜놓고 마운트된 폴더로 저장
     @Override
     public void uploadImage(CollectionPostTestDto dto) throws IOException {
-        String rootPath = "/home/ubuntu/images/collection/";
+        String rootPath = "/root/data/images/collection/";
 //        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
         String changeName = 1 + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
-        System.out.println("check!!!! "+ FileSystemView.getFileSystemView().getHomeDirectory().toString());
+        System.out.println("check!!!! "+ FileSystemView.getFileSystemView().getDefaultDirectory().toString());
         MultipartFile file = dto.getFish_image();
 //        System.out.println("file " + file);
         String filePath = rootPath + changeName;
