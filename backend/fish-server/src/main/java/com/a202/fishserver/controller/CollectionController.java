@@ -2,16 +2,12 @@ package com.a202.fishserver.controller;
 
 import com.a202.fishserver.dto.Response;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
-import com.a202.fishserver.dto.collection.CollectionPostTestDto;
 import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,7 +63,7 @@ public class CollectionController {
      */
     @PostMapping
     @ApiOperation(value = "물고기 등록")
-    public Response postCollection(@RequestBody CollectionPostRequestDto dto) {
+    public Response postCollection(@ModelAttribute CollectionPostRequestDto dto) {
         try {
             collectionService.postCollection(dto);
         } catch (Exception e) {
@@ -82,19 +78,6 @@ public class CollectionController {
                 .message("물고기 등록 성공")
                 .data(null)
                 .build();
-    }
-
-    /**
-     * 이미지 업로드 테스트
-     */
-    @PostMapping("/test")
-    public void uploadImage(@ModelAttribute CollectionPostTestDto dto) {
-        try {
-            collectionService.uploadImage(dto);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
     }
 
     /**
