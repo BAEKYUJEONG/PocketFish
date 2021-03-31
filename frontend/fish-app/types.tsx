@@ -32,9 +32,10 @@ export type ProfileParamList = {
 };
 
 export type AddParamList={
+  
+  ShowResultScreen:undefined;
   CameraScreen:undefined;
   ImageCheckScreen:undefined;
-  ShowResultScreen:undefined;
   WaitResponseScreen:undefined;
   InputDetailScreen:undefined
 };

@@ -16,7 +16,8 @@ export default function ImageScreen({navigation}:{ navigation:any}) {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     onPress={async ()=>{
-                            let result= await analysisApi(reduxState.fish.fishImage);
+                            //let result= await analysisApi(reduxState.fish.fishImage);
+                            let result= JSON.stringify({'catfish':57.548,'carpfish':41.126,'flatfish':1.326})
                             console.log(result);
                             dispatch(SetFishResult(result));
                             navigation.navigate('ShowResultScreen');
