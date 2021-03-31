@@ -1,75 +1,102 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { rankingApi } from "../utils/axios";
 
 import { Text, View } from "../components/Themed";
 
+import SegmentedControlTab from "react-native-segmented-control-tab";
+
+import RankerView from "../components/ranking/RankerView";
 import RankerBigView from "../components/ranking/RankerBigView";
 import RankerSmallView from "../components/ranking/RankerSmallView";
 
 export default function Home() {
-  const [rankerView, setRankerView] = React.useState(0);
-  const [rankers, setRankers] = React.useState([]);
-  const [cache, setCache] = React.useState({});
-  if (cache.fishes === undefined) {
-    rankingApi.getRanking(1).then((response: []) => {
-      setRankers(response.data);
-      setCache({ ...cache, fishes: response.data });
-    });
+  const [rankerView, setRankerView] = useState(0);
+  const [rankers, setRankers] = useState([]);
+  const [cache, setCache] = useState({});
+  const [tab1Index, setTab1Index] = useState(0);
+  const [tab2Index, setTab2Index] = useState(0);
+  useEffect(() => {
+    updateRanker(tab1Index, tab2Index);
+  }, [tab1Index, tab2Index]);
+
+  function selectedFish() {
+    let fish = "";
+    switch (tab1Index) {
+      case 0:
+        switch (tab2Index) {
+          case 0:
+            fish = "flatfish";
+            break;
+          case 1:
+            fish = "rockfish";
+            break;
+          case 2:
+            fish = "red_snapper";
+            break;
+        }
+        break;
+      case 1:
+        switch (tab2Index) {
+          case 0:
+            fish = "catfish";
+            break;
+          case 1:
+            fish = "bass";
+            break;
+          case 2:
+            fish = "golden_mandarin_fish";
+            break;
+        }
+        break;
+    }
+    return fish;
+  }
+  function updateRanker(tab1, tab2) {
+    const fish = selectedFish();
+    console.log(fish);
+    if (cache[fish] === undefined) {
+      console.log("uncached data!");
+      rankingApi.getRanking(1).then((response: []) => {
+        const updatedCache = cache;
+        updatedCache[fish] = response.data;
+        setCache(updatedCache);
+        setRankers(response.data);
+      });
+    } else {
+      console.log("cached data!");
+      setRankers(cache[fish]);
+    }
   }
   return (
     <View style={styles.container}>
       <View style={styles.headerView}>
-        <Text style={styles.instructions}>
-          포켓피쉬 영광의 {!rankerView ? "Top 3를" : "Top 50을"} 만나보세요!
-        </Text>
-      </View>
-      {!rankerView ? (
-        <View style={styles.contentView}>
-          {rankers
-            ? rankers
-                .slice(0, 3)
-                .map((ranker: Record<string, any>, index) => (
-                  <RankerBigView
-                    key={index}
-                    rank={String(index + 1)}
-                    user={ranker.nickname}
-                    length={ranker.length}
-                  />
-                ))
-            : ""}
-        </View>
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          {rankers
-            ? rankers
-                .slice(0, 50)
-                .map((ranker: Record<string, any>, index) => (
-                  <RankerSmallView
-                    key={index}
-                    rank={String(index + 1)}
-                    user={ranker.nickname}
-                    length={ranker.length}
-                  />
-                ))
-            : ""}
-        </ScrollView>
-      )}
-      <View style={styles.footerView}>
-        <TouchableOpacity
-          onPress={() => {
-            if (!rankerView) {
-              setRankerView(1);
-            } else {
-              setRankerView(0);
-            }
+        <SegmentedControlTab
+          values={["바다", "민물"]}
+          selectedIndex={tab1Index}
+          onTabPress={(index) => {
+            setTab1Index(index);
+            setTab2Index(0);
           }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>
-            {!rankerView ? "Top 50 보기" : "Top 3 보기"}
-          </Text>
-        </TouchableOpacity>
+          tabsContainerStyle={{
+            width: "90%",
+          }}
+        />
+        <SegmentedControlTab
+          values={
+            tab1Index === 0
+              ? ["광어", "우럭", "참돔"]
+              : ["메기", "배스", "쏘가리"]
+          }
+          selectedIndex={tab2Index}
+          onTabPress={(index) => setTab2Index(index)}
+          tabsContainerStyle={{
+            width: "90%",
+          }}
+        />
+      </View>
+      <View style={styles.contentView}>
+        <RankerView rankers={rankers} />
       </View>
     </View>
   );
