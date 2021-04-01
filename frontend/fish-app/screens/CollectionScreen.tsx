@@ -1,15 +1,26 @@
 import * as React from "react";
 import { Component } from "react";
+import { useState, useEffect } from "react";
+import { collectionApi } from "../utils/axios"
 import {
   StyleSheet,
-  Image
 } from "react-native";
 import { Text, View } from "../components/Themed";
-import { Icon, Container, Content, Thumbnail, Left, Body, Right, Button } from 'native-base';
+import { Icon, Container, Content, Thumbnail, Image, Left, Body, Right, Button } from 'native-base';
 
 export default function CollectionScreen() {
   const uri1 = "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&w=1000&q=80";
-  const uri2 = "https://lh3.googleusercontent.com/proxy/8_f75Wu-aR0sFQj-m6MuUqdcEbjC1--2DUlHv0RAJVPTY3ngHzHGiAET303CKZiRTVap5L4psulV7cQ7AxCygHGKXwwe-CXqD-H40CMgFPzsSJZj6z7E8q-_H_kqf8c2A3i-o4MFUfuCXLWC13Dk2gFtdQfLRyI8";
+  const uri2 = "https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d";
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    collectionApi.getCollection(1).then((response:any) => {
+      setData(response.data);
+      alert(JSON.stringify(response.data));
+      console.log(data);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <Container>
@@ -38,8 +49,9 @@ export default function CollectionScreen() {
           </View>
           */}
           <View style={styles.contentView}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderTopWidth: 1, borderTopColor: '#eae5e5' }}>
-              
+            <View style={styles.collectionAll}>
+              {data.map((d, index) => <Text key={index}>fishImage: {d.fishImage}, collectionId: {d.collectionId}</Text>)}
+
               <Thumbnail large source={{ uri: uri1 }} />
               <Thumbnail large source={{ uri: uri2 }} />
               <Thumbnail large source={{ uri: uri1 }} />
@@ -82,5 +94,16 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+  },
+  collectionAll: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderTopWidth: 1,
+    borderTopColor: '#eae5e5',
+  },
+  collectionImg: {
+    flex: 1,
+    width: undefined,
+    height: undefined,
   },
 });

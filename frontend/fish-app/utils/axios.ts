@@ -26,6 +26,15 @@ export const rankingApi: Record<string, any> = {
   },
 };
 
+// 보관함 Api
+export const collectionApi: Record<string, any> = {
+  async getCollection(user_id: number): Promise<void | AxiosResponse<any>> {
+    const response = await request.get(`collection/user/${String(user_id)}`);
+    console.log(response);
+    return response.data;
+  },
+}
+
 // 분석 Api
 export async function analysisApi(img:any){
   console.log("api");
