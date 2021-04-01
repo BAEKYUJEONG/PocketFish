@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 
 import { Text, View } from "../Themed";
 
-export default function RankerBigView(props: any) {
+export default function RankerView(props: any) {
   const { rankers } = props;
   return (
     <View style={styles.container}>
