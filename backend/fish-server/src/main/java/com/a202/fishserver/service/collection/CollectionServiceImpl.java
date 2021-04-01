@@ -115,7 +115,7 @@ public class CollectionServiceImpl implements CollectionService{
         if (dto.getFish_image() != null) {
             fishImageRepository.save(FishImage.builder()
                     .collection(c)
-                    .imagePath(apiPath)
+                    .imagePath(apiPath + fileName)
                     .build());
         }
     }
