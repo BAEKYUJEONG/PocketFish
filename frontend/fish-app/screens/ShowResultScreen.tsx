@@ -1,51 +1,81 @@
 
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image,ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Header, Content, Form, Item, Picker, Button, Right } from 'native-base';
+import { Container, Header, Content, Form, Item, Picker, Button, Right  } from 'native-base';
 import { SetFishResult } from '../redux/fish';
+import {analysisApi} from "../utils/axios";
+import { List, Dialog } from 'react-native-paper';
+import FishInformation from './Component/FishInformation';
+
 
 export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
-    const reduxState=useSelector((state:any)=>state);
+  
+  console.log("\n\n");
 
-    const [state,setState]=useState("{'a','b'}");
+  const reduxState=useSelector((state:any)=>state);
+  const dispatch=useDispatch();
 
-    var itemList=[];
-    var nameList=[];
-    nameList.push(reduxState.fish.fishResult.split(`"`)[1]);
-    nameList.push(reduxState.fish.fishResult.split(`"`)[3]);
-    nameList.push(reduxState.fish.fishResult.split(`"`)[5]);
-    console.log("\n\n");
-    console.log(nameList);
-    nameList.forEach((item)=>itemList.push(<Picker.Item label={item} value="key0"/>));
-    console.log("itemLIst: ",itemList);
-    return (
-      <View style={styles.container}>
-        <Image style={styles.img} source={{uri:`data:image/jpeg;base64,${reduxState.fish.fishImage}`}}/>
-        <View style={styles.resultList}>
-          <Form style={styles.form}>
-            <Text style={styles.text}>분석결과</Text>
-            <Item picker style={styles.item}>
-              <Picker
-                  mode="dropdown"
-                  style={styles.picker}
-                  placeholder="Select your SIM"
-                  placeholderStyle={{ color: "#bfc6ea" }}
-                  placeholderIconColor="#007aff"
-                  selectedValue={state}
-                  onValueChange={(loc)=>{setState(loc)}}
-              >
-                {itemList}
-              </Picker>
-            </Item>
-            <View style={styles.saveBtnContainer}> 
-              <Button rounded success style={styles.saveBtn}><Text>저장하기</Text></Button>
-            </View>
-          </Form>
-        </View>
+  let itemList=[];
+  let nameList=[];
+
+  //MODIFY essential
+  nameList.push(reduxState.fish.fishResult.split(`"`)[1]);
+  nameList.push(reduxState.fish.fishResult.split(`"`)[3]);
+  nameList.push(reduxState.fish.fishResult.split(`"`)[5]);
+
+  
+  const [selectState,setSelectState]=useState(nameList[0]);
+  nameList.forEach((item)=>itemList.push(<Picker.Item label={item} value={item}/>));
+
+  console.log(nameList);
+  console.log("itemLIst: ",itemList);
+
+
+
+  return (
+    <View style={styles.container}>
+      <Image style={styles.img} source={{uri:`data:image/jpeg;base64,${reduxState.fish.fishImage}`}}/>
+      <View style={styles.resultList}>
+        <Form style={styles.form}>
+          <Text style={styles.text}>분석결과</Text>
+          <Item picker style={styles.item}>
+            <Picker
+                mode="dropdown"
+                style={styles.picker}
+                placeholder="Select your SIM"
+                placeholderStyle={{ color: "#bfc6ea" }}
+                placeholderIconColor="#007aff"
+                selectedValue={selectState}
+                onValueChange={(loc)=>{setSelectState(loc)}}
+            >
+              {itemList}
+            </Picker>
+          </Item>
+
+         
+          <ScrollView style={styles.list}>
+            <FishInformation name={selectState}/>
+          </ScrollView>
+ 
+          <View style={styles.saveBtnContainer}> 
+            <Button rounded success style={styles.saveBtn} 
+                onPress={async ()=>{
+                  //let result= await analysisApi(reduxState.fish.fishImage);
+                  //let result= JSON.stringify({'catfish':57.548,'carpfish':41.126,'flatfish':1.326})
+                  //console.log(result);
+                  //dispatch(SetFishResult(result));
+                  navigation.navigate('InputDetailScreen', {name: selectState });
+                }   
+              }>
+                <Text>저장하기</Text>
+              </Button>
+          </View>
+        </Form>
       </View>
-    );
+    </View>
+  );
 }
 
 
@@ -54,10 +84,10 @@ const styles=StyleSheet.create({
     flex:1,
   },
   img:{
-    flex:0.7,
+    flex:0.5,
   },
   resultList:{
-    flex:0.3,
+    flex:0.5,
     //backgroundColor:'pink',
     padding:10,
   },
@@ -68,19 +98,22 @@ const styles=StyleSheet.create({
     //backgroundColor:'blue',
   },
   item:{
-    flex:0.5,
+    //backgroundColor:'yellow',
+    flex:0.2,
+  },
+  list:{
+    flex:0.8,
   },
   picker:{
     width:100,
     height:20,
   },
   saveBtn:{
+    alignSelf:'flex-end',
     padding:20,
   },
   saveBtnContainer:{
-    //backgroundColor:'white',
-    right:0,
-    position:'absolute',
+    //backgroundColor:'pink',
     bottom:0,
     marginTop:10,
   },
