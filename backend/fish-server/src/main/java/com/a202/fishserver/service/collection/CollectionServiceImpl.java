@@ -94,8 +94,8 @@ public class CollectionServiceImpl implements CollectionService{
         String rootPath = "/root/data/images/collection/";
         String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
         String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
-        String filePath = rootPath + fileName;
 
+        String filePath = rootPath + fileName;
         File dest = new File(filePath);
         MultipartFile file = dto.getFish_image();
         file.transferTo(dest);
@@ -124,9 +124,10 @@ public class CollectionServiceImpl implements CollectionService{
                                                 .build());
 
             try{
-                String imgOriginalPath= rootPath + fileName;           // 원본 이미지 파일명
+                String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
                 String imgTargetPath= rootPath + FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small"; // 새 이미지 파일명
-                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename());                             // 새 이미지 포맷. jpg, gif 등
+                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
+
                 int newWidth = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 넓이
                 int newHeigt = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2;
 
@@ -134,16 +135,17 @@ public class CollectionServiceImpl implements CollectionService{
                 Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
 
                 // 새 이미지  저장하기
-                File newFile = new File(imgTargetPath);
+                File newFile = new File(imgTargetPath + "." + imgFormat);
                 BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
                 Graphics g = newImage.getGraphics();
                 g.drawImage(resizeImage, 0, 0, null);
                 g.dispose();
                 ImageIO.write(newImage, imgFormat, newFile);
 
+                // FishImage테이블에 small size image 저장
                 fishImageRepository.save(FishImage.builder()
                         .collection(c)
-                        .imagePath(apiPath + fileName)
+                        .imagePath(imgTargetPath + "." + imgFormat)
                         .build());
 
             }catch (Exception e){
