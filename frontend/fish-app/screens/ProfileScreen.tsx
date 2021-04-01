@@ -1,21 +1,53 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, StyleSheet, TouchableOpacity, Image } from "react-native";
+
+import { useFocusEffect } from "@react-navigation/native";
 
 import { Text, View } from "../components/Themed";
 
-import { test, authApi } from "../utils/axios";
+import { authApi } from "../utils/axios";
+import { getData } from "../utils/storage";
 
 export default function ProfileScreen() {
-  return (
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [nickname, setNickname] = useState("nickname");
+  const [profileImage, setProfileImage] = useState("");
+  useFocusEffect(
+    React.useCallback(() => {
+      getData("auth").then((data) => {
+        if (data) {
+          setIsLoggedIn(true);
+          authApi.kakaoUserInfo().then((response) => {
+            const {
+              properties: { nickname, profile_image },
+            } = response;
+            console.log(nickname, profile_image);
+            setNickname(nickname);
+            setProfileImage(profile_image);
+          });
+        } else {
+          setIsLoggedIn(false);
+          console.log("no data");
+        }
+      });
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+  );
+
+  return isLoggedIn ? (
     <View style={styles.container}>
       <View style={styles.profile}>
         <Image
           source={{
-            uri: "https://j4a202.p.ssafy.io/images/collection/strange.png",
+            uri: profileImage,
           }}
           style={{ width: 305, height: 159, resizeMode: "center" }}
         />
-        <Text>닉네임 이상해씨</Text>
+        <Text>닉네임 {nickname}</Text>
         <Text>도감기록 12회</Text>
       </View>
       <View style={styles.footer}>
@@ -32,7 +64,7 @@ export default function ProfileScreen() {
                 onPress: () => {
                   authApi
                     .kakaoLogout()
-                    .then((result) => console.log(result))
+                    .then((result) => setIsLoggedIn(false))
                     .catch((e) => console.error(e));
                 },
               },
@@ -61,6 +93,8 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
     </View>
+  ) : (
+    <Text>로그인해주세요.</Text>
   );
 }
 

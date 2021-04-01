@@ -1,37 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// AsyncStorage Test
-const storeAuthData = async (value: string) => {
-  try {
-    await AsyncStorage.setItem("auth", value);
-  } catch (e) {
-    // saving error
-    alert(e);
-  }
-};
-
-const getAuthData = async () => {
-  try {
-    const value = await AsyncStorage.getItem("auth2");
-    return value;
-  } catch (e) {
-    // error reading value
-    alert(e);
-  }
-};
-
-export const test = () => {
-  storeAuthData("");
-  const storeData = getAuthData().then((result) => {
-    if (result) {
-      console.log(result);
-    } else {
-      console.log("no data");
-      console.log(result);
-    }
-  });
-};
+import { saveData, getData } from "./storage";
 
 // 인증 헤더
 // const authHeader = function (): Record<string, string> {
@@ -53,17 +21,31 @@ const request: AxiosInstance = axios.create({
 // 인증 Api
 export const authApi: Record<string, any> = {
   async kakaoLogout(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
     const response = await axios.post(
       "https://kapi.kakao.com/v1/user/logout",
       "",
       {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization:
-            "Bearer NGskuYBP7qB-wptCyXKw49MXkJnYoBVWYh_RfQorDNMAAAF4i80kWA",
+          Authorization: `Bearer ${access_token}`,
         },
       }
     );
+    await saveData("auth", "");
+    return response.data;
+  },
+  async kakaoUserInfo(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return response.data;
   },
 };
