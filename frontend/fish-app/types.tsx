@@ -1,5 +1,3 @@
-
-
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
@@ -13,10 +11,9 @@ export type BottomTabParamList = {
   Add: undefined;
 };
 
-
-
 export type HomeParamList = {
   HomeScreen: undefined;
+  KakaoLoginScreen: undefined;
 };
 
 export type CollectionParamList = {

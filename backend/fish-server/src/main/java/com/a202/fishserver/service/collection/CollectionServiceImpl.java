@@ -11,8 +11,15 @@ import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FilenameUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,18 +89,69 @@ public class CollectionServiceImpl implements CollectionService{
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
         if (!fish.isPresent()) throw new Exception("해당 물고기가 존재하지 않습니다.");
+        System.out.println(FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small");
 
-        collectionRepository.save(Collection.builder()
-                                    .fish(fish.get())
-                                    .bait(dto.getBait())
-                                    .fishingInfo(dto.getFishing_info())
-                                    .length(dto.getLength())
-                                    .location(dto.getLocation())
-                                    .memo(dto.getMemo())
-                                    .user(user.get())
-                                    .regDate(LocalDateTime.now())
-                                    .flag(false)
-                                    .build());
+        String rootPath = "/root/data/images/collection/";
+        String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
+        String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
+
+        String filePath = rootPath + fileName;
+        File dest = new File(filePath);
+        MultipartFile file = dto.getFish_image();
+        file.transferTo(dest);
+
+        Collection c;
+        try {
+            c = collectionRepository.save(Collection.builder()
+                    .fish(fish.get())
+                    .bait(dto.getBait())
+                    .fishingInfo(dto.getFishing_info())
+                    .length(dto.getLength())
+                    .location(dto.getLocation())
+                    .memo(dto.getMemo())
+                    .user(user.get())
+                    .regDate(LocalDateTime.now())
+                    .flag(false)
+                    .build());
+        } catch (Exception e) {
+            throw new Exception("보관함 저장 중 오류 발생");
+        }
+
+        if (dto.getFish_image() != null) {
+            fishImageRepository.save(FishImage.builder()
+                                                .collection(c)
+                                                .imagePath(apiPath + fileName)
+                                                .build());
+
+            try{
+                String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
+                String imgTargetPath= rootPath + FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small"; // 새 이미지 파일명
+                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
+
+                int newWidth = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 넓이
+                int newHeigt = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2;
+
+                Image image = ImageIO.read(new File(imgOriginalPath)); // 원본 이미지 가져오기
+                Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
+
+                // 새 이미지  저장하기
+                File newFile = new File(imgTargetPath + "." + imgFormat);
+                BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
+                Graphics g = newImage.getGraphics();
+                g.drawImage(resizeImage, 0, 0, null);
+                g.dispose();
+                ImageIO.write(newImage, imgFormat, newFile);
+
+                // FishImage테이블에 small size image 저장
+                fishImageRepository.save(FishImage.builder()
+                        .collection(c)
+                        .imagePath(imgTargetPath + "." + imgFormat)
+                        .build());
+
+            }catch (Exception e){
+                throw new Exception("이미지 리사이즈 오류: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -132,4 +190,5 @@ public class CollectionServiceImpl implements CollectionService{
         collection.get().setFlag(true);
         collectionRepository.save(collection.get());
     }
+
 }

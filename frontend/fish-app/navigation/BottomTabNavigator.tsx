@@ -8,6 +8,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import CollectionScreen from "../screens/CollectionScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
+import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
@@ -21,7 +22,7 @@ import {
   RankingParamList,
   HomeParamList,
   ProfileParamList,
-  AddParamList
+  AddParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -50,14 +51,14 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Add"
         component={AddNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="camera" color={color} />
+            <MaterialIcons name="camera" color={color} size={30} />
           ),
-          unmountOnBlur:  true, // 클릭 시 새로고침. 
+          unmountOnBlur: true, // 클릭 시 새로고침.
         }}
       />
       <BottomTab.Screen
@@ -106,6 +107,11 @@ function HomeNavigator() {
         component={HomeScreen}
         options={{ headerTitle: "Home" }}
       />
+      <HomeStack.Screen
+        name="KakaoLoginScreen"
+        component={KakaoLoginScreen}
+        options={{ headerTitle: "Home" }}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -124,32 +130,21 @@ function CollectionNavigator() {
   );
 }
 
-
 const AddStack = createStackNavigator<AddParamList>();
 
 function AddNavigator() {
   return (
     <AddStack.Navigator>
-      <AddStack.Screen
-        name="CameraScreen"
-        component={CameraScreen}
-      />
-      <AddStack.Screen
-        name="ImageCheckScreen"
-        component={ImageCheckScreen}
-      />
+      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
+      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
       <AddStack.Screen
         name="ShowResultScreen"
         component={ShowResultScreen}
       />
-      <AddStack.Screen
-        name="InputDetailScreen"
-        component={InputDetailScreen}
-      />
+      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </AddStack.Navigator>
   );
 }
-
 
 const RankingStack = createStackNavigator<RankingParamList>();
 
