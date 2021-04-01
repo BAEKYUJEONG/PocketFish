@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Text, View } from "../components/Themed";
@@ -6,16 +6,49 @@ import { Text, View } from "../components/Themed";
 import { WebView } from "react-native-webview";
 
 import axios from "axios";
+import { useFocusEffect } from "@react-navigation/native";
+import { getData } from "../utils/storage";
+import { authApi } from "../utils/axios";
 // import * as Kakao from "../utils/kakao";
 
 export default function Home({ navigation }: { navigation: any }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [nickname, setNickname] = useState("nickname");
+  const [profileImage, setProfileImage] = useState("");
+  useFocusEffect(
+    React.useCallback(() => {
+      getData("auth").then((data) => {
+        if (data) {
+          setIsLoggedIn(true);
+          authApi.kakaoUserInfo().then((response) => {
+            const {
+              properties: { nickname, profile_image },
+            } = response;
+            console.log(nickname, profile_image);
+            setNickname(nickname);
+            setProfileImage(profile_image);
+          });
+        } else {
+          setIsLoggedIn(false);
+          console.log("no data");
+        }
+      });
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+  );
   // function kakaoLogin() {
   //   console.log("kakaoLogin");
   //   Kakao.Auth.authorize({
   //     redirectUri: "{REDIRECT_URI}",
   //   });
   // }
-  return (
+  return isLoggedIn ? (
+    <Text>로그인된 홈화면</Text>
+  ) : (
     <View style={styles.container}>
       <View style={styles.headerView}></View>
       <View style={styles.contentView}>
