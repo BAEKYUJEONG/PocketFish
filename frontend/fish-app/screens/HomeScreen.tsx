@@ -3,7 +3,18 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Text, View } from "../components/Themed";
 
-export default function Home() {
+import { WebView } from "react-native-webview";
+
+import axios from "axios";
+// import * as Kakao from "../utils/kakao";
+
+export default function Home({ navigation }: { navigation: any }) {
+  // function kakaoLogin() {
+  //   console.log("kakaoLogin");
+  //   Kakao.Auth.authorize({
+  //     redirectUri: "{REDIRECT_URI}",
+  //   });
+  // }
   return (
     <View style={styles.container}>
       <View style={styles.headerView}></View>
@@ -16,7 +27,10 @@ export default function Home() {
         </Text>
       </View>
       <View style={styles.footerView}>
-        <TouchableOpacity onPress={() => alert("로그인")} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("KakaoLoginScreen")}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>카카오톡으로 로그인</Text>
         </TouchableOpacity>
       </View>
