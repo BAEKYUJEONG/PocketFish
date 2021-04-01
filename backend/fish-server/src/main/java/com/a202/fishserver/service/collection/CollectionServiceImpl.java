@@ -39,9 +39,8 @@ public class CollectionServiceImpl implements CollectionService{
     public List<HashMap<String, Object>> getMyCollections(long userId){
         List<Collection> list = collectionRepository.findByUser(new User(userId));
         List<HashMap<String, Object>> result = new ArrayList<>();
-        System.out.println("size " + list.size());
+
         for (Collection c : list) {
-            System.out.println(c);
             // 삭제여부 true인 것은 list에 담지 않음
             if (c.getFlag()) continue;
 
