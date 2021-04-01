@@ -32,6 +32,8 @@ export type ProfileParamList = {
 };
 
 export type AddParamList={
+  
+  ShowResultScreen:undefined;
   CameraScreen:undefined;
   ImageCheckScreen:undefined;
   WaitResponseScreen:undefined;
