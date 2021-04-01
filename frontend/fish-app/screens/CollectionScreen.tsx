@@ -2,13 +2,12 @@ import * as React from "react";
 import { Component } from "react";
 import { useState, useEffect } from "react";
 import { collectionApi } from "../utils/axios"
-import {
-  StyleSheet,
-} from "react-native";
+import axios from "axios";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import { Icon, Container, Content, Thumbnail, Image, Left, Body, Right, Button } from 'native-base';
 
-export default function CollectionScreen() {
+export default function CollectionScreen({navigation}:{navigation:any}) {
   const uri1 = "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&w=1000&q=80";
   const uri2 = "https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d";
   const [data, setData] = useState([]);
@@ -30,32 +29,28 @@ export default function CollectionScreen() {
           </Text>
         </View>
         <Content>
-          {/*
-          <View style={{ paddingTop: 10 }}>
-            <View style={{ flexDirection: 'row' }}>
-              
-              <View style={{ flex: 1 }}>
-              </View>
-
-              <View style={{ flex: 3 }}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-around'}}></View>
-              </View>
-
-            </View>
-            <View style={{ paddingVertical: 10}}>
-
-            </View>
-
-          </View>
-          */}
           <View style={styles.contentView}>
-            <View style={styles.collectionAll}>
-              {data.map((d, index) => <Text key={index}>fishImage: {d.fishImage}, collectionId: {d.collectionId}</Text>)}
-
+            <View style={styles.collectionAll}>              
+              {data.map((d, index) =>
+                <View key={index} style={[{ width: (innerWidth) / 3 }, { height: (innerWidth) / 3 }, { marginBottom: 2 },
+                  index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }
+                ]}> 
+                  <Thumbnail style={styles.collectionImg} source={{ uri: d.fishImage }} />
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={ async () => {
+                        navigation.navigate('CollectionItemScreen');
+                    }}
+                  >
+                  </TouchableOpacity>
+                </View>
+              )}
+              {/* 
               <Thumbnail large source={{ uri: uri1 }} />
               <Thumbnail large source={{ uri: uri2 }} />
               <Thumbnail large source={{ uri: uri1 }} />
               <Thumbnail large source={{ uri: uri2 }} />
+              */}
             </View>
           </View>
         </Content>
@@ -86,6 +81,11 @@ const styles = StyleSheet.create({
     flex: 5,
     marginBottom: 30,
   },
+  button: {
+    flex: 0.2,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
@@ -105,5 +105,12 @@ const styles = StyleSheet.create({
     flex: 1,
     width: undefined,
     height: undefined,
+    background: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
+    //IOS
+    shadowColor: "#000000", //그림자색
+    shadowOpacity: 0.3,//그림자 투명도
+    shadowOffset: { width: 2, height: 2 }, //그림자 위치
+    //ANDROID
+    elevation: 3,
   },
 });
