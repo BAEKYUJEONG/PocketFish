@@ -5,31 +5,19 @@ import { useFocusEffect } from "@react-navigation/native";
 
 import { Text, View } from "../components/Themed";
 
-import { authApi } from "../utils/axios";
+import { kakaoApi, userApi } from "../utils/axios";
 import { getData } from "../utils/storage";
+import { useDispatch, useSelector } from "react-redux";
+import { SetUser } from "../redux/user";
 
 export default function ProfileScreen() {
+  const user = useSelector((state) => state.user);
+  const userObj = JSON.parse(user.user);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [nickname, setNickname] = useState("nickname");
-  const [profileImage, setProfileImage] = useState("");
   useFocusEffect(
     React.useCallback(() => {
-      getData("auth").then((data) => {
-        if (data) {
-          setIsLoggedIn(true);
-          authApi.kakaoUserInfo().then((response) => {
-            const {
-              properties: { nickname, profile_image },
-            } = response;
-            console.log(nickname, profile_image);
-            setNickname(nickname);
-            setProfileImage(profile_image);
-          });
-        } else {
-          setIsLoggedIn(false);
-          console.log("no data");
-        }
-      });
       // Do something when the screen is focused
       return () => {
         // Do something when the screen is unfocused
@@ -38,16 +26,16 @@ export default function ProfileScreen() {
     }, [])
   );
 
-  return isLoggedIn ? (
+  return user.user ? (
     <View style={styles.container}>
       <View style={styles.profile}>
         <Image
           source={{
-            uri: profileImage,
+            uri: userObj.profile_image,
           }}
           style={{ width: 305, height: 159, resizeMode: "center" }}
         />
-        <Text>닉네임 {nickname}</Text>
+        <Text>닉네임 {userObj.nickname}</Text>
         <Text>도감기록 12회</Text>
       </View>
       <View style={styles.footer}>
@@ -62,9 +50,14 @@ export default function ProfileScreen() {
               {
                 text: "예",
                 onPress: () => {
-                  authApi
+                  kakaoApi
                     .kakaoLogout()
-                    .then((result) => setIsLoggedIn(false))
+                    .then((result) => {
+                      setIsLoggedIn(false);
+                      dispatch(SetUser(null));
+                      console.log(state.user);
+                      console.log;
+                    })
                     .catch((e) => console.error(e));
                 },
               },
@@ -91,6 +84,15 @@ export default function ProfileScreen() {
         >
           <Text style={{ color: "red" }}>계정 탈퇴</Text>
         </TouchableOpacity>
+        {/* 회원가입 버튼 */}
+        {/* <TouchableOpacity
+          onPress={() => {
+            console.log("clicked");
+            userApi.signup();
+          }}
+        >
+          <Text>회원가입</Text>
+        </TouchableOpacity> */}
       </View>
     </View>
   ) : (

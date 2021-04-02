@@ -3,20 +3,23 @@ import { WebView } from "react-native-webview";
 import axios from "axios";
 import "../../utils/storage";
 import { getData, saveData } from "../../utils/storage";
+import { kakaoApi } from "../../utils/axios";
+import { SetUser } from "../../redux/user";
+import { useDispatch } from "react-redux";
 
-const patchPostMessageJsCode = `(${String(function () {
-  const originalPostMessage = window.postMessage;
-  const patchedPostMessage = function (message, targetOrigin, transfer) {
-    originalPostMessage(message, targetOrigin, transfer);
-  };
-  patchedPostMessage.toString = function () {
-    return String(Object.hasOwnProperty).replace(
-      "hasOwnProperty",
-      "postMessage"
-    );
-  };
-  window.postMessage = patchedPostMessage;
-})})();`;
+// const patchPostMessageJsCode = `(${String(function () {
+//   const originalPostMessage = window.postMessage;
+//   const patchedPostMessage = function (message, targetOrigin, transfer) {
+//     originalPostMessage(message, targetOrigin, transfer);
+//   };
+//   patchedPostMessage.toString = function () {
+//     return String(Object.hasOwnProperty).replace(
+//       "hasOwnProperty",
+//       "postMessage"
+//     );
+//   };
+//   window.postMessage = patchedPostMessage;
+// })})();`;
 
 const runFirst = `
 setTimeout(function () {
@@ -26,11 +29,14 @@ setTimeout(function () {
 }, 100)
 `;
 
-export default function KakaoLoginScreen({ navigation }: { navigation: any }) {
+export default function KakaoLoginScreen(props) {
   const client_id = "fa18c792f29dde66fafdd337e808e8af";
   const redirect_uri = "https://j4a202.p.ssafy.io/images/meta.png";
+  const { login } = props;
+  const dispatch = useDispatch();
   return (
     <WebView
+      style={{ flex: 0 }}
       source={{
         uri: `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`, // &prompt=login 매번 로그인
       }}
@@ -56,11 +62,27 @@ export default function KakaoLoginScreen({ navigation }: { navigation: any }) {
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
           },
         };
+        login();
         axios
           .post("https://kauth.kakao.com/oauth/token", params, postConfig)
           .then((result) => {
             saveData("auth", JSON.stringify(result.data));
-            navigation.navigate("Profile");
+            console.log(result.data);
+            kakaoApi.kakaoUserInfo().then((response) => {
+              const {
+                id,
+                properties: { nickname, profile_image },
+              } = response;
+              dispatch(
+                SetUser(
+                  JSON.stringify({
+                    id,
+                    nickname,
+                    profile_image,
+                  })
+                )
+              );
+            });
           })
           .catch((e) => console.error(e));
 

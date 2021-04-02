@@ -18,8 +18,33 @@ const request: AxiosInstance = axios.create({
   // headers: authHeader(),
 });
 
-// 인증 Api
-export const authApi: Record<string, any> = {
+// 유저 Api
+export const userApi: Record<string, any> = {
+  async signup(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    if (await kakaoApi.validateToken()) {
+      const {
+        id,
+        properties: { nickname, profile_image },
+      } = await kakaoApi.kakaoUserInfo();
+      const postData = {
+        id,
+        nickname,
+        profile_image,
+        access_token,
+      };
+      console.log(postData);
+      const response = await request.post("login/signup", postData);
+      console.log(resposne);
+      return response.data;
+    }
+  },
+};
+
+// 카카오 인증 Api
+export const kakaoApi: Record<string, any> = {
   async kakaoLogout(): Promise<void | AxiosResponse<any>> {
     const appData = await getData("auth");
     const jsonData = JSON.parse(appData);
@@ -35,6 +60,7 @@ export const authApi: Record<string, any> = {
       }
     );
     await saveData("auth", "");
+    console.log("logout");
     return response.data;
   },
   async kakaoUserInfo(): Promise<void | AxiosResponse<any>> {
@@ -47,6 +73,26 @@ export const authApi: Record<string, any> = {
       },
     });
     return response.data;
+  },
+  async validateToken(): Promise<boolean> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    try {
+      const response = await axios.get(
+        "https://kapi.kakao.com/v1/user/access_token_info",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("token validation ok");
+      return true;
+    } catch (error) {
+      console.log("token validation fail");
+      return false;
+    }
   },
 };
 
@@ -75,7 +121,7 @@ export const collectionItemApi: Record<string, any> = {
     console.log(response);
     return response.data;
   },
-}
+};
 
 // 분석 Api
 export async function analysisApi(img: any) {
