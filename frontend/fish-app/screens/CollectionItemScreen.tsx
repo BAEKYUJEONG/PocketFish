@@ -3,28 +3,29 @@ import { Component } from 'react';
 import { useState, useEffect } from 'react';
 import { collectionItemApi } from '../utils/axios';
 import axios from 'axios';
-import { StyleSheet, Button, Image } from 'react-native';
-import { Text, View } from '../components/Themed';
-import { Card, CardItem, Thumbnail, Body, Left, Right, Icon, } from 'native-base';
+import { StyleSheet, Image } from 'react-native';
+import { View } from '../components/Themed';
+import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon, Text } from 'native-base';
 
 export default function CollectionItemScreen({ route, navigation }) {
   
   const { id } = route.params;
-  const [data, setData] = useState([]);
+  const [item, setItem] = useState({});
 
   useEffect(() => {
-    collectionItemApi.getCollection(id).then((response: any) => {
-      setData(response.data);
-      console.log(data);
+    collectionItemApi.getCollectionItem(id).then((response: any) => {
+      setItem(response.item);
+      console.log(item);
     });
   }, []);
 
   return (
     <View>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-        
-        <Button title="Go back" onPress={() => navigation.goBack()} />
+        <Button iconLeft light onPress={() => navigation.goBack()}>
+          <Icon name='arrow-back' />
+          <Text>Back</Text>
+        </Button>
       </View>
 
       <Card>
@@ -42,9 +43,9 @@ export default function CollectionItemScreen({ route, navigation }) {
           <Image
             source={{
               uri:
-              "https://divingholic.com/wp-content/uploads/2019/01/moorish-idol-featured-image.jpg",
+              "https://img.sbs.co.kr/newimg/news/20160420/200935703_1280.jpg",
             }}
-            style={{ height: 200, width: undefined, flex: 1 }}
+            style={{ height: 250, width: undefined, flex: 1 }}
           />
         </CardItem>
         <CardItem style={{ height: 45 }}>
@@ -66,7 +67,7 @@ export default function CollectionItemScreen({ route, navigation }) {
         <CardItem>
           <Text>
             <Text style={{ fontWeight: '900' }}>백유정</Text>
-            안녕 내 예쁜 물고이야!
+            안녕 내 예쁜 물고기야! 희희
           </Text>
         </CardItem>
       </Card>

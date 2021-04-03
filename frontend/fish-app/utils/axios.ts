@@ -116,7 +116,7 @@ export const collectionApi: Record<string, any> = {
 
 // 게시글 Api
 export const collectionItemApi: Record<string, any> = {
-  async getCollection(collection_id: number): Promise<void | AxiosResponse<any>> {
+  async getCollectionItem(collection_id: number): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`collection/${String(collection_id)}`);
     console.log(response);
     return response.data;
