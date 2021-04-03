@@ -8,7 +8,7 @@ import {
 
 export const fishState: FishState={
     fishImage: null,
-    fishResult: null,
+    fishResult: null
 };
 
 export const SetFishImage=(image:string): SetFishImageAction=>{

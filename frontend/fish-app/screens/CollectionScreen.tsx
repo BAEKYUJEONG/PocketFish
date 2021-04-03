@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 0.2,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    alignSelf: "flex-end",
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
@@ -101,16 +101,16 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   collectionAll: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     borderTopWidth: 1,
-    borderTopColor: '#eae5e5',
+    borderTopColor: "#eae5e5",
   },
   collectionImg: {
     flex: 1,
     width: undefined,
     height: undefined,
-    background: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
+    backgroundColor: "#ffffff", //배경색이 없으면 그림자가 안보일 수 있음.
     //IOS
     shadowColor: '#000000', //그림자색
     shadowOpacity: 0.3, //그림자 투명도

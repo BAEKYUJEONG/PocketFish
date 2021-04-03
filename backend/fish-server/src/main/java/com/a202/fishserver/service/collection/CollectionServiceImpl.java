@@ -12,7 +12,11 @@ import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FilenameUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +44,11 @@ public class CollectionServiceImpl implements CollectionService{
             // 삭제여부 true인 것은 list에 담지 않음
             if (c.getFlag()) continue;
 
-            Optional<FishImage> fishImage = fishImageRepository.findByCollection(c);
-            String imagePath = "";
-            if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
+            List<FishImage> fishImage = fishImageRepository.findByCollection(c);
+            String imagePath = ""; // small image (long url)
+            for (FishImage tmp : fishImage) {
+                if (tmp.getImagePath().length() > imagePath.length()) imagePath = tmp.getImagePath();
+            }
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("collectionId", c.getId());
@@ -59,9 +65,15 @@ public class CollectionServiceImpl implements CollectionService{
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         if (!collection.isPresent()) throw new Exception("도감이 존재하지 않습니다.");
 
-        Optional<FishImage> fishImage = fishImageRepository.findByCollection(collection.get());
-        String imagePath = "";
-        if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
+        List<FishImage> fishImage = fishImageRepository.findByCollection(collection.get());
+        String imagePath = ""; // origin image (short url)
+        if (fishImage.size() == 0) imagePath = "";
+        else {
+            imagePath = fishImage.get(0).getImagePath();
+            for (FishImage tmp : fishImage) {
+                if (tmp.getImagePath().length() < imagePath.length()) imagePath = tmp.getImagePath();
+            }
+        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("collectionId", collectionId);
@@ -85,12 +97,13 @@ public class CollectionServiceImpl implements CollectionService{
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
         if (!fish.isPresent()) throw new Exception("해당 물고기가 존재하지 않습니다.");
+        System.out.println(FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small");
 
         String rootPath = "/root/data/images/collection/";
         String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
         String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
-        String filePath = rootPath + fileName;
 
+        String filePath = rootPath + fileName;
         File dest = new File(filePath);
         MultipartFile file = dto.getFish_image();
         file.transferTo(dest);
@@ -114,9 +127,38 @@ public class CollectionServiceImpl implements CollectionService{
 
         if (dto.getFish_image() != null) {
             fishImageRepository.save(FishImage.builder()
-                    .collection(c)
-                    .imagePath(apiPath)
-                    .build());
+                                                .collection(c)
+                                                .imagePath(apiPath + fileName)
+                                                .build());
+
+            try{
+                String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
+                String imgTargetPath= rootPath + "small_" + fileName; // 새 이미지 파일명
+                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
+
+                int newWidth = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 넓이
+                int newHeigt = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2;
+
+                Image image = ImageIO.read(new File(imgOriginalPath)); // 원본 이미지 가져오기
+                Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
+
+                // 새 이미지  저장하기
+                File newFile = new File(imgTargetPath + "." + imgFormat);
+                BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
+                Graphics g = newImage.getGraphics();
+                g.drawImage(resizeImage, 0, 0, null);
+                g.dispose();
+                ImageIO.write(newImage, imgFormat, newFile);
+
+                // FishImage테이블에 small size image 저장
+                fishImageRepository.save(FishImage.builder()
+                        .collection(c)
+                        .imagePath(imgTargetPath + "." + imgFormat)
+                        .build());
+
+            }catch (Exception e){
+                throw new Exception("이미지 리사이즈 오류: " + e.getMessage());
+            }
         }
     }
 

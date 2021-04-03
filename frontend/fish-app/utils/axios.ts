@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { saveData, getData } from "./storage";
 
 // 인증 헤더
 // const authHeader = function (): Record<string, string> {
@@ -17,6 +18,84 @@ const request: AxiosInstance = axios.create({
   // headers: authHeader(),
 });
 
+// 유저 Api
+export const userApi: Record<string, any> = {
+  async signup(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    if (await kakaoApi.validateToken()) {
+      const {
+        id,
+        properties: { nickname, profile_image },
+      } = await kakaoApi.kakaoUserInfo();
+      const postData = {
+        id,
+        nickname,
+        profile_image,
+        access_token,
+      };
+      console.log(postData);
+      const response = await request.post("login/signup", postData);
+      console.log(resposne);
+      return response.data;
+    }
+  },
+};
+
+// 카카오 인증 Api
+export const kakaoApi: Record<string, any> = {
+  async kakaoLogout(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    const response = await axios.post(
+      "https://kapi.kakao.com/v1/user/logout",
+      "",
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    await saveData("auth", "");
+    console.log("logout");
+    return response.data;
+  },
+  async kakaoUserInfo(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+    return response.data;
+  },
+  async validateToken(): Promise<boolean> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    try {
+      const response = await axios.get(
+        "https://kapi.kakao.com/v1/user/access_token_info",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("token validation ok");
+      return true;
+    } catch (error) {
+      console.log("token validation fail");
+      return false;
+    }
+  },
+};
+
 // 랭킹 Api
 export const rankingApi: Record<string, any> = {
   async getRanking(fish_id: number): Promise<void | AxiosResponse<any>> {
@@ -33,7 +112,7 @@ export const collectionApi: Record<string, any> = {
     console.log(response);
     return response.data;
   },
-}
+};
 
 // 게시글 Api
 export const collectionItemApi: Record<string, any> = {
@@ -42,24 +121,27 @@ export const collectionItemApi: Record<string, any> = {
     console.log(response);
     return response.data;
   },
-}
+};
 
 // 분석 Api
-export async function analysisApi(img:any){
+export async function analysisApi(img: any) {
   console.log("api");
   //const dispatch=useDispatch();
 
-  const result= await axios.post(`http://skeldtcan.iptime.org:5000`,
-    JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
-    // .then(
-    //   (res)=>{
-    //     console.log(res.data);
-    //     return res.data;
-    //   }
-    // )
-    // .catch((Error)=>{console.log(Error);});
-console.log(result.data);
-    return result.data;
+  const result = await axios.post(
+    `http://skeldtcan.iptime.org:5000`,
+    JSON.stringify({ file: img }),
+    { headers: { "Content-Type": "application/JSON" } }
+  );
+  // .then(
+  //   (res)=>{
+  //     console.log(res.data);
+  //     return res.data;
+  //   }
+  // )
+  // .catch((Error)=>{console.log(Error);});
+  console.log(result.data);
+  return result.data;
 }
 
 // 로그인 Api
