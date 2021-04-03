@@ -8,10 +8,10 @@ import { Text, View } from '../components/Themed';
 import { Icon, Container, Content, Thumbnail, Image } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
-export default function CollectionScreen({ navigation }) {
+export default function CollectionScreen({navigation}:{navigation:any}) {
   const uri1 = 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&w=1000&q=80';
   const uri2 = 'https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d';
-  const [data, setData] = useState([]);
+const [data, setData] = useState([]);
 
   useEffect(() => {
     collectionApi.getCollection(1).then((response: any) => {
