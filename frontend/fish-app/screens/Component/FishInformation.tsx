@@ -7,37 +7,52 @@ import { Container, Header, Content, Form, Item, Picker, Button, Right  } from '
 
 import { List, Dialog ,Paragraph,} from 'react-native-paper';
 import {AddApi } from "../../utils/axios";
-import {StringToNumber} from "../../utils/fish";
+import {KoreanToNumber} from "../../utils/fish";
 import ListItem from "../Component/ListItem";
 
 
-export default function FIshInformation({name}:{name:any}) {
-  //console.log("\n\n");
-  //console.log(name);
+export default function FishInformation({name}:{name:any}) {
+  // console.log("\n\n");
+  // console.log("name "+name);
   const [data, setdata] = useState([])
 
   useEffect(() => {
     const get= async ()=>{
-      const number = StringToNumber(name);
-      const res=await AddApi.getFishInformation(number);
-      await setdata(res.data);
-    }
+      //console.log("=========="+KoreanToNumber(name));
+      let number = KoreanToNumber(name);
+      await AddApi.getFishInformation(number).then(async(Response:any)=>{
+          await setdata(Response.data)
+      })
+    };
     get();
     return () => {
-      console.log("This will be logged on unmount");
+      console.log(data);
     }
-  },[]);
+  },[name]);
 
   // for( let a in data){
   //   console.log(data[a]);
   // }
 
+  const value =(index:any)=>{
+    switch (index) {
+      case "name":
+        return data['name'];
+      case "size_ok":
+        return data['size_ok'];
+      case "habitat":
+        return data['habitat'];
+      default:
+        return data['description'];
+    }
+  }
+
   let information=[];
 
-  information.push(<ListItem title="물고기 종" content={data['name']}/>);
-  information.push(<ListItem title="포획가능 길이" content={data['size_ok']}/>);
-  information.push(<ListItem title="서식지" content={data['habitat']}/>);
-  information.push(<ListItem title="추가정보" content={data['description']}/>);
+  information.push(<ListItem title="물고기 종" content={value('name')}/>);
+  information.push(<ListItem title="포획가능 길이" content={value('size_ok')}/>);
+  information.push(<ListItem title="서식지" content={value('habitat')}/>);
+  information.push(<ListItem title="추가정보" content={value('description')}/>);
 
 
   return (

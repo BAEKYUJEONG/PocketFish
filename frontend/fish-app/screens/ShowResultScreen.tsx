@@ -26,6 +26,9 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
   //console.log(Object.keys(resultJSON)[0]);
   const [selectState, setSelectState] = useState(Object.keys(resultJSON)[0]);
 
+  const get=async()=>{
+    return selectState;
+  }
   let number=0;
   for (let i in resultJSON){
     let box=EnglishToKorean(i);
@@ -34,7 +37,10 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
     number++;
   }
   //console.log(itemList);
+
+
   return (
+
     <View style={styles.container}>
       <Image style={styles.img} source={{uri:`data:image/jpeg;base64,${reduxState.fish.fishImage}`}}/>
       <View style={styles.resultList}>
@@ -48,7 +54,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
                 placeholderStyle={{ color: "#bfc6ea" }}
                 placeholderIconColor="#007aff"
                 selectedValue={selectState}
-                onValueChange={(loc)=>{setSelectState(loc)}}
+                onValueChange={(loc)=>{setSelectState(loc);}}
             >
               {itemList}
             </Picker>

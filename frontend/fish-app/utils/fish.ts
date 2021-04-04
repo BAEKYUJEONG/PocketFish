@@ -1,3 +1,4 @@
+import { resolveUri } from 'expo-asset/build/AssetSources';
 import React from 'react';
 
 
@@ -49,7 +50,8 @@ export function EnglishToKorean(name: string){
       return "배스";
   }
 }
-export function StringToNumber(name: string){
+export async function EnglishToNumber(name: string){
+  console.log("!!!!!!!!!!!!!!!"+name);
   switch (name) {
     case "flatfish":
       return 1;
@@ -62,6 +64,22 @@ export function StringToNumber(name: string){
     case  "golden mandarin fish":
       return 5;
     default:
+      return 6;
+  }
+}
+export function KoreanToNumber(name:string){
+  switch (name) {
+    case "광어":
+      return 1;
+    case "참돔":
+      return 2;
+    case "우럭":
+      return 3;
+    case "붕어":
+      return 4;
+    case "쏘가리":
+      return 5;
+    case "배스":
       return 6;
   }
 }
