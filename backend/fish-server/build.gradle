@@ -44,7 +44,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/springloaded
 	implementation group: 'org.springframework', name: 'springloaded', version: '1.2.8.RELEASE'
 
-
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 test {

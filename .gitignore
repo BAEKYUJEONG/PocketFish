@@ -4,6 +4,12 @@
 
 # dataset
 dataset/
+test_data/
+training_data/
+
+# model
+*.h5
+*.hdf5
 
 # application.properties
 backend/fish-server/src/main/resources/

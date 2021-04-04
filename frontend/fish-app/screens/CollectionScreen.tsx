@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 0.2,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    alignSelf: "flex-end",
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
@@ -109,10 +109,10 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   collectionAll: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     borderTopWidth: 1,
-    borderTopColor: '#eae5e5',
+    borderTopColor: "#eae5e5",
   },
   collectionImg: {
     borderRadius: 50,

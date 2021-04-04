@@ -15,6 +15,7 @@ import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
 import WaitResponseScreen from "../screens/WaitResponseScreen";
 import InputDetailScreen from "../screens/InputDetailScreen";
+import ShowResultScreen from "../screens/ShowResultScreen";
 
 import {
   BottomTabParamList,
@@ -139,8 +140,8 @@ function AddNavigator() {
       <AddStack.Screen name="CameraScreen" component={CameraScreen} />
       <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
       <AddStack.Screen
-        name="WaitResponseScreen"
-        component={WaitResponseScreen}
+        name="ShowResultScreen"
+        component={ShowResultScreen}
       />
       <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </AddStack.Navigator>
