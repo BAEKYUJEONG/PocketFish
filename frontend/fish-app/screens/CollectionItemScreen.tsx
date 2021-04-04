@@ -14,37 +14,33 @@ export default function CollectionItemScreen({ route, navigation }) {
 
   useEffect(() => {
     collectionItemApi.getCollectionItem(id).then((response: any) => {
-      setItem(response.item);
+      setItem(response.data);
       console.log(item);
     });
   }, []);
 
   return (
     <View>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button iconLeft light onPress={() => navigation.goBack()}>
           <Icon name='arrow-back' />
           <Text>Back</Text>
         </Button>
-      </View>
-
+      </View> */}
       <Card>
         <CardItem>
           <Left>
             {/* 사람사진 */}
-            <Thumbnail source={{ uri: "https://lh3.googleusercontent.com/proxy/b80Jo_oxSfyDzDb_Vczpq7ngZ2EDKAjK3jwkzpPHjfJVeAqMy6Sf72IvRIshThJCUxIONqL88NUCdNOaDpncld-qkgqUitm766-KrpCsj2AXxw7_SVxHQ58sPeiLVzISyuZC5D6dYKsLohL9CqctsqW6ZDLbWRwERItosYH7yA" }} />
+            <Thumbnail source={{ uri: "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg" }} />
             <Body>
               <Text>백유정</Text>
-              <Text>April 04, 2021</Text>
+              <Text>{ item.regDate }</Text>
             </Body>
           </Left>
         </CardItem>
         <CardItem cardBody>
           <Image
-            source={{
-              uri:
-              "https://img.sbs.co.kr/newimg/news/20160420/200935703_1280.jpg",
-            }}
+            source={{ uri: item.fishImage }}
             style={{ height: 250, width: undefined, flex: 1 }}
           />
         </CardItem>
@@ -67,7 +63,9 @@ export default function CollectionItemScreen({ route, navigation }) {
         <CardItem>
           <Text>
             <Text style={{ fontWeight: '900' }}>백유정</Text>
-            안녕 내 예쁜 물고기야! 희희
+            <span style={{ marginLeft: 5 }}>{item.fishMemo}</span>
+            <div>{item.fishBait}</div>
+            <div>{item.fishLocation}</div>
           </Text>
         </CardItem>
       </Card>
