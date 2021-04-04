@@ -18,6 +18,7 @@ export type HomeParamList = {
 
 export type CollectionParamList = {
   CollectionScreen: undefined;
+  CollectionItemScreen: undefined;
 };
 
 export type RankingParamList = {

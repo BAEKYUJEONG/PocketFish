@@ -44,9 +44,11 @@ public class CollectionServiceImpl implements CollectionService{
             // 삭제여부 true인 것은 list에 담지 않음
             if (c.getFlag()) continue;
 
-            Optional<FishImage> fishImage = fishImageRepository.findByCollection(c);
-            String imagePath = "";
-            if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
+            List<FishImage> fishImage = fishImageRepository.findByCollection(c);
+            String imagePath = ""; // small image (long url)
+            for (FishImage tmp : fishImage) {
+                if (tmp.getImagePath().length() > imagePath.length()) imagePath = tmp.getImagePath();
+            }
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("collectionId", c.getId());
@@ -63,9 +65,15 @@ public class CollectionServiceImpl implements CollectionService{
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         if (!collection.isPresent()) throw new Exception("도감이 존재하지 않습니다.");
 
-        Optional<FishImage> fishImage = fishImageRepository.findByCollection(collection.get());
-        String imagePath = "";
-        if (fishImage.isPresent()) imagePath = fishImage.get().getImagePath();
+        List<FishImage> fishImage = fishImageRepository.findByCollection(collection.get());
+        String imagePath = ""; // origin image (short url)
+        if (fishImage.size() == 0) imagePath = "";
+        else {
+            imagePath = fishImage.get(0).getImagePath();
+            for (FishImage tmp : fishImage) {
+                if (tmp.getImagePath().length() < imagePath.length()) imagePath = tmp.getImagePath();
+            }
+        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("collectionId", collectionId);
@@ -125,7 +133,7 @@ public class CollectionServiceImpl implements CollectionService{
 
             try{
                 String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
-                String imgTargetPath= rootPath + FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small"; // 새 이미지 파일명
+                String imgTargetPath= rootPath + "small_" + fileName; // 새 이미지 파일명
                 String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
 
                 int newWidth = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 넓이
