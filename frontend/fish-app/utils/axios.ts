@@ -35,15 +35,22 @@ export const collectionApi: Record<string, any> = {
   },
 }
 
-// 분석 Api
-export async function analysisApi(img:any){
-  console.log("api");
-  //const dispatch=useDispatch();
-
-  const result= await axios.post(`http://skeldtcan.iptime.org:5000`,
-    JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
-  console.log(result.data);
-  return result.data;
+// Add Api
+export const AddApi: Record<string, any> = {
+  async getAnalysis(img:any): Promise<void | AxiosResponse<any>> {
+    console.log("analysis api");
+    const response= await axios.post(`https://j4a202.p.ssafy.io/ai/`,
+        JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    //const response = await request.post(`ai`,JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    //console.log(response);
+    return response.data;
+  },
+  async getFishInformation(num: number) : Promise<void | AxiosResponse<any>> {
+    console.log("fish information api");
+    const response = await request.get(`fish/${String(num)}`);
+    //console.log(response);
+    return response.data;
+  }
 }
 
 // 로그인 Api

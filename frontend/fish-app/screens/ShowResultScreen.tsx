@@ -2,10 +2,7 @@
 import { StyleSheet, Text, View, Image,ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Header, Content, Form, Item, Picker, Button, Right  } from 'native-base';
-import { SetFishResult } from '../redux/fish';
-import {analysisApi} from "../utils/axios";
-import { List, Dialog } from 'react-native-paper';
+import { Form, Item, Picker, Button  } from 'native-base';
 import FishInformation from './Component/FishInformation';
 
 
@@ -16,23 +13,20 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   const reduxState=useSelector((state:any)=>state);
   const dispatch=useDispatch();
+  const [selectState, setSelectState] = useState("")
 
   let itemList=[];
   let nameList=[];
 
-  //MODIFY essential
-  nameList.push(reduxState.fish.fishResult.split(`"`)[1]);
-  nameList.push(reduxState.fish.fishResult.split(`"`)[3]);
-  nameList.push(reduxState.fish.fishResult.split(`"`)[5]);
-
-  
-  const [selectState,setSelectState]=useState(nameList[0]);
-  nameList.forEach((item)=>itemList.push(<Picker.Item label={item} value={item}/>));
-
-  console.log(nameList);
-  console.log("itemLIst: ",itemList);
-
-
+  console.log("fishResult:"+reduxState.fish.fishResult);
+  var result = reduxState.fish.fishResult.replace(/'/g, '"')
+  const resultJSON=JSON.parse(result);
+  let number=0;
+  for (let i in resultJSON){
+    itemList.push(<Picker.Item label={i} value={i} key={number}/>);
+    number++;
+  }
+  //console.log(itemList);
 
   return (
     <View style={styles.container}>
