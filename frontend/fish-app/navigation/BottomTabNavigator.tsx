@@ -6,13 +6,16 @@ import * as React from "react";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import CollectionScreen from "../screens/CollectionScreen";
+import CollectionItemScreen from "../screens/CollectionItemScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
+import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
 import WaitResponseScreen from "../screens/WaitResponseScreen";
 import InputDetailScreen from "../screens/InputDetailScreen";
+import ShowResultScreen from "../screens/ShowResultScreen";
 
 import {
   BottomTabParamList,
@@ -105,6 +108,11 @@ function HomeNavigator() {
         component={HomeScreen}
         options={{ headerTitle: "Home" }}
       />
+      <HomeStack.Screen
+        name="KakaoLoginScreen"
+        component={KakaoLoginScreen}
+        options={{ headerTitle: "Home" }}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -119,6 +127,7 @@ function CollectionNavigator() {
         component={CollectionScreen}
         options={{ headerTitle: "Collection" }}
       />
+      <CollectionStack.Screen name="CollectionItemScreen" component={CollectionItemScreen}/>
     </CollectionStack.Navigator>
   );
 }
@@ -131,8 +140,8 @@ function AddNavigator() {
       <AddStack.Screen name="CameraScreen" component={CameraScreen} />
       <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
       <AddStack.Screen
-        name="WaitResponseScreen"
-        component={WaitResponseScreen}
+        name="ShowResultScreen"
+        component={ShowResultScreen}
       />
       <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </AddStack.Navigator>
