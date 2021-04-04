@@ -18,7 +18,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
   let itemList=[];
   let nameList=[];
 
-  console.log("fishResult:"+reduxState.fish.fishResult);
+  //console.log("fishResult:"+reduxState.fish.fishResult);
   
   // var result = reduxState.fish.fishResult.replace(/'/g, '"')
   // const resultJSON=JSON.parse(result);
@@ -37,7 +37,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
   //   }
   // },[]);
 
-  console.log("-------------"+selectState);
+  //console.log("-------------"+selectState);
 
   const get=async()=>{
     return selectState;
@@ -85,7 +85,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
               mode="contained"
               style={{marginVertical:10, padding:1}}
                 onPress={async ()=>{
-                  console.log(selectState);
+                  //console.log(selectState);
                   navigation.navigate('InputDetailScreen', {name: selectState });
                 }   
               }>

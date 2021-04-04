@@ -23,7 +23,6 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
         console.error('Permission to access location was denied');
         return;
       }
-
       let lo = await Location.getCurrentPositionAsync({});
       setLocation(lo);
     })();

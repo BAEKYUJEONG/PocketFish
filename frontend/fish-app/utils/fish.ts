@@ -51,7 +51,7 @@ export function EnglishToKorean(name: string){
   }
 }
 export async function EnglishToNumber(name: string){
-  console.log("!!!!!!!!!!!!!!!"+name);
+  //console.log("!!!!!!!!!!!!!!!"+name);
   switch (name) {
     case 'flatfish':
       return 1;
@@ -68,7 +68,7 @@ export async function EnglishToNumber(name: string){
   }
 }
 export function KoreanToNumber(name:string){
-  console.log("&&&&&&&&&&&&&&&"+name);
+  //console.log("&&&&&&&&&&&&&&&"+name);
   switch (name) {
     case "광어":
       return 1;

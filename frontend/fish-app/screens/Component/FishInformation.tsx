@@ -13,14 +13,14 @@ import ListItem from "../Component/ListItem";
 
 export default function FishInformation({name}:{name:any}) {
   // console.log("\n\n");
-  console.log("name "+name);
+  //console.log("name "+name);
   const [data, setdata] = useState([])
 
   useEffect(() => {
     const get= async ()=>{
       //console.log("=========="+KoreanToNumber(name));
       let number = await KoreanToNumber(name);
-      console.log("number :"+number);
+      //console.log("number :"+number);
       await AddApi.getFishInformation(number).then(async(Response:any)=>{
           await setdata(Response.data)
       })
