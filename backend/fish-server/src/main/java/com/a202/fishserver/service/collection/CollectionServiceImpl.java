@@ -157,7 +157,7 @@ public class CollectionServiceImpl implements CollectionService{
                         .build());
 
             }catch (Exception e){
-                throw new Exception("이미지 리사이즈 오류: " + e.getMessage());
+                throw new Exception("이미지 리사이징 오류: " + e.getMessage());
             }
         }
     }
