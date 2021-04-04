@@ -50,6 +50,13 @@ export const AddApi: Record<string, any> = {
     const response = await request.get(`fish/${String(num)}`);
     //console.log(response);
     return response.data;
+  },
+  async saveFish(post:any) : Promise<void | AxiosResponse<any>> {
+    console.log("fish save api");
+    //console.log("1"+JSON.stringify(post));
+    const response= await request.post(`collection`,post,{headers: { 'Content-type': 'application/x-www-form-urlencoded'}});
+    console.log(response.data);
+    return response.data;
   }
 }
 

@@ -16,13 +16,13 @@ export default function FIshInformation({name}:{name:any}) {
   //console.log(name);
   const [data, setdata] = useState([])
 
-  useEffect(async () => {
-    async function get(){
+  useEffect(() => {
+    const get= async ()=>{
       const number = StringToNumber(name);
       const res=await AddApi.getFishInformation(number);
       await setdata(res.data);
     }
-    await get();
+    get();
     return () => {
       console.log("This will be logged on unmount");
     }

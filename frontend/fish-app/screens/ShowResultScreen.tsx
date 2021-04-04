@@ -13,21 +13,23 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   const reduxState=useSelector((state:any)=>state);
   const dispatch=useDispatch();
-  const [selectState, setSelectState] = useState("")
 
   let itemList=[];
   let nameList=[];
 
   console.log("fishResult:"+reduxState.fish.fishResult);
+  
   var result = reduxState.fish.fishResult.replace(/'/g, '"')
   const resultJSON=JSON.parse(result);
+  //console.log(Object.keys(resultJSON)[0]);
+  const [selectState, setSelectState] = useState(Object.keys(resultJSON)[0]);
+
   let number=0;
   for (let i in resultJSON){
     itemList.push(<Picker.Item label={i} value={i} key={number}/>);
     number++;
   }
   //console.log(itemList);
-
   return (
     <View style={styles.container}>
       <Image style={styles.img} source={{uri:`data:image/jpeg;base64,${reduxState.fish.fishImage}`}}/>
@@ -56,10 +58,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
           <View style={styles.saveBtnContainer}> 
             <Button rounded success style={styles.saveBtn} 
                 onPress={async ()=>{
-                  //let result= await analysisApi(reduxState.fish.fishImage);
-                  //let result= JSON.stringify({'catfish':57.548,'carpfish':41.126,'flatfish':1.326})
-                  //console.log(result);
-                  //dispatch(SetFishResult(result));
+                  console.log(selectState);
                   navigation.navigate('InputDetailScreen', {name: selectState });
                 }   
               }>
