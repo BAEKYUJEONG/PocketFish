@@ -137,7 +137,7 @@ public class CollectionServiceImpl implements CollectionService{
                 String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
 
                 int newWidth = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 넓이
-                int newHeigt = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2;
+                int newHeigt = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 높이
 
                 Image image = ImageIO.read(new File(imgOriginalPath)); // 원본 이미지 가져오기
                 Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
