@@ -20,10 +20,10 @@ const styles=StyleSheet.create({
     padding:3,
   },
   title:{
-    fontSize:20,
+    fontSize:15,
     fontWeight:'bold',
   },
   text:{
-    fontSize:18,
+    fontSize:13,
   }
 });

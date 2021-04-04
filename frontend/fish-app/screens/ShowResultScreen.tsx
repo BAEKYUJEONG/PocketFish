@@ -1,9 +1,11 @@
 
-import { StyleSheet, Text, View, Image,ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image,ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Item, Picker, Button  } from 'native-base';
+import { Form, Item, Picker  } from 'native-base';
 import FishInformation from './Component/FishInformation';
+import {EnglishToKorean} from "../utils/fish";
+import { Button} from 'react-native-paper';
 
 
 export default function ShowResultScreen({navigation}:{ navigation:any}) {
@@ -26,7 +28,9 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   let number=0;
   for (let i in resultJSON){
-    itemList.push(<Picker.Item label={i} value={i} key={number}/>);
+    let box=EnglishToKorean(i);
+    console.log(box);
+    itemList.push(<Picker.Item label={box} value={box} key={number}/>);
     number++;
   }
   //console.log(itemList);
@@ -56,7 +60,9 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
           </ScrollView>
  
           <View style={styles.saveBtnContainer}> 
-            <Button rounded success style={styles.saveBtn} 
+            <Button  
+              mode="contained"
+              style={{marginVertical:10, padding:1}}
                 onPress={async ()=>{
                   console.log(selectState);
                   navigation.navigate('InputDetailScreen', {name: selectState });
@@ -98,6 +104,7 @@ const styles=StyleSheet.create({
     flex:0.8,
   },
   picker:{
+    fontWeight:'bold',
     width:100,
     height:20,
   },

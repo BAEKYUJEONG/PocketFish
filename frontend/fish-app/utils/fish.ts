@@ -33,7 +33,22 @@ export function NumberToStringEnglish(number:number){
       return "bass";
   }
 }
-
+export function EnglishToKorean(name: string){
+  switch (name) {
+    case "flatfish":
+      return "광어";
+    case "red snapper":
+      return "참돔";
+    case "rockfish":
+      return "우럭";
+    case "crucian carp":
+      return "붕어";
+    case  "golden mandarin fish":
+      return "쏘가리";
+    default:
+      return "배스";
+  }
+}
 export function StringToNumber(name: string){
   switch (name) {
     case "flatfish":

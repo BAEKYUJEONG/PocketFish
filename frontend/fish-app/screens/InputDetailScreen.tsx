@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { TextInput,Button } from 'react-native-paper';
+import { TextInput,Button ,Divider} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -80,7 +80,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
             //console.log(dataInformation);
             let result= await AddApi.saveFish(dataInformation);
             console.log(result);
-            //navigation.navigate('InputDetailScreen', {name: selectState });
+            navigation.navigate('Home');
           }}>
           <Text  style={styles.btn} >저장하기</Text>
         </Button>
@@ -96,6 +96,9 @@ const styles=StyleSheet.create({
     marginHorizontal:10,
   },
   memoText:{
+
+    fontSize:20,
+    fontWeight:'bold',
     marginVertical:10,
   },
   text:{
