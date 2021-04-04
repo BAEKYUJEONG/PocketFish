@@ -12,7 +12,7 @@ import ListItem from "../Component/ListItem";
 
 
 export default function FIshInformation({name}:{name:any}) {
-  console.log("\n\n");
+  //console.log("\n\n");
   //console.log(name);
   const [data, setdata] = useState([])
 

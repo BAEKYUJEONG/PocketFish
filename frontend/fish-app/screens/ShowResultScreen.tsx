@@ -11,7 +11,7 @@ import { Button} from 'react-native-paper';
 export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   
-  console.log("\n\n");
+  //console.log("\n\n");
 
   const reduxState=useSelector((state:any)=>state);
   const dispatch=useDispatch();
@@ -29,7 +29,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
   let number=0;
   for (let i in resultJSON){
     let box=EnglishToKorean(i);
-    console.log(box);
+    //console.log(box);
     itemList.push(<Picker.Item label={box} value={box} key={number}/>);
     number++;
   }

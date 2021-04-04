@@ -36,11 +36,10 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
 
   const [dataInformation, setdataInformation] = useState(box);
  
-  console.log("location"+JSON.stringify(location));
-
-
+  //console.log("location"+JSON.stringify(location));
   //console.log("name: ", name);
-  console.log(dataInformation);
+  //console.log(dataInformation);
+  
   const set=(box:any)=>{
     setdataInformation(box);
   }
@@ -79,7 +78,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
           onPress={async ()=>{
             //console.log(dataInformation);
             let result= await AddApi.saveFish(dataInformation);
-            console.log(result);
+            //console.log(result);
             navigation.navigate('Home');
           }}>
           <Text  style={styles.btn} >저장하기</Text>

@@ -17,10 +17,10 @@ export default function ImageScreen({navigation}:{ navigation:any}) {
           mode="contained"
           style={{marginVertical:10, padding:1}}
           onPress={async ()=>{
-          let result= await AddApi.getAnalysis(reduxState.fish.fishImage);
-          console.log(result);
-          dispatch(SetFishResult(result));
-          navigation.navigate('ShowResultScreen');
+            let result= await AddApi.getAnalysis(reduxState.fish.fishImage);
+            //console.log(result);
+            dispatch(SetFishResult(result));
+            navigation.navigate('ShowResultScreen');
           }}>
           <Text style={styles.btnText}>분석하기</Text>
         </Button>
