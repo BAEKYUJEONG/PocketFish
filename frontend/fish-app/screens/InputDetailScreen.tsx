@@ -4,7 +4,7 @@ import { TextInput,Button ,Divider} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import {StringToNumber} from "../utils/fish";
+import {KoreanToNumber} from "../utils/fish";
 import {AddApi} from "../utils/axios";
 import * as Location from 'expo-location';
 import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
@@ -31,7 +31,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
   
   let box={name:" ",user_id:"1",lenth:" ",location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   box.name=name;
-  box.fish_id=StringToNumber(name);
+  box.fish_id=KoreanToNumber(name);
   //console.log(box);
 
   const [dataInformation, setdataInformation] = useState(box);

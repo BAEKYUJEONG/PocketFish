@@ -53,21 +53,22 @@ export function EnglishToKorean(name: string){
 export async function EnglishToNumber(name: string){
   console.log("!!!!!!!!!!!!!!!"+name);
   switch (name) {
-    case "flatfish":
+    case 'flatfish':
       return 1;
-    case "red snapper":
+    case 'red snapper':
       return 2;
-    case "rockfish":
+    case 'rockfish':
       return 3;
-    case "crucian carp":
+    case 'crucian carp':
       return 4;
-    case  "golden mandarin fish":
+    case 'golden mandarin fish':
       return 5;
     default:
       return 6;
   }
 }
 export function KoreanToNumber(name:string){
+  console.log("&&&&&&&&&&&&&&&"+name);
   switch (name) {
     case "광어":
       return 1;

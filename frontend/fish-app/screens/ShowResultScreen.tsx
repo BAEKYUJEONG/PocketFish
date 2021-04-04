@@ -1,12 +1,11 @@
 
 import { StyleSheet, Text, View, Image,ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Item, Picker  } from 'native-base';
 import FishInformation from './Component/FishInformation';
 import {EnglishToKorean} from "../utils/fish";
 import { Button} from 'react-native-paper';
-
 
 export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
@@ -21,15 +20,31 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   console.log("fishResult:"+reduxState.fish.fishResult);
   
+  // var result = reduxState.fish.fishResult.replace(/'/g, '"')
+  // const resultJSON=JSON.parse(result);
+  //console.log(Object.keys(resultJSON)[0]);
+
   var result = reduxState.fish.fishResult.replace(/'/g, '"')
   const resultJSON=JSON.parse(result);
-  //console.log(Object.keys(resultJSON)[0]);
-  const [selectState, setSelectState] = useState(Object.keys(resultJSON)[0]);
+  const [selectState, setSelectState] = useState(EnglishToKorean(Object.keys(resultJSON)[0]));
+  // useEffect(() => {
+  //   const get= async ()=>{
+  //     setSelectState(Object.keys(resultJSON)[0]);
+  //   };
+  //   get();
+  //   return () => {
+  //     console.log();
+  //   }
+  // },[]);
+
+  console.log("-------------"+selectState);
 
   const get=async()=>{
     return selectState;
   }
+  
   let number=0;
+
   for (let i in resultJSON){
     let box=EnglishToKorean(i);
     //console.log(box);
