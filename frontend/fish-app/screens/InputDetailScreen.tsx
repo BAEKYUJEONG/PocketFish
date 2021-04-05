@@ -11,8 +11,14 @@ import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 
 export default function InputDetailScreen({route, navigation}:{route:any, navigation:any}){
-    
   const reduxState=useSelector((state:any)=>state);
+  const user = useSelector((state:any) => state.user);
+  const userObj = JSON.parse(user.user);
+
+  if(userObj.asscess_token!==undefined){
+    alert('저장하실려면 로그인이 필요합니다.');
+    navigation.navigate('Home');
+  }
   const {name}=route.params;
   const [location, setLocation] = useState({});
 
@@ -27,7 +33,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
       setLocation(lo);
     })();
   }, []);
-  let box={user_id:1,length:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
+  let box={user_token:userObj.asscess_token,user_id:1,length:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   box.fish_id=KoreanToNumber(name);
   box.fish_image=reduxState.fish.fishImage;
   //console.log(box);
