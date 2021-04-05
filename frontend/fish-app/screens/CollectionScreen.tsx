@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { collectionApi } from '../utils/axios';
 import axios from 'axios';
 import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
@@ -12,9 +13,28 @@ export default function CollectionScreen({navigation}:{navigation:any}) {
   const uri1 = 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&w=1000&q=80';
   const uri2 = 'https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d';
   const [data, setData] = useState([]);
+  
+  const reduxState = useSelector((state: any) => state);
+  const user = useSelector((state:any) => state.user);
+  const userObj = JSON.parse(user.user);
+  
+  //아이디값
+  //console.log(userObj.user_id);
+  //토큰값
+  //console.log(userObj.asscess_token);
+
+  // useEffect(() => {
+  //   collectionApi.getCollection(1).then((response: any) => {
+  //     let count = 3 - (response.data.length % 3);
+  //     let data = [...response.data, ...new Array(count)];
+  //     setData(data);
+  //     //alert(JSON.stringify(response.data));
+  //     console.log(data);
+  //   });
+  // }, []);
 
   useEffect(() => {
-    collectionApi.getCollection(1).then((response: any) => {
+    collectionApi.userToken(userObj).then((response: any) => {
       let count = 3 - (response.data.length % 3);
       let data = [...response.data, ...new Array(count)];
       setData(data);

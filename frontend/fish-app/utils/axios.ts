@@ -130,6 +130,30 @@ export const collectionApi: Record<string, any> = {
     console.log(response);
     return response.data;
   },
+  //JSON 형식으로 보내는 형식!
+  async userToken(user: any): Promise<void | AxiosResponse<any>> {
+    console.log(user);
+
+    // let box = new FormData();
+    // box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
+    // const response = await request.post(`collection/user/1682556852`, box, {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+
+    //let box = new FormData();
+    //box.append("user_id", user.user_id);
+    
+    //원래 써야하는 것
+    // const response = await request.post(`collection/user/${String(user.user_id)}`, {'user_token': user.access_token}, {
+    //   headers: { "Content-Type": "application/JSON" },
+    // });
+
+    //대체 하드코딩
+    const response = await request.post(`collection/user/1682556852`, {"user_token": "kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug"});
+    //axios.get('url', {data: {id:1682556852}})
+    console.log("!!"+response.data);
+    return response.data;
+  }
 };
 
 // 게시글 Api
