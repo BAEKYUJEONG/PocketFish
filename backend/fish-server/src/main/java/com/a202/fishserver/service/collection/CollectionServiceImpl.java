@@ -103,9 +103,8 @@ public class CollectionServiceImpl implements CollectionService{
 
         String rootPath = "/root/data/images/collection/";
         String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
-        String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS"));
+        String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + ".jpeg";
         String filePath = rootPath + fileName;
-
 
         // 저장할 파일 경로를 지정
         File file = new File(filePath);
@@ -175,7 +174,7 @@ public class CollectionServiceImpl implements CollectionService{
                 // FishImage테이블에 small size image 저장
                 fishImageRepository.save(FishImage.builder()
                         .collection(c)
-                        .imagePath(imgTargetPath)
+                        .imagePath(apiPath + "small_" + fileName)
                         .build());
 
             }catch (Exception e){
