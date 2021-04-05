@@ -140,7 +140,7 @@ public class UserController {
         return Response.builder()
                 .status(true)
                 .message("프로필 사진 갱신 성공")
-                .data(map)
+                .data(null)
                 .build();
     }
 
