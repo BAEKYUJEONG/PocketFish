@@ -87,6 +87,29 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * 프로필 사진 갱신
+     */
+    @Override
+    public void putPicture(long userId, String accessToken, String picture) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
+        if (user.get().isFlag()) throw new Exception("탈퇴한 사용자입니다.");
+        if (userId != getUserIdByAccessToken(accessToken)) throw new Exception("올바른 사용자가 아닙니다.");
+
+        if (picture == null) {
+            if (user.get().getPicture() != null) {
+                user.get().setPicture(picture);
+                userRepository.save(user.get());
+            }
+        } else {
+            if (!picture.equals(user.get().getPicture())) {
+                user.get().setPicture(picture);
+                userRepository.save(user.get());
+            }
+        }
+    }
+
+    /**
      * 토큰 유효성 검사
      */
     @Override

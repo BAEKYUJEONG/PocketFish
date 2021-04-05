@@ -74,8 +74,8 @@ public class UserController {
     @PutMapping("/{id}")
     @ApiOperation(value = "닉네임 정보 수정")
     public Response putNickname(@PathVariable("id") long userId, @RequestBody Map<String, String> map) {
-        String nickname = map.get("nickname");
         String accessToken = map.get("accessToken");
+        String nickname = map.get("nickname");
 
         try {
             userService.putNickname(userId, nickname, accessToken);
@@ -100,7 +100,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation(value = "사용자 정보 조회")
     public Response getUser(@PathVariable("id") long userId) {
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> map;
         try {
             map = userService.getUser(userId);
         } catch (Exception e) {
@@ -114,6 +114,32 @@ public class UserController {
         return Response.builder()
                 .status(true)
                 .message("사용자 정보 조회 성공")
+                .data(map)
+                .build();
+    }
+
+    /**
+     * 프로필 사진 갱신
+     */
+    @PostMapping("/picture/{id}")
+    @ApiOperation(value = "프로필 사진 갱신")
+    public Response putPicture(@PathVariable("id") long userId, @RequestBody Map<String, String> map) {
+        String accessToken = map.get("accessToken");
+        String picture = map.get("picture");
+
+        try {
+            userService.putPicture(userId, accessToken, picture);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message(e.getMessage())
+                    .data(null)
+                    .build();
+        }
+
+        return Response.builder()
+                .status(true)
+                .message("프로필 사진 갱신 성공")
                 .data(map)
                 .build();
     }
