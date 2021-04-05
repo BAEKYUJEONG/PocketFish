@@ -109,22 +109,22 @@ public class CollectionServiceImpl implements CollectionService{
 
         // 저장할 파일 경로를 지정
         File file = new File(filePath);
+
         // BASE64를 일반 파일로 변환하고 저장
         Base64.Decoder decoder = Base64.getDecoder();
         byte[] decodedBytes = decoder.decode(dto.getFish_image().getBytes(StandardCharsets.UTF_8));
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(decodedBytes);
         fileOutputStream.close();
+
         // File을 MultipartFile로 변환
         FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
         try {
             InputStream input = new FileInputStream(file);
             OutputStream os = fileItem.getOutputStream();
             IOUtils.copy(input, os);
-            // Or faster..
             IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
         } catch (IOException ex) {
-            // do something.
             System.out.println("이미지 변환 오류: " + ex.getMessage());
         }
         MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
@@ -156,17 +156,13 @@ public class CollectionServiceImpl implements CollectionService{
             try{
                 String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
                 String imgTargetPath= rootPath + "small_" + fileName; // 새 이미지 파일명
-//                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
-                InputStream inputStream = multipartFile.getInputStream();
-                int newWidth = ImageIO.read(inputStream).getWidth() / 2; // 변경 할 넓이
-                int newHeigt = ImageIO.read(inputStream).getWidth() / 2; // 변경 할 높이
 
                 Image image = ImageIO.read(new File(imgOriginalPath)); // 원본 이미지 가져오기
-                Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
+                Image resizeImage = image.getScaledInstance(300, 300, Image.SCALE_DEFAULT);
 
                 // 새 이미지  저장하기
                 File newFile = new File(imgTargetPath);
-                BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
+                BufferedImage newImage = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
                 Graphics g = newImage.getGraphics();
                 g.drawImage(resizeImage, 0, 0, null);
                 g.dispose();
@@ -177,7 +173,6 @@ public class CollectionServiceImpl implements CollectionService{
                         .collection(c)
                         .imagePath(apiPath + "small_" + fileName)
                         .build());
-
             }catch (Exception e){
                 throw new Exception("이미지 리사이징 오류: " + e.getMessage());
             }
