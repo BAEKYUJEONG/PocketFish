@@ -7,6 +7,7 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import CollectionScreen from "../screens/CollectionScreen";
 import CollectionItemScreen from "../screens/CollectionItemScreen";
+import CommentScreen from "../screens/CommentScreen";
 import RankingScreen from "../screens/RankingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
@@ -126,7 +127,8 @@ function CollectionNavigator() {
         component={CollectionScreen}
         options={{ headerTitle: "Collection" }}
       />
-      <CollectionStack.Screen name="CollectionItemScreen" component={CollectionItemScreen}/>
+      <CollectionStack.Screen name="CollectionItemScreen" component={CollectionItemScreen} />
+      <CollectionStack.Screen name="CommentScreen" component={CommentScreen}/>
     </CollectionStack.Navigator>
   );
 }
