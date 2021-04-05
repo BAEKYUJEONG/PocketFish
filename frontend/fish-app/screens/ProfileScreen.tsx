@@ -76,8 +76,17 @@ export default function ProfileScreen() {
               },
               {
                 text: "예",
-                onPress: () =>
-                  Alert.alert("힝 속았지?", "응 탈퇴 못해 그런 기능 없어~"),
+                onPress: () => {
+                  kakaoApi
+                    .kakaoSignout()
+                    .then((result) => {
+                      setIsLoggedIn(false);
+                      dispatch(SetUser(null));
+                      console.log(state.user);
+                      console.log;
+                    })
+                    .catch((e) => console.error(e));
+                },
               },
             ])
           }

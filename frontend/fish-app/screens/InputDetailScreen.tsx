@@ -11,8 +11,14 @@ import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 
 export default function InputDetailScreen({route, navigation}:{route:any, navigation:any}){
-    
   const reduxState=useSelector((state:any)=>state);
+  const user = useSelector((state:any) => state.user);
+  const userObj = JSON.parse(user.user);
+
+  if(userObj.asscess_token!==undefined){
+    alert('저장하실려면 로그인이 필요합니다.');
+    navigation.navigate('Home');
+  }
   const {name}=route.params;
   const [location, setLocation] = useState({});
 
@@ -27,10 +33,9 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
       setLocation(lo);
     })();
   }, []);
-  
-  let box={name:" ",user_id:"1",lenth:" ",location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
-  box.name=name;
+  let box={user_token:userObj.asscess_token,user_id:1,length:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   box.fish_id=KoreanToNumber(name);
+  box.fish_image=reduxState.fish.fishImage;
   //console.log(box);
 
   const [dataInformation, setdataInformation] = useState(box);
@@ -51,13 +56,14 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
           mode='flat' 
           style={styles.text} 
           editable={false}  
-          value={dataInformation.name}
+          value={name}
           left={<TextInput.Icon name="fish" color={"#000000"} onPress={() => {}} />}/>
         <TextInput label="물고기 길이(cm)" mode='flat' style={styles.text} 
           left={<TextInput.Icon name="ruler" color={"#000000"} onPress={() => {}} />}
+          keyboardType="number-pad"
           onChangeText={(text)=>{
             let box=dataInformation;
-            box.lenth=text;
+            box.length=parseInt(text);
             set(box);}}/>
         <TextInput label="위치" mode='flat' style={styles.text} 
           left={<TextInput.Icon name="map" color={"#000000"} onPress={() => {}} />}
@@ -77,7 +83,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
           onPress={async ()=>{
             //console.log(dataInformation);
             let result= await AddApi.saveFish(dataInformation);
-            //console.log(result);
+            console.log(result);
             navigation.navigate('Home');
           }}>
           <Text  style={styles.btn} >저장하기</Text>

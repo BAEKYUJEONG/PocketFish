@@ -34,7 +34,7 @@ pred_model = load_model(model_path)
 
 app = Flask(__name__)
 
-@app.route('/', methods=['POST'])
+@app.route('/ai/', methods=['POST'])
 def predict():
     if request.method == 'POST':
         # string으로 이미지 받아오기
