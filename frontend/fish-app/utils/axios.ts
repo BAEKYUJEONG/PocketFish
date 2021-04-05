@@ -20,26 +20,16 @@ const request: AxiosInstance = axios.create({
 
 // 유저 Api
 export const userApi: Record<string, any> = {
-  async signup(): Promise<void | AxiosResponse<any>> {
-    const appData = await getData("auth");
-    const jsonData = JSON.parse(appData);
-    const { access_token } = jsonData;
-    if (await kakaoApi.validateToken()) {
-      const {
-        id,
-        properties: { nickname, profile_image },
-      } = await kakaoApi.kakaoUserInfo();
-      const postData = {
-        id,
-        nickname,
-        profile_image,
-        access_token,
-      };
-      console.log(postData);
-      const response = await request.post("login/signup", postData);
-      console.log(resposne);
-      return response.data;
-    }
+  async signup(
+    userData: Record<string, any>
+  ): Promise<void | AxiosResponse<any>> {
+    const response = await request.post("/user/", userData);
+    return response;
+  },
+  async checkUser(id: number): Promise<void | AxiosResponse<any>> {
+    console.log("checkUser");
+    const response = await request.get(`/user/${id}`);
+    return response.data;
   },
 };
 
@@ -175,7 +165,7 @@ export const AddApi: Record<string, any> = {
     box.append("bait", post.bait);
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
-    box.append('user_token',post.user_token);
+    box.append("user_token", post.user_token);
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
