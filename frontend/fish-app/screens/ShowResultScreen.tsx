@@ -1,18 +1,16 @@
 
-import { StyleSheet, Text, View, Image,ScrollView, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image,ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Header, Content, Form, Item, Picker, Button, Right  } from 'native-base';
-import { SetFishResult } from '../redux/fish';
-import {analysisApi} from "../utils/axios";
-import { List, Dialog } from 'react-native-paper';
+import { Form, Item, Picker  } from 'native-base';
 import FishInformation from './Component/FishInformation';
-
+import {EnglishToKorean} from "../utils/fish";
+import { Button} from 'react-native-paper';
 
 export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   
-  console.log("\n\n");
+  //console.log("\n\n");
 
   const reduxState=useSelector((state:any)=>state);
   const dispatch=useDispatch();
@@ -20,21 +18,44 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
   let itemList=[];
   let nameList=[];
 
-  //MODIFY essential
-  nameList.push(reduxState.fish.fishResult.split(`"`)[1]);
-  nameList.push(reduxState.fish.fishResult.split(`"`)[3]);
-  nameList.push(reduxState.fish.fishResult.split(`"`)[5]);
-
+  //console.log("fishResult:"+reduxState.fish.fishResult);
   
-  const [selectState,setSelectState]=useState(nameList[0]);
-  nameList.forEach((item)=>itemList.push(<Picker.Item label={item} value={item}/>));
+  // var result = reduxState.fish.fishResult.replace(/'/g, '"')
+  // const resultJSON=JSON.parse(result);
+  //console.log(Object.keys(resultJSON)[0]);
 
-  console.log(nameList);
-  console.log("itemLIst: ",itemList);
+  var result = reduxState.fish.fishResult.replace(/'/g, '"')
+  const resultJSON=JSON.parse(result);
+  const [selectState, setSelectState] = useState(EnglishToKorean(Object.keys(resultJSON)[0]));
+  // useEffect(() => {
+  //   const get= async ()=>{
+  //     setSelectState(Object.keys(resultJSON)[0]);
+  //   };
+  //   get();
+  //   return () => {
+  //     console.log();
+  //   }
+  // },[]);
 
+  //console.log("-------------"+selectState);
+
+  const get=async()=>{
+    return selectState;
+  }
+  
+  let number=0;
+
+  for (let i in resultJSON){
+    let box=EnglishToKorean(i);
+    //console.log(box);
+    itemList.push(<Picker.Item label={box} value={box} key={number}/>);
+    number++;
+  }
+  //console.log(itemList);
 
 
   return (
+
     <View style={styles.container}>
       <Image style={styles.img} source={{uri:`data:image/jpeg;base64,${reduxState.fish.fishImage}`}}/>
       <View style={styles.resultList}>
@@ -48,7 +69,7 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
                 placeholderStyle={{ color: "#bfc6ea" }}
                 placeholderIconColor="#007aff"
                 selectedValue={selectState}
-                onValueChange={(loc)=>{setSelectState(loc)}}
+                onValueChange={(loc)=>{setSelectState(loc);}}
             >
               {itemList}
             </Picker>
@@ -60,12 +81,11 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
           </ScrollView>
  
           <View style={styles.saveBtnContainer}> 
-            <Button rounded success style={styles.saveBtn} 
+            <Button  
+              mode="contained"
+              style={{marginVertical:10, padding:1}}
                 onPress={async ()=>{
-                  //let result= await analysisApi(reduxState.fish.fishImage);
-                  //let result= JSON.stringify({'catfish':57.548,'carpfish':41.126,'flatfish':1.326})
-                  //console.log(result);
-                  //dispatch(SetFishResult(result));
+                  //console.log(selectState);
                   navigation.navigate('InputDetailScreen', {name: selectState });
                 }   
               }>
@@ -105,6 +125,7 @@ const styles=StyleSheet.create({
     flex:0.8,
   },
   picker:{
+    fontWeight:'bold',
     width:100,
     height:20,
   },

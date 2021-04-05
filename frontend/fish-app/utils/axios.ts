@@ -116,32 +116,36 @@ export const collectionApi: Record<string, any> = {
 
 // 게시글 Api
 export const collectionItemApi: Record<string, any> = {
-  async getCollection(user_id: number): Promise<void | AxiosResponse<any>> {
-    const response = await request.get(`collection/${String(user_id)}`);
+  async getCollectionItem(collection_id: number): Promise<void | AxiosResponse<any>> {
+    const response = await request.get(`collection/${String(collection_id)}`);
     console.log(response);
     return response.data;
   },
 };
 
-// 분석 Api
-export async function analysisApi(img: any) {
-  console.log("api");
-  //const dispatch=useDispatch();
-
-  const result = await axios.post(
-    `http://skeldtcan.iptime.org:5000`,
-    JSON.stringify({ file: img }),
-    { headers: { "Content-Type": "application/JSON" } }
-  );
-  // .then(
-  //   (res)=>{
-  //     console.log(res.data);
-  //     return res.data;
-  //   }
-  // )
-  // .catch((Error)=>{console.log(Error);});
-  console.log(result.data);
-  return result.data;
+// Add Api
+export const AddApi: Record<string, any> = {
+  async getAnalysis(img:any): Promise<void | AxiosResponse<any>> {
+    console.log("analysis api");
+    const response= await axios.post(`https://j4a202.p.ssafy.io/ai/`,
+        JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    //const response = await request.post(`ai`,JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    //console.log(response);
+    return response.data;
+  },
+  async getFishInformation(num: number) : Promise<void | AxiosResponse<any>> {
+    console.log("fish information api");
+    const response = await request.get(`fish/${String(num)}`);
+    //console.log(response);
+    return response.data;
+  },
+  async saveFish(post:any) : Promise<void | AxiosResponse<any>> {
+    console.log("fish save api");
+    //console.log("1"+JSON.stringify(post));
+    const response= await request.post(`collection`,post,{headers: { 'Content-type': 'application/x-www-form-urlencoded'}});
+    //console.log(response.data);
+    return response.data;
+  }
 }
 
 // 로그인 Api

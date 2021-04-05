@@ -30,7 +30,7 @@ export const fishReducer = (state = fishState, action:any): FishState=>{
     switch(action.type){
         case SET_FISH_IMAGE:
             //console.log(action.fishImage);
-            console.log(fishState);
+            //console.log(fishState);
             return {...state, fishImage:action.fishImage};
         case SET_FISH_RESULT:
             return {...state, fishResult:action.fishResult};
