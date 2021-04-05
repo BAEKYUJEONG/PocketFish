@@ -25,7 +25,7 @@ public class CollectionController {
     /**
      * 내 보관함 조회
      */
-    @GetMapping("/user/{id}")
+    @PostMapping("/user/{id}")
     @ApiOperation(value = "내 보관함 조회")
     public Response getMyCollection(@PathVariable("id") long userId, @RequestBody CollectionPostTokenRequestDto dto) {
         List<HashMap<String, Object>> result;
