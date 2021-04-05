@@ -8,12 +8,13 @@ import {KoreanToNumber} from "../utils/fish";
 import {AddApi} from "../utils/axios";
 import * as Location from 'expo-location';
 import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-
+import { SetUser } from "../redux/user";
 
 export default function InputDetailScreen({route, navigation}:{route:any, navigation:any}){
   const reduxState=useSelector((state:any)=>state);
   const user = useSelector((state:any) => state.user);
   const userObj = JSON.parse(user.user);
+  const dispatch = useDispatch();
 
   if(userObj.asscess_token!==undefined){
     alert('저장하실려면 로그인이 필요합니다.');
