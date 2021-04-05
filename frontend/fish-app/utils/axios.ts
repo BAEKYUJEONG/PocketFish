@@ -179,10 +179,16 @@ export const AddApi: Record<string, any> = {
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
     //console.log(response.data);
     return response.data;
   },
 };
+
+
+
+
+
 // 로그인 Api
 // export const userApi: Record<string, any> = {
 //   async login(user: Record<string, any>): Promise<void | AxiosResponse<any>> {
