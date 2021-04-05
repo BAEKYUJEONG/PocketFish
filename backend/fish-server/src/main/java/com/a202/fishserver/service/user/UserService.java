@@ -10,4 +10,5 @@ public interface UserService {
     void putNickname(long userId, String nickname, String accessToken) throws Exception;
     long getUserIdByAccessToken(String acceessToken) throws Exception;
     HashMap<String, Object> getUser(long userId) throws Exception;
+    void putPicture(long userId, String accessToken, String picture) throws Exception;
 }
