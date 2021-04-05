@@ -71,6 +71,22 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * 사용자 정보 조회
+     */
+    @Override
+    public HashMap<String, Object> getUser(long userId) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", user.get().getId());
+        map.put("email", user.get().getEmail());
+        map.put("nickname", user.get().getNickname());
+        map.put("picture", user.get().getPicture());
+        return map;
+    }
+
+    /**
      * 토큰 유효성 검사
      */
     @Override

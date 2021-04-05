@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -90,6 +91,30 @@ public class UserController {
                 .status(true)
                 .message("닉네임 정보 수정 성공")
                 .data(userId +", " + nickname +", " + accessToken)
+                .build();
+    }
+
+    /**
+     * 사용자 정보 조회
+     */
+    @GetMapping("/{id}")
+    @ApiOperation(value = "사용자 정보 조회")
+    public Response getUser(@PathVariable("id") long userId) {
+        HashMap<String, Object> map = new HashMap<>();
+        try {
+            map = userService.getUser(userId);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message(e.getMessage())
+                    .data(null)
+                    .build();
+        }
+
+        return Response.builder()
+                .status(true)
+                .message("사용자 정보 조회 성공")
+                .data(map)
                 .build();
     }
 
