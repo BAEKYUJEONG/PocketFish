@@ -57,6 +57,7 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
               .then((result) => {
                 saveData("auth", JSON.stringify(result.data));
                 console.log(result.data);
+                const { access_token } = result.data;
                 kakaoApi.kakaoUserInfo().then((response: any) => {
                   const {
                     id,
@@ -68,6 +69,7 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                         id,
                         nickname,
                         profile_image,
+                        access_token,
                       })
                     )
                   );

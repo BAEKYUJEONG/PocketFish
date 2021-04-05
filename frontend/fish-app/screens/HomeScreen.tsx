@@ -28,15 +28,20 @@ export default function Home({ navigation }: { navigation: any }) {
               id,
               properties: { nickname, profile_image },
             } = response;
-            dispatch(
-              SetUser(
-                JSON.stringify({
-                  id,
-                  nickname,
-                  profile_image,
-                })
-              )
-            );
+            getData("auth").then((data) => {
+              const jsonData = JSON.parse(data);
+              const { access_token } = jsonData;
+              dispatch(
+                SetUser(
+                  JSON.stringify({
+                    id,
+                    nickname,
+                    profile_image,
+                    access_token,
+                  })
+                )
+              );
+            });
             setIsInit(false);
           })
           .catch((e) => {
