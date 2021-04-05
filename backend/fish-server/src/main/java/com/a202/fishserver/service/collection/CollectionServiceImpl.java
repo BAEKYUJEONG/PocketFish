@@ -9,6 +9,9 @@ import com.a202.fishserver.domain.fishImage.FishImageRepository;
 import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTokenIDRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTokenRequestDto;
+import com.a202.fishserver.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -36,11 +39,20 @@ public class CollectionServiceImpl implements CollectionService{
     private final FishImageRepository fishImageRepository;
     private final FishRepository fishRepository;
     private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     /**
      * 내 보관함 조회
      */
-    public List<HashMap<String, Object>> getMyCollections(long userId){
+    public List<HashMap<String, Object>> getMyCollections(long userId, CollectionPostTokenRequestDto dto) throws Exception{
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != userId) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         List<Collection> list = collectionRepository.findByUser(new User(userId));
         List<HashMap<String, Object>> result = new ArrayList<>();
 
@@ -79,8 +91,11 @@ public class CollectionServiceImpl implements CollectionService{
             }
         }
 
+        Optional<User> user = userRepository.findById(collection.get().getUser().getId());
         HashMap<String, Object> map = new HashMap<>();
         map.put("collectionId", collectionId);
+        map.put("userNick", user.get().getNickname());
+        map.put("userProfile", user.get().getPicture());
         map.put("fishName", collection.get().getFish().getName());
         map.put("fishImage", imagePath);
         map.put("fishLength", collection.get().getLength());
@@ -97,6 +112,14 @@ public class CollectionServiceImpl implements CollectionService{
      * 물고기 등록
      */
     public void postCollection(CollectionPostRequestDto dto) throws Exception{
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != dto.getUser_id()) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         Optional<User> user = userRepository.findById(dto.getUser_id());
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
@@ -183,6 +206,14 @@ public class CollectionServiceImpl implements CollectionService{
      * 도감 정보 수정
      */
     public void putCollection(CollectionPostRequestDto dto, long collectionId) throws Exception{
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != dto.getUser_id()) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         Optional<User> user = userRepository.findById(dto.getUser_id());
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
@@ -208,7 +239,15 @@ public class CollectionServiceImpl implements CollectionService{
      * 도감 정보 삭제
      */
     @Override
-    public void putCollectionFlag(long collectionID) throws Exception {
+    public void putCollectionFlag(long collectionID, CollectionPostTokenIDRequestDto dto) throws Exception {
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != dto.getUser_id()) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         Optional<Collection> collection = collectionRepository.findById(collectionID);
         if (!collection.isPresent()) throw new Exception("해당 도감 정보가 존재하지 않습니다.");
 

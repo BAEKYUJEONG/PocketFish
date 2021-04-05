@@ -2,6 +2,8 @@ package com.a202.fishserver.controller;
 
 import com.a202.fishserver.dto.Response;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTokenIDRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTokenRequestDto;
 import com.a202.fishserver.service.collection.CollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,8 +27,17 @@ public class CollectionController {
      */
     @GetMapping("/user/{id}")
     @ApiOperation(value = "내 보관함 조회")
-    public Response getMyCollection(@PathVariable("id") long userId) {
-        List<HashMap<String, Object>> result = collectionService.getMyCollections(userId);
+    public Response getMyCollection(@PathVariable("id") long userId, @RequestBody CollectionPostTokenRequestDto dto) {
+        List<HashMap<String, Object>> result;
+        try {
+            result = collectionService.getMyCollections(userId, dto);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message("물고기 전체 조회 실패")
+                    .data(null)
+                    .build();
+        }
 
         return Response.builder()
                 .status(true)
@@ -107,9 +118,9 @@ public class CollectionController {
      */
     @DeleteMapping("/{id}")
     @ApiOperation(value = "도감 정보 삭제")
-    public Response putCollectionFlag(@PathVariable("id") long collectionId) {
+    public Response putCollectionFlag(@PathVariable("id") long collectionId, @RequestBody CollectionPostTokenIDRequestDto dto) {
         try {
-            collectionService.putCollectionFlag(collectionId);
+            collectionService.putCollectionFlag(collectionId, dto);
         } catch (Exception e) {
             return Response.builder()
                     .status(false)
