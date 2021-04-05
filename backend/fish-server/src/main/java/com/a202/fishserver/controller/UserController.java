@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @CrossOrigin(origins = {"*"})
 @RestController
@@ -24,6 +26,7 @@ public class UserController {
     @PostMapping("/")
     @ApiOperation(value = "사용자 등록")
     public Response postUser(@ModelAttribute UserPostRequestDto userDto) {
+
         try {
             userService.postUser(userDto);
         } catch (Exception e) {
@@ -45,8 +48,7 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     @ApiOperation(value = "사용자 탈퇴")
-    public Response putUserFlag(@PathVariable("id") long userId,
-                                @RequestBody String accessToken) {
+    public Response putUserFlag(@PathVariable("id") long userId, @RequestBody String accessToken) {
 
         try {
             userService.putUserFlag(userId, accessToken);
@@ -57,10 +59,37 @@ public class UserController {
                     .data(null)
                     .build();
         }
+
         return Response.builder()
                 .status(true)
                 .message("사용자 탈퇴 성공")
                 .data(null)
+                .build();
+    }
+
+    /**
+     * 닉네임 수정
+     */
+    @PutMapping("/{id}")
+    @ApiOperation(value = "닉네임 정보 수정")
+    public Response putNickname(@PathVariable("id") long userId, @RequestBody Map<String, String> map) {
+        String nickname = map.get("nickname");
+        String accessToken = map.get("accessToken");
+
+        try {
+            userService.putNickname(userId, nickname, accessToken);
+        } catch (Exception e) {
+            return Response.builder()
+                    .status(false)
+                    .message(e.getMessage())
+                    .data(null)
+                    .build();
+        }
+
+        return Response.builder()
+                .status(true)
+                .message("닉네임 정보 수정 성공")
+                .data(userId +", " + nickname +", " + accessToken)
                 .build();
     }
 
@@ -72,6 +101,7 @@ public class UserController {
     @ApiOperation(value = "토큰 유효성 검사")
     public Response getUserIdByAccessToken(@RequestBody String accessToken) {
         long id;
+
         try {
             id = userService.getUserIdByAccessToken(accessToken);
         } catch (Exception e) {

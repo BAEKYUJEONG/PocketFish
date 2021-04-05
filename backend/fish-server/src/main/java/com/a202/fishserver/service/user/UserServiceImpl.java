@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -42,6 +41,20 @@ public class UserServiceImpl implements UserService{
         } catch (Exception e) {
             throw new Exception("사용자 등록 중 오류 발생");
         }
+    }
+
+    /**
+     * 닉네임 정보 수정
+     */
+    @Override
+    public void putNickname(long userId, String nickname, String accessToken) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
+        if (user.get().isFlag()) throw new Exception("탈퇴한 사용자입니다.");
+        if (userId != getUserIdByAccessToken(accessToken)) throw new Exception("올바른 사용자가 아닙니다.");
+
+        user.get().setNickname(nickname);
+        userRepository.save(user.get());
     }
 
     /**
