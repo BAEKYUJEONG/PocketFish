@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { useState, useEffect } from 'react';
 import { collectionApi } from '../utils/axios';
 import axios from 'axios';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { Icon, Container, Content, Thumbnail, Image } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -25,11 +25,11 @@ export default function CollectionScreen({navigation}:{navigation:any}) {
 
   return (
     <View style={styles.container}>
-      <Container>
+      <View>
         <View style={styles.headerView}>
           <Text style={styles.instructions}>내 수조</Text>
         </View>
-        <Content>
+        <View>
           <View style={styles.contentView}>
             <View style={styles.collectionAll}>
               <Grid style={{ marginTop: 30 }}>
@@ -40,7 +40,7 @@ export default function CollectionScreen({navigation}:{navigation:any}) {
                       { d === undefined ? null :
                       <View
                           key={index}
-                          style={[{ width: (innerWidth) / 18 }, { height: (innerWidth) / 18 }, { marginBottom: 2 }, { alignItems: 'center' },
+                          style={[{ width: Dimensions.get('window').width/ 18 }, { height: Dimensions.get('window').width/ 18 }, { marginBottom: 2 }, { alignItems: 'center' },
                                     index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }
                           ]}
                       >
@@ -66,8 +66,8 @@ export default function CollectionScreen({navigation}:{navigation:any}) {
               */}
             </View>
           </View>
-        </Content>
-      </Container>
+        </View>
+      </View>
     </View>
   );
 }
@@ -75,11 +75,10 @@ export default function CollectionScreen({navigation}:{navigation:any}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
   },
   headerView: {
-    marginTop: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
   },
   collectionImg: {
     borderRadius: 50,
-    background: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
+    //backgroundColor: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
     //IOS
     shadowColor: '#000000', //그림자색
     shadowOpacity: 0.3, //그림자 투명도
