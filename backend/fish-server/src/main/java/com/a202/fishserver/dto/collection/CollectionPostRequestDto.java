@@ -16,5 +16,6 @@ public class CollectionPostRequestDto {
     public String bait;
     public String fishing_info;
     public long user_id;
-    public MultipartFile fish_image;
+//    public MultipartFile fish_image;
+    public String fish_image;
 }
