@@ -1,9 +1,6 @@
 package com.a202.fishserver.domain.user;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -25,9 +22,22 @@ public class User {
     private String nickname;
 
     @Column
+    private String picture;
+
+    @Column
     private boolean flag;
+
 
     public User (long id) {
         this.id = id;
+    }
+
+    @Builder
+    public User(long id, String nickname, String email, String picture, boolean flag) {
+        this.id = id;
+        this.nickname = nickname;
+        this.email = email;
+        this.picture = picture;
+        this.flag = flag;
     }
 }
