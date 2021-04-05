@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { useState, useEffect } from 'react';
 import { collectionApi } from '../utils/axios';
 import axios from 'axios';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { Icon, Container, Content, Thumbnail, Image } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -40,7 +40,7 @@ export default function CollectionScreen({navigation}:{navigation:any}) {
                       { d === undefined ? null :
                       <View
                           key={index}
-                          style={[{ width: (innerWidth) / 18 }, { height: (innerWidth) / 18 }, { marginBottom: 2 }, { alignItems: 'center' },
+                          style={[{ width: Dimensions.get('window').width/ 18 }, { height: Dimensions.get('window').width/ 18 }, { marginBottom: 2 }, { alignItems: 'center' },
                                     index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }
                           ]}
                       >
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   collectionImg: {
     borderRadius: 50,
-    background: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
+    backgroundColor: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
     //IOS
     shadowColor: '#000000', //그림자색
     shadowOpacity: 0.3, //그림자 투명도

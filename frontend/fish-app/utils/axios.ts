@@ -130,7 +130,7 @@ export const AddApi: Record<string, any> = {
     const response= await axios.post(`https://j4a202.p.ssafy.io/ai/`,
         JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
     //const response = await request.post(`ai`,JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
-    //console.log(response);
+    console.log(response.data);
     return response.data;
   },
   async getFishInformation(num: number) : Promise<void | AxiosResponse<any>> {
@@ -141,8 +141,18 @@ export const AddApi: Record<string, any> = {
   },
   async saveFish(post:any) : Promise<void | AxiosResponse<any>> {
     console.log("fish save api");
-    //console.log("1"+JSON.stringify(post));
-    const response= await request.post(`collection`,post,{headers: { 'Content-type': 'application/x-www-form-urlencoded'}});
+    //post.fish_image=post.fish_image.substring(0,100);
+    //console.log(post);
+    let box=new FormData();
+    box.append('user_id', post.user_id);
+    box.append('length', post.length);
+    box.append('location',post.location);
+    box.append('fish_id',post.fish_id);
+    box.append('memo',post.memo);
+    box.append('bait',post.bait);
+    box.append('fishing_info',post.fishing_info);
+    box.append('fish_image',post.fish_image);
+    const response= await request.post(`collection`,box,{headers: {'Content-Type': 'multipart/form-data'}});
     //console.log(response.data);
     return response.data;
   }

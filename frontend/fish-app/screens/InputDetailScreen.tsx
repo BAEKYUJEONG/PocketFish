@@ -27,7 +27,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
       setLocation(lo);
     })();
   }, []);
-  let box={user_id:"1",lenth:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
+  let box={user_id:1,length:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   box.fish_id=KoreanToNumber(name);
   box.fish_image=reduxState.fish.fishImage;
   //console.log(box);
@@ -57,7 +57,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
           keyboardType="number-pad"
           onChangeText={(text)=>{
             let box=dataInformation;
-            box.lenth=text;
+            box.length=parseInt(text);
             set(box);}}/>
         <TextInput label="위치" mode='flat' style={styles.text} 
           left={<TextInput.Icon name="map" color={"#000000"} onPress={() => {}} />}
