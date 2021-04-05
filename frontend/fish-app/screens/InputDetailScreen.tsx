@@ -27,10 +27,9 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
       setLocation(lo);
     })();
   }, []);
-  
-  let box={name:" ",user_id:"1",lenth:" ",location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
-  box.name=name;
+  let box={user_id:"1",lenth:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   box.fish_id=KoreanToNumber(name);
+  box.fish_image=reduxState.fish.fishImage;
   //console.log(box);
 
   const [dataInformation, setdataInformation] = useState(box);
@@ -51,10 +50,11 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
           mode='flat' 
           style={styles.text} 
           editable={false}  
-          value={dataInformation.name}
+          value={name}
           left={<TextInput.Icon name="fish" color={"#000000"} onPress={() => {}} />}/>
         <TextInput label="물고기 길이(cm)" mode='flat' style={styles.text} 
           left={<TextInput.Icon name="ruler" color={"#000000"} onPress={() => {}} />}
+          keyboardType="number-pad"
           onChangeText={(text)=>{
             let box=dataInformation;
             box.lenth=text;
@@ -77,7 +77,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
           onPress={async ()=>{
             //console.log(dataInformation);
             let result= await AddApi.saveFish(dataInformation);
-            //console.log(result);
+            console.log(result);
             navigation.navigate('Home');
           }}>
           <Text  style={styles.btn} >저장하기</Text>

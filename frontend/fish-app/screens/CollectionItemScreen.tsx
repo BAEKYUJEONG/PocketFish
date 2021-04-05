@@ -46,26 +46,35 @@ export default function CollectionItemScreen({ route, navigation }) {
         </CardItem>
         <CardItem style={{ height: 45 }}>
           <Left>
-            <Button transparent>
+            {/* <Button transparent>
               <Icon name="ios-heart" style={{ color: 'black' }} />
-            </Button>
-            <Button transparent>
+            </Button> */}
+            <Button transparent
+              onPress={() =>
+                navigation.navigate('CommentScreen', { id : item.collectionId })
+              }>
               <Icon name="ios-chatbubbles" style={{ color: 'black' }} />
+              <Text style={{ color: 'black', fontSize: 15, alignContent: 'center' }}>댓글</Text>
             </Button>
-            <Button transparent>
+            {/* <Button transparent>
               <Icon name="ios-send" style={{ color: 'black' }} />
-            </Button>
+            </Button> */}
           </Left>
         </CardItem>
-        <CardItem style={{ height: 20 }}>
+        {/* <CardItem style={{ height: 20 }}>
           <Text>101 likes</Text>
-        </CardItem>
-        <CardItem>
+        </CardItem> */}
+        <CardItem style={{ marginTop: -10 }}>
           <Text>
             <Text style={{ fontWeight: '900' }}>백유정</Text>
-            <span style={{ marginLeft: 5 }}>{item.fishMemo}</span>
-            <div>{item.fishBait}</div>
-            <div>{item.fishLocation}</div>
+            <span>
+              <span style={{ marginLeft: 5 }}>{item.fishMemo}</span>
+              <div>길이 : {item.fishLength}</div>
+              <div>어종 : {item.fishName}</div>
+              <div>장소 : {item.fishLocation}</div>
+              <div>장비 : {item.fishingInfo}</div>
+              <div>미끼 : {item.fishBait}</div>
+            </span>
           </Text>
         </CardItem>
       </Card>
