@@ -191,7 +191,7 @@ export const AddApi: Record<string, any> = {
     //post.fish_image=post.fish_image.substring(0,100);
     //console.log(post);
     let box = new FormData();
-    box.append("user_id", post.user_id);
+    box.append("user_id", "1682556852");
     box.append("length", post.length);
     box.append("location", post.location);
     box.append("fish_id", post.fish_id);
@@ -199,13 +199,19 @@ export const AddApi: Record<string, any> = {
     box.append("bait", post.bait);
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
+    box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
     //console.log(response.data);
     return response.data;
   },
 };
+
+
+
+
 
 // 로그인 Api
 // export const userApi: Record<string, any> = {
