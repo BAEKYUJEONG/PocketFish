@@ -106,40 +106,29 @@ public class CollectionServiceImpl implements CollectionService{
         String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS"));
         String filePath = rootPath + fileName;
 
-////////////////////
+
+        // 저장할 파일 경로를 지정
         File file = new File(filePath);
+        // BASE64를 일반 파일로 변환하고 저장
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] decodedBytes = decoder.decode(dto.getFish_image().getBytes());
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(decodedBytes);
+        fileOutputStream.close();
+        // File을 MultipartFile로 변환
         FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
         try {
             InputStream input = new FileInputStream(file);
             OutputStream os = fileItem.getOutputStream();
             IOUtils.copy(input, os);
             // Or faster..
-             IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+            IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
         } catch (IOException ex) {
             // do something.
+            System.out.println("이미지 변환 오류: " + ex.getMessage());
         }
         MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-////////////////////
-
-//        File file = new File(filePath);
-//        DiskFileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length() , file.getParentFile());
-//
-//        InputStream input = new FileInputStream(file);
-//        OutputStream os = fileItem.getOutputStream();
-//        IOUtils.copy(input, os);
-//
-//        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-////////////////////
-        File dest = new File(filePath);
-//        MultipartFile file = dto.getFish_image();
-
-        // BASE64를 일반 파일로 변환하고 저장합니다.
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] decodedBytes = decoder.decode(dto.getFish_image().getBytes());
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        fileOutputStream.write(decodedBytes);
-        fileOutputStream.close();
-        multipartFile.transferTo(dest);
+        multipartFile.transferTo(file);
 
         Collection c;
         try {
