@@ -3,7 +3,7 @@ import { WebView } from "react-native-webview";
 import axios from "axios";
 import "../../utils/storage";
 import { getData, saveData } from "../../utils/storage";
-import { kakaoApi } from "../../utils/axios";
+import { kakaoApi, userApi } from "../../utils/axios";
 import { SetUser } from "../../redux/user";
 import { useDispatch } from "react-redux";
 import LoadingScreen from "../common/LoadingScreen";
@@ -39,7 +39,6 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
           console.log(jsonObj);
           console.log(jsonObj.location.origin);
           if (jsonObj.location.origin == "https://j4a202.p.ssafy.io") {
-            console.log("돌아간다!");
             const auth_code = jsonObj.location.search.split("=")[1];
             const params = new URLSearchParams();
             params.append("grant_type", "authorization_code");
@@ -63,6 +62,22 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                     id,
                     properties: { nickname, profile_image },
                   } = response;
+                  userApi.checkUser(id).then((result: any) => {
+                    console.log("id type");
+                    console.log(id);
+                    console.log(typeof id);
+                    if (!result.status) {
+                      const userData = {
+                        id,
+                        nickname,
+                        picture: profile_image,
+                      };
+                      userApi
+                        .signup(userData)
+                        .then((res) => console.log(res))
+                        .catch((e) => console.log(e));
+                    }
+                  });
                   dispatch(
                     SetUser(
                       JSON.stringify({
