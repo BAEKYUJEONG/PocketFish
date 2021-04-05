@@ -10,9 +10,12 @@ import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -32,6 +35,11 @@ public class CollectionServiceImpl implements CollectionService{
     private final FishImageRepository fishImageRepository;
     private final FishRepository fishRepository;
     private final UserRepository userRepository;
+
+    // 랭킹 등록
+    @Autowired
+    StringRedisTemplate template;
+
 
     /**
      * 내 보관함 조회
@@ -93,10 +101,20 @@ public class CollectionServiceImpl implements CollectionService{
      * 물고기 등록
      */
     public void postCollection(CollectionPostRequestDto dto) throws Exception{
+
         Optional<User> user = userRepository.findById(dto.getUser_id());
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
+
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
         if (!fish.isPresent()) throw new Exception("해당 물고기가 존재하지 않습니다.");
+
+        // 랭킹 등록
+        System.out.println("== 랭킹 등록==");
+        ZSetOperations<String, String> zset = template.opsForZSet();
+        System.out.println("zset created");
+        zset.add("fish"+fish.get().getId(), user.get().getNickname(), dto.getLength());
+        System.out.println("zset added");
+
         System.out.println(FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small");
 
         String rootPath = "/root/data/images/collection/";
@@ -121,6 +139,7 @@ public class CollectionServiceImpl implements CollectionService{
                     .regDate(LocalDateTime.now())
                     .flag(false)
                     .build());
+
         } catch (Exception e) {
             throw new Exception("보관함 저장 중 오류 발생");
         }
@@ -198,5 +217,4 @@ public class CollectionServiceImpl implements CollectionService{
         collection.get().setFlag(true);
         collectionRepository.save(collection.get());
     }
-
 }

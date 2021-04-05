@@ -27,7 +27,7 @@ public class User {
     @Column
     private boolean flag;
 
-    public User (long id) {
+    public User(long id) {
         this.id = id;
     }
 }
