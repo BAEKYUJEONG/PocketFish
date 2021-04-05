@@ -63,6 +63,24 @@ export const kakaoApi: Record<string, any> = {
     console.log("logout");
     return response.data;
   },
+  async kakaoSignout(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    const response = await axios.post(
+      "https://kapi.kakao.com/v1/user/unlink",
+      "",
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    await saveData("auth", "");
+    console.log("signout");
+    return response.data;
+  },
   async kakaoUserInfo(): Promise<void | AxiosResponse<any>> {
     const appData = await getData("auth");
     const jsonData = JSON.parse(appData);
@@ -116,7 +134,9 @@ export const collectionApi: Record<string, any> = {
 
 // 게시글 Api
 export const collectionItemApi: Record<string, any> = {
-  async getCollectionItem(collection_id: number): Promise<void | AxiosResponse<any>> {
+  async getCollectionItem(
+    collection_id: number
+  ): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`collection/${String(collection_id)}`);
     console.log(response);
     return response.data;
@@ -125,38 +145,43 @@ export const collectionItemApi: Record<string, any> = {
 
 // Add Api
 export const AddApi: Record<string, any> = {
-  async getAnalysis(img:any): Promise<void | AxiosResponse<any>> {
+  async getAnalysis(img: any): Promise<void | AxiosResponse<any>> {
     console.log("analysis api");
-    const response= await axios.post(`https://j4a202.p.ssafy.io/ai/`,
-        JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    const response = await axios.post(
+      `https://j4a202.p.ssafy.io/ai/`,
+      JSON.stringify({ file: img }),
+      { headers: { "Content-Type": "application/JSON" } }
+    );
     //const response = await request.post(`ai`,JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
     console.log(response.data);
     return response.data;
   },
-  async getFishInformation(num: number) : Promise<void | AxiosResponse<any>> {
+  async getFishInformation(num: number): Promise<void | AxiosResponse<any>> {
     console.log("fish information api");
     const response = await request.get(`fish/${String(num)}`);
     //console.log(response);
     return response.data;
   },
-  async saveFish(post:any) : Promise<void | AxiosResponse<any>> {
+  async saveFish(post: any): Promise<void | AxiosResponse<any>> {
     console.log("fish save api");
     //post.fish_image=post.fish_image.substring(0,100);
     //console.log(post);
-    let box=new FormData();
-    box.append('user_id', post.user_id);
-    box.append('length', post.length);
-    box.append('location',post.location);
-    box.append('fish_id',post.fish_id);
-    box.append('memo',post.memo);
-    box.append('bait',post.bait);
-    box.append('fishing_info',post.fishing_info);
-    box.append('fish_image',post.fish_image);
-    const response= await request.post(`collection`,box,{headers: {'Content-Type': 'multipart/form-data'}});
+    let box = new FormData();
+    box.append("user_id", post.user_id);
+    box.append("length", post.length);
+    box.append("location", post.location);
+    box.append("fish_id", post.fish_id);
+    box.append("memo", post.memo);
+    box.append("bait", post.bait);
+    box.append("fishing_info", post.fishing_info);
+    box.append("fish_image", post.fish_image);
+    const response = await request.post(`collection`, box, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     //console.log(response.data);
     return response.data;
-  }
-}
+  },
+};
 
 // 로그인 Api
 // export const userApi: Record<string, any> = {

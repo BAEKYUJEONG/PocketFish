@@ -6,6 +6,8 @@ import { getData, saveData } from "../../utils/storage";
 import { kakaoApi } from "../../utils/axios";
 import { SetUser } from "../../redux/user";
 import { useDispatch } from "react-redux";
+import LoadingScreen from "../common/LoadingScreen";
+import { useState } from "react";
 
 const injectedJS = `
 setTimeout(function () {
@@ -17,55 +19,70 @@ setTimeout(function () {
 export default function KakaoLoginScreen({ close }: { close: any }) {
   const client_id = "fa18c792f29dde66fafdd337e808e8af";
   const redirect_uri = "https://j4a202.p.ssafy.io/images/meta.png";
+  const [flex, setFlex] = useState(0);
   const dispatch = useDispatch();
   return (
-    <WebView
-      style={{ flex: 0 }}
-      source={{
-        uri: `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`, // &prompt=login 매번 로그인
-      }}
-      injectedJavaScript={injectedJS}
-      onMessage={(event) => {
-        const { data } = event.nativeEvent;
-        const jsonObj = JSON.parse(data);
-        const auth_code = jsonObj.location.search.split("=")[1];
-        const params = new URLSearchParams();
-        params.append("grant_type", "authorization_code");
-        params.append("client_id", client_id);
-        params.append("redirect_uri", redirect_uri);
-        params.append("code", auth_code);
-        const postConfig = {
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        };
-        axios
-          .post("https://kauth.kakao.com/oauth/token", params, postConfig)
-          .then((result) => {
-            saveData("auth", JSON.stringify(result.data));
-            console.log(result.data);
-            kakaoApi.kakaoUserInfo().then((response: any) => {
-              const {
-                id,
-                properties: { nickname, profile_image },
-              } = response;
-              dispatch(
-                SetUser(
-                  JSON.stringify({
+    <>
+      <WebView
+        style={{ flex }}
+        source={{
+          uri: `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`, // &prompt=login 매번 로그인
+        }}
+        injectedJavaScript={injectedJS}
+        onLoad={() => setFlex(0)}
+        onMessage={(event) => {
+          const { data } = event.nativeEvent;
+          // console.log("data");
+          // console.log(data);
+          const jsonObj = JSON.parse(data);
+          console.log("jsonObj");
+          console.log(jsonObj);
+          console.log(jsonObj.location.origin);
+          if (jsonObj.location.origin == "https://j4a202.p.ssafy.io") {
+            console.log("돌아간다!");
+            const auth_code = jsonObj.location.search.split("=")[1];
+            const params = new URLSearchParams();
+            params.append("grant_type", "authorization_code");
+            params.append("client_id", client_id);
+            params.append("redirect_uri", redirect_uri);
+            params.append("code", auth_code);
+            const postConfig = {
+              headers: {
+                "Content-type":
+                  "application/x-www-form-urlencoded;charset=utf-8",
+              },
+            };
+            axios
+              .post("https://kauth.kakao.com/oauth/token", params, postConfig)
+              .then((result) => {
+                saveData("auth", JSON.stringify(result.data));
+                console.log(result.data);
+                kakaoApi.kakaoUserInfo().then((response: any) => {
+                  const {
                     id,
-                    nickname,
-                    profile_image,
-                  })
-                )
-              );
-            });
-            close();
-          })
-          .catch((e) => {
-            console.error(e);
-            close();
-          });
-      }}
-    />
+                    properties: { nickname, profile_image },
+                  } = response;
+                  dispatch(
+                    SetUser(
+                      JSON.stringify({
+                        id,
+                        nickname,
+                        profile_image,
+                      })
+                    )
+                  );
+                });
+                close();
+              })
+              .catch((e) => {
+                console.error(e);
+                close();
+              });
+          } else {
+            setFlex(1);
+          }
+        }}
+      />
+    </>
   );
 }
