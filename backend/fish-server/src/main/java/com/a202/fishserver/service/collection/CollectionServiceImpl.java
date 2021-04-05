@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -110,7 +111,7 @@ public class CollectionServiceImpl implements CollectionService{
         File file = new File(filePath);
         // BASE64를 일반 파일로 변환하고 저장
         Base64.Decoder decoder = Base64.getDecoder();
-        byte[] decodedBytes = decoder.decode(dto.getFish_image().getBytes());
+        byte[] decodedBytes = decoder.decode(dto.getFish_image().getBytes(StandardCharsets.UTF_8));
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(decodedBytes);
         fileOutputStream.close();
@@ -156,9 +157,9 @@ public class CollectionServiceImpl implements CollectionService{
                 String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
                 String imgTargetPath= rootPath + "small_" + fileName; // 새 이미지 파일명
 //                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
-
-                int newWidth = ImageIO.read(multipartFile.getInputStream()).getWidth() / 2; // 변경 할 넓이
-                int newHeigt = ImageIO.read(multipartFile.getInputStream()).getWidth() / 2; // 변경 할 높이
+                InputStream inputStream = multipartFile.getInputStream();
+                int newWidth = ImageIO.read(inputStream).getWidth() / 2; // 변경 할 넓이
+                int newHeigt = ImageIO.read(inputStream).getWidth() / 2; // 변경 할 높이
 
                 Image image = ImageIO.read(new File(imgOriginalPath)); // 원본 이미지 가져오기
                 Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
