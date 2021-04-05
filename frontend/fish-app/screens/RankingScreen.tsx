@@ -7,11 +7,8 @@ import { Text, View } from "../components/Themed";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 
 import RankerView from "../components/ranking/RankerView";
-import RankerBigView from "../components/ranking/RankerBigView";
-import RankerSmallView from "../components/ranking/RankerSmallView";
 
 export default function Home() {
-  const [rankerView, setRankerView] = useState(0);
   const [rankers, setRankers] = useState([]);
   const [cache, setCache] = useState({});
   const [tab1Index, setTab1Index] = useState(0);
@@ -22,50 +19,57 @@ export default function Home() {
 
   function selectedFish() {
     let fish = "";
+    let fish_id = 0;
     switch (tab1Index) {
       case 0:
         switch (tab2Index) {
           case 0:
             fish = "flatfish";
+            fish_id = 1;
             break;
           case 1:
             fish = "rockfish";
+            fish_id = 3;
             break;
           case 2:
             fish = "red_snapper";
+            fish_id = 2;
             break;
         }
         break;
       case 1:
         switch (tab2Index) {
           case 0:
-            fish = "catfish";
+            fish = "crucian_carp";
+            fish_id = 4;
             break;
           case 1:
             fish = "bass";
+            fish_id = 6;
             break;
           case 2:
             fish = "golden_mandarin_fish";
+            fish_id = 5;
             break;
         }
         break;
     }
-    return fish;
+    return [fish, fish_id];
   }
   function updateRanker(tab1, tab2) {
-    const fish = selectedFish();
-    console.log(fish);
-    if (cache[fish] === undefined) {
+    const [fish, fish_id] = selectedFish();
+    console.log(fish, fish_id);
+    if (cache[fish_id] === undefined) {
       console.log("uncached data!");
-      rankingApi.getRanking(1).then((response: []) => {
+      rankingApi.getRanking(fish_id).then((response: []) => {
         const updatedCache = cache;
-        updatedCache[fish] = response.data;
+        updatedCache[fish_id] = response.data;
         setCache(updatedCache);
         setRankers(response.data);
       });
     } else {
       console.log("cached data!");
-      setRankers(cache[fish]);
+      setRankers(cache[fish_id]);
     }
   }
   return (
@@ -86,7 +90,7 @@ export default function Home() {
           values={
             tab1Index === 0
               ? ["광어", "우럭", "참돔"]
-              : ["메기", "배스", "쏘가리"]
+              : ["붕어", "배스", "쏘가리"]
           }
           selectedIndex={tab2Index}
           onTabPress={(index) => setTab2Index(index)}
@@ -96,7 +100,7 @@ export default function Home() {
         />
       </View>
       <View style={styles.contentView}>
-        <RankerView rankers={rankers} />
+        {rankers ? <RankerView rankers={rankers} /> : <></>}
       </View>
     </View>
   );

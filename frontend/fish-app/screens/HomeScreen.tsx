@@ -1,40 +1,81 @@
-import * as React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-
+import React, { useState, useEffect, useCallback } from "react";
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
-
-import { WebView } from "react-native-webview";
-
-import axios from "axios";
-// import * as Kakao from "../utils/kakao";
+import { useFocusEffect } from "@react-navigation/native";
+import { getData } from "../utils/storage";
+import { kakaoApi } from "../utils/axios";
+import KakaoLoginScreen from "./auth/KakaoLoginScreen";
+import { useDispatch, useSelector } from "react-redux";
+import { SetUser } from "../redux/user";
+import LoadingScreen from "./common/LoadingScreen";
+import MainScreen from "./auth/MainScreen";
+import MainLoginScreen from "./auth/MainLoginScreen";
 
 export default function Home({ navigation }: { navigation: any }) {
-  // function kakaoLogin() {
-  //   console.log("kakaoLogin");
-  //   Kakao.Auth.authorize({
-  //     redirectUri: "{REDIRECT_URI}",
-  //   });
-  // }
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerView}></View>
-      <View style={styles.contentView}>
-        <Text style={styles.instructions}>
-          포켓피쉬를 찾아주셔서 감사합니다.
-        </Text>
-        <Text style={styles.instructions}>
-          카카오톡을 통해 로그인 해주세요.
-        </Text>
-      </View>
-      <View style={styles.footerView}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("KakaoLoginScreen")}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>카카오톡으로 로그인</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInit, setIsInit] = useState(true);
+  const [kakaoLoginBtn, setKakaoLoginBtn] = useState(false);
+  useEffect(() => {
+    getData("auth").then((data) => {
+      if (data) {
+        setIsLoggedIn(true);
+        kakaoApi
+          .kakaoUserInfo()
+          .then((response) => {
+            const {
+              id,
+              properties: { nickname, profile_image },
+            } = response;
+            getData("auth").then((data) => {
+              const jsonData = JSON.parse(data);
+              const { access_token } = jsonData;
+              dispatch(
+                SetUser(
+                  JSON.stringify({
+                    id,
+                    nickname,
+                    profile_image,
+                    access_token,
+                  })
+                )
+              );
+            });
+            setIsInit(false);
+          })
+          .catch((e) => {
+            console.log(e);
+            setIsInit(false);
+          });
+      } else {
+        console.log("no data");
+        setIsInit(false);
+      }
+    });
+  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getData("auth").then((data) => {
+        // Do something when the screen is focused
+        if (data) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      });
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+  );
+  return isInit ? (
+    <LoadingScreen />
+  ) : user.user ? (
+    <MainScreen />
+  ) : (
+    <MainLoginScreen />
   );
 }
 
