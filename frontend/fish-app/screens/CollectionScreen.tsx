@@ -2,11 +2,11 @@ import * as React from "react";
 import { Component } from "react";
 import { useState, useEffect } from "react";
 import { collectionApi } from "../utils/axios";
-import axios from "axios";
 import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Text, View } from "../components/Themed";
 import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { useSelector } from "react-redux";
 
 export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri1 =

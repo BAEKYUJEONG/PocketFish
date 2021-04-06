@@ -126,8 +126,15 @@ export const rankingApi: Record<string, any> = {
 // 보관함 Api
 export const collectionApi: Record<string, any> = {
   async getCollection(user_id: number): Promise<void | AxiosResponse<any>> {
-    const response = await request.get(`collection/user/${String(user_id)}`);
-    console.log(response);
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    console.log("access_token");
+    console.log(access_token);
+    const response = await request.post(`collection/user/${String(user_id)}`, {
+      user_token: access_token,
+    });
+    console.log(response.data);
     return response.data;
   },
   //JSON 형식으로 보내는 형식!
@@ -199,7 +206,7 @@ export const AddApi: Record<string, any> = {
     box.append("bait", post.bait);
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
-    box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
+    box.append("user_token", post.user_token);
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
