@@ -35,6 +35,8 @@ export default function RankingScreen({ navigation }) {
             fish = "red_snapper";
             fish_id = 2;
             break;
+          default:
+            break;
         }
         break;
       case 1:
@@ -50,6 +52,8 @@ export default function RankingScreen({ navigation }) {
           case 2:
             fish = "golden_mandarin_fish";
             fish_id = 5;
+            break;
+          default:
             break;
         }
         break;
