@@ -4,6 +4,7 @@ import { StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Left, Thumbnail } from "native-base";
 import { Text, View } from "../Themed";
+import colors from "../../colors";
 
 export default function RankerView({
   rankers,
@@ -15,7 +16,48 @@ export default function RankerView({
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
-        <TouchableOpacity
+        {rankers
+          .slice(0, 3)
+          .map((ranker: Record<string, any>, index: number) => (
+            <TouchableOpacity
+              style={styles.rank}
+              onPress={() =>
+                navigation.navigate("OtherCollectionItemScreen", {
+                  id: ranker.collection_id,
+                })
+              }
+            >
+              <Row style={{ alignItems: "center" }}>
+                <Row>
+                  <Image
+                    style={{ height: 50, width: 50 }}
+                    resizeMode="contain"
+                    source={
+                      index === 0
+                        ? require("../../assets/images/rank1.png")
+                        : index === 1
+                        ? require("../../assets/images/rank2.png")
+                        : require("../../assets/images/rank3.png")
+                    }
+                  />
+                  <Thumbnail
+                    style={{ height: 50, width: 50 }}
+                    small
+                    source={{
+                      uri:
+                        // 사용자 프사 또는 물고기 사진 필요
+                        "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg",
+                    }}
+                  />
+                </Row>
+                <Col style={{}}>
+                  <Text style={styles.textStyle}>{ranker.user_id}</Text>
+                  <Text style={styles.textStyle}>{ranker.length}cm</Text>
+                </Col>
+              </Row>
+            </TouchableOpacity>
+          ))}
+        {/* <TouchableOpacity
           style={styles.rank}
           onPress={() =>
             navigation.navigate("OtherCollectionItemScreen", {
@@ -56,7 +98,7 @@ export default function RankerView({
               source={require("../../assets/images/rank2.png")}
             />
             <Thumbnail
-              style={{ alignContent: "center" }}
+              style={{ marginTop: 5, height: 50, width: 50 }}
               small
               source={{
                 uri:
@@ -100,7 +142,7 @@ export default function RankerView({
           ) : (
             <></>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View style={styles.top50}>
         <ScrollView>
@@ -142,8 +184,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   textStyle: {
-    textAlign: "center",
-
+    // textAlign: "center",
     color: "black",
   },
   top3: {
@@ -155,6 +196,8 @@ const styles = StyleSheet.create({
   },
   rank: {
     height: 60,
-    backgroundColor: "#FFFFFF",
+    // 스타일 전체 수정 후 색상 변경 필요
+    backgroundColor: colors.light,
+    marginBottom: 5,
   },
 });
