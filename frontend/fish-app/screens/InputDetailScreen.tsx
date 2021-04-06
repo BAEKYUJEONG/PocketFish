@@ -1,26 +1,38 @@
-
-import { StyleSheet, Text, View, Image, TouchableOpacity, LogBox } from 'react-native';
-import { TextInput,Button ,Divider} from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-import {KoreanToNumber} from "../utils/fish";
-import {AddApi} from "../utils/axios";
-import * as Location from 'expo-location';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  LogBox,
+} from "react-native";
+import { TextInput, Button, Divider } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import { KoreanToNumber } from "../utils/fish";
+import { AddApi } from "../utils/axios";
+import * as Location from "expo-location";
 import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { SetUser } from "../redux/user";
 
-export default function InputDetailScreen({route, navigation}:{route:any, navigation:any}){
-  const reduxState=useSelector((state:any)=>state);
-  const user = useSelector((state:any) => state.user);
+export default function InputDetailScreen({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) {
+  const reduxState = useSelector((state: any) => state);
+  const user = useSelector((state: any) => state.user);
   const userObj = JSON.parse(user.user);
   const dispatch = useDispatch();
 
-  if(userObj.asscess_token!==undefined){
-    alert('저장하실려면 로그인이 필요합니다.');
-    navigation.navigate('Home');
+  if (userObj.asscess_token !== undefined) {
+    alert("저장하실려면 로그인이 필요합니다.");
+    navigation.navigate("Home");
   }
-  let {box, name}=route.params;
+  let { box, name } = route.params;
   //console.log("------"+box);
   // const [location, setLocation] = useState({});
 
@@ -37,9 +49,9 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
   // }, []);
   // let box={user_token:userObj.asscess_token,user_id:1,length:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   // box.fish_id=KoreanToNumber(name);
-  box.user_id=userObj.id;
-  box.user_token=userObj.access_token;
-  box.fish_image=reduxState.fish.fishImage;
+  box.user_id = userObj.id;
+  box.user_token = userObj.access_token;
+  box.fish_image = reduxState.fish.fishImage;
   //console.log(route.params);
 
   const [length, setlength] = useState(box.length);
@@ -48,82 +60,137 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
   const [fishing_info, setfishing_info] = useState(box.fishing_info);
   const [memo, setmemo] = useState(box.memo);
 
- 
   //console.log("location"+JSON.stringify(location));
   //console.log("name: ", name);
   //console.log(dataInformation);
-  
+
   return (
     <View style={styles.container}>
       <ScrollView>
-        
-        <TextInput label="물고기 품종" 
-          mode='flat' 
-          style={styles.text} 
-          editable={false}  
+        <TextInput
+          label="물고기 품종"
+          mode="flat"
+          style={styles.text}
+          editable={false}
           value={name}
-          left={<TextInput.Icon name="fish" color={"#000000"} onPress={() => {}} />}/>
-        <TextInput label="물고기 길이(cm)" mode='flat' style={styles.text} 
+          left={
+            <TextInput.Icon name="fish" color={"#000000"} onPress={() => {}} />
+          }
+        />
+        <TextInput
+          label="물고기 길이(cm)"
+          mode="flat"
+          style={styles.text}
           value={String(length)}
-          left={<TextInput.Icon name="ruler" color={"#000000"} onPress={() => {}} />}
+          left={
+            <TextInput.Icon name="ruler" color={"#000000"} onPress={() => {}} />
+          }
           keyboardType="number-pad"
-          onChangeText={(text)=>{setlength(text)}}/>
-        <TextInput label="위치" mode='flat' style={styles.text} 
+          onChangeText={(text) => {
+            setlength(text);
+          }}
+        />
+        <TextInput
+          label="위치"
+          mode="flat"
+          style={styles.text}
           value={location}
-          left={<TextInput.Icon name="map" color={"#000000"} onPress={() => {}} />}
-          onChangeText={(text)=>{setlocation(text)}} />
-        <TextInput label="미끼 정보" mode='flat' style={styles.text} 
+          left={
+            <TextInput.Icon name="map" color={"#000000"} onPress={() => {}} />
+          }
+          onChangeText={(text) => {
+            setlocation(text);
+          }}
+        />
+        <TextInput
+          label="미끼 정보"
+          mode="flat"
+          style={styles.text}
           value={bait}
-          left={<TextInput.Icon name="information" color={"#000000"} onPress={() => {}} />}
-          onChangeText={(text)=>{setbait(text);}} />
-        <TextInput label="장비 정보" mode='flat' style={styles.text} 
+          left={
+            <TextInput.Icon
+              name="information"
+              color={"#000000"}
+              onPress={() => {}}
+            />
+          }
+          onChangeText={(text) => {
+            setbait(text);
+          }}
+        />
+        <TextInput
+          label="장비 정보"
+          mode="flat"
+          style={styles.text}
           value={fishing_info}
-          left={<TextInput.Icon name="information" color={"#000000"} onPress={() => {}} />}
-          onChangeText={(text)=>{setfishing_info(text)}} />
-        <TextInput label="메모" multiline mode='flat' style={styles.memoText} 
+          left={
+            <TextInput.Icon
+              name="information"
+              color={"#000000"}
+              onPress={() => {}}
+            />
+          }
+          onChangeText={(text) => {
+            setfishing_info(text);
+          }}
+        />
+        <TextInput
+          label="메모"
+          multiline
+          mode="flat"
+          style={styles.memoText}
           value={memo}
-          left={<TextInput.Icon name="pencil" color={"#000000"} onPress={() => {}} />} 
-          onChangeText={(text)=>{setmemo(box);}} />
-        <Button 
+          left={
+            <TextInput.Icon
+              name="pencil"
+              color={"#000000"}
+              onPress={() => {}}
+            />
+          }
+          onChangeText={(text) => {
+            setmemo(box);
+          }}
+        />
+        <Button
           mode="contained"
-          style={{marginVertical:10, padding:1}}
-          onPress={async ()=>{
+          style={{ marginVertical: 10, padding: 1 }}
+          onPress={async () => {
             //console.log(dataInformation);
-            box.length=length;
-            box.location=location;
-            box.bait=bait;
-            box.fishing_info=fishing_info;
-            box.memo=memo;
-            console.log(userObj.access_token);
-            let result= await AddApi.saveFish(box);
-            //console.log(result);
-            navigation.navigate('Home');
-          }}>
-          <Text  style={styles.btn} >저장하기</Text>
+            box.length = length;
+            box.location = location;
+            box.bait = bait;
+            box.fishing_info = fishing_info;
+            box.memo = memo;
+            //console.log(userObj.access_token);
+            let result = await AddApi.saveFish(box);
+            console.log(result);
+            navigation.navigate("Collection");
+          }}
+        >
+          <Text style={styles.btn}>저장하기</Text>
         </Button>
       </ScrollView>
     </View>
   );
 }
 
-const styles=StyleSheet.create({
-  container:{
-    flex:1,
-    marginVertical:20,
-    marginHorizontal:10,
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginVertical: 20,
+    marginHorizontal: 10,
   },
-  memoText:{
-
-    fontSize:20,
-    fontWeight:'bold',
-    marginVertical:10,
+  memoText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginVertical: 10,
   },
-  text:{
-    fontSize:20,
-    fontWeight:'bold',
-    marginVertical:10,
+  text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginVertical: 10,
   },
-  btn:{
-    fontSize:20
-  }
+  btn: {
+    fontSize: 20,
+  },
 });

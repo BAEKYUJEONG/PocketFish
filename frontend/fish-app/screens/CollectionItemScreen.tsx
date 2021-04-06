@@ -3,8 +3,11 @@ import { Component } from "react";
 import { useState, useEffect } from "react";
 import { collectionItemApi } from "../utils/axios";
 import axios from "axios";
-import { StyleSheet, Image } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { StyleSheet, Image, Alert } from "react-native";
 import { View } from "../components/Themed";
+
+import { IconButton } from "react-native-paper";
 import {
   Card,
   CardItem,
@@ -20,6 +23,8 @@ import {
 export default function CollectionItemScreen({ route, navigation }) {
   const { id } = route.params;
   const [item, setItem] = useState({});
+  const user = useSelector((state: any) => state.user);
+  const userObj = JSON.parse(user.user);
 
   useEffect(() => {
     const get = async () => {
@@ -34,27 +39,50 @@ export default function CollectionItemScreen({ route, navigation }) {
     };
   }, []);
 
+  const deleteItem = async () => {
+    let box = {
+      user_token: userObj.access_token,
+      user_id: userObj.id,
+      item_id: item.collectionId,
+    };
+    console.log(box);
+    await collectionItemApi.deleteItem(box).then((res: any) => {
+      console.log(res.data);
+      navigation.navigate("CollectionScreen");
+    });
+  };
+
   return (
     <View>
-      {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button iconLeft light onPress={() => navigation.goBack()}>
-          <Icon name='arrow-back' />
-          <Text>Back</Text>
-        </Button>
-      </View> */}
       <Card>
         <CardItem>
           <Left>
-            {/* 사람사진 */}
-            <Thumbnail
-              source={{
-                uri:
-                  "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg",
-              }}
-            />
-            <Body>
-              <Text>백유정</Text>
-              <Text>{item.regDate}</Text>
+            <Thumbnail source={{ uri: item.userProfile }} />
+            <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
+              <View>
+                <Text>백유정</Text>
+                <Text>{item.regDate}</Text>
+              </View>
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                <IconButton
+                  icon="pencil"
+                  style={{ marginLeft: "15%" }}
+                  color="black"
+                  size={20}
+                  onPress={() => console.log("Pressed")}
+                />
+                <IconButton
+                  icon="delete"
+                  color="black"
+                  size={20}
+                  onPress={() => {
+                    Alert.alert("", "정망 삭제하시나요?", [
+                      { text: "No" },
+                      { text: "Yes", onPress: deleteItem },
+                    ]);
+                  }}
+                />
+              </View>
             </Body>
           </Left>
         </CardItem>
@@ -82,17 +110,11 @@ export default function CollectionItemScreen({ route, navigation }) {
                 댓글
               </Text>
             </Button>
-            {/* <Button transparent>
-              <Icon name="ios-send" style={{ color: 'black' }} />
-            </Button> */}
           </Left>
         </CardItem>
-        {/* <CardItem style={{ height: 20 }}>
-          <Text>101 likes</Text>
-        </CardItem> */}
         <CardItem style={{ marginTop: -10 }}>
           <Text>
-            <Text style={{ fontWeight: "900" }}>백유정</Text>
+            <Text style={{ fontWeight: "900" }}>{item.userNick}</Text>
             <View>
               <Text style={{ marginLeft: 5 }}>{item.fishMemo}</Text>
               <Text>길이 : {item.fishLength}</Text>
@@ -107,3 +129,5 @@ export default function CollectionItemScreen({ route, navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({});
