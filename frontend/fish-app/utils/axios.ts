@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { userState } from "../redux/user";
 import { saveData, getData } from "./storage";
 
 // 인증 헤더
@@ -142,16 +143,33 @@ export const collectionItemApi: Record<string, any> = {
   },
   async deleteItem(user: any): Promise<void | AxiosResponse<any>> {
     let box = { user_token: user.user_token, user_id: user.user_id };
-    console.log(box);
-    console.log(user.item_id);
+    // console.log(box);
+    // console.log(user.item_id);
     const response = await request.delete(`collection/${user.item_id}`, {
       data: box,
     });
-    console.log(
-      "-----------------------------" + JSON.stringify(response.data)
-    );
+    // console.log(
+    //   "-----------------------------" + JSON.stringify(response.data)
+    // );
     return response.data;
   },
+  async updateItem(user: any): Promise<void | AxiosResponse<any>> {
+    let box = {
+      user_token:user.user_token,
+      user_id:user.user_id,
+      length:user.length,
+      location:user.location,
+      fish_id:user.fish_id, 
+      memo:user.memo,
+      bait:user.bait,
+      fishing_info:user.fishing_info, 
+      fish_image: user.fish_image
+    };
+    // console.log(box);
+    // console.log(user.collectionId);
+    const response = await request.put(`collection/${user.collectionId}`,box);
+    return response.data;
+  }
 };
 
 // Add Api

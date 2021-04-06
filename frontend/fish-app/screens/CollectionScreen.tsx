@@ -120,8 +120,6 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                               <TouchableOpacity
                                 style={styles.collectionImg}
                                 onPress={() => {
-                                  console.log("touch");
-                                  console.log(d.collectionId);
                                   navigation.navigate("CollectionItemScreen", {
                                     id: d.collectionId,
                                   });

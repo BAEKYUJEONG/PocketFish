@@ -139,6 +139,8 @@ function CollectionNavigator() {
         component={CollectionItemScreen}
       />
       <CollectionStack.Screen name="CommentScreen" component={CommentScreen} />
+      
+      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </CollectionStack.Navigator>
   );
 }
@@ -152,6 +154,7 @@ function AddNavigator() {
       <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
       <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
       <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
+      <AddStack.Screen name="CollectionScreen" component={CollectionScreen}/>
     </AddStack.Navigator>
   );
 }

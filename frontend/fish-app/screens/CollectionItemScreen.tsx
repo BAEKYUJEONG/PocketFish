@@ -6,7 +6,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, Image, Alert } from "react-native";
 import { View } from "../components/Themed";
-
+import { KoreanToNumber } from "../utils/fish";
 import { IconButton } from "react-native-paper";
 import {
   Card,
@@ -45,13 +45,27 @@ export default function CollectionItemScreen({ route, navigation }) {
       user_id: userObj.id,
       item_id: item.collectionId,
     };
-    console.log(box);
+    //console.log(box);
     await collectionItemApi.deleteItem(box).then((res: any) => {
       console.log(res.data);
       navigation.navigate("CollectionScreen");
     });
   };
-
+  const updateItem =async () =>{
+    let box={
+      bait: item.fishBait,
+      fish_id: KoreanToNumber(item.fishName),
+      fishing_info: item.fishingInfo,
+      length: item.fishLength,
+      location: item.fishLocation,
+      memo: item.fishMemo,
+      fish_image:item.fishImage,
+      collectionId: item.collectionId
+    };
+    let name=item.fishName;
+    let type="update";
+    navigation.navigate("InputDetailScreen",{box,name,type});
+  }
   return (
     <View>
       <Card>
@@ -60,7 +74,7 @@ export default function CollectionItemScreen({ route, navigation }) {
             <Thumbnail source={{ uri: item.userProfile }} />
             <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
               <View>
-                <Text>백유정</Text>
+                <Text>{item.userNick}</Text>
                 <Text>{item.regDate}</Text>
               </View>
               <View style={{ flexDirection: "row", width: "100%" }}>
@@ -69,7 +83,9 @@ export default function CollectionItemScreen({ route, navigation }) {
                   style={{ marginLeft: "15%" }}
                   color="black"
                   size={20}
-                  onPress={() => console.log("Pressed")}
+                  onPress={() => {
+                    updateItem()
+                  }}
                 />
                 <IconButton
                   icon="delete"
@@ -114,7 +130,7 @@ export default function CollectionItemScreen({ route, navigation }) {
         </CardItem>
         <CardItem style={{ marginTop: -10 }}>
           <Text>
-            <Text style={{ fontWeight: "900" }}>{item.userNick}</Text>
+            {/* <Text style={{ fontWeight: "900" }}>{item.userNick}</Text> */}
             <View>
               <Text style={{ marginLeft: 5 }}>{item.fishMemo}</Text>
               <Text>길이 : {item.fishLength}</Text>
