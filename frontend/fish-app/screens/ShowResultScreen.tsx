@@ -6,7 +6,7 @@ import { Form, Item, Picker  } from 'native-base';
 import FishInformation from './Component/FishInformation';
 import {EnglishToKorean} from "../utils/fish";
 import { Button} from 'react-native-paper';
-
+import {KoreanToNumber} from "../utils/fish";
 export default function ShowResultScreen({navigation}:{ navigation:any}) {
 
   
@@ -86,7 +86,11 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
               style={{marginVertical:10, padding:1}}
                 onPress={async ()=>{
                   //console.log(selectState);
-                  navigation.navigate('InputDetailScreen', {name: selectState });
+                  let box={user_token:"",user_id:1,length:0,location:"한국",fish_id:0, memo:"",bait:"",fishing_info:"",fish_image:""};
+                  //console.log(selectState);
+                  let name=selectState;
+                  box.fish_id=KoreanToNumber(selectState);
+                  navigation.navigate('InputDetailScreen', {box,name});
                 }   
               }>
                 <Text>저장하기</Text>
