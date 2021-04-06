@@ -117,14 +117,15 @@ export const rankingApi: Record<string, any> = {
 // 보관함 Api
 export const collectionApi: Record<string, any> = {
   async getCollection(user_id: number): Promise<void | AxiosResponse<any>> {
-    const appData = await getData("auth");
-    const jsonData = JSON.parse(appData);
-    const { access_token } = jsonData;
-    console.log("access_token");
-    console.log(access_token);
-    const response = await request.post(`collection/user/${String(user_id)}`, {
-      user_token: access_token,
-    });
+    // const appData = await getData("auth");
+    // const jsonData = JSON.parse(appData);
+    // const { access_token } = jsonData;
+    // console.log("access_token");
+    // console.log(access_token);
+    const response = await request.post(
+      `collection/user/${String(user_id)}`,
+      {}
+    );
     console.log(response.data);
     return response.data;
   },
@@ -176,6 +177,7 @@ export const AddApi: Record<string, any> = {
     console.log("fish save api");
     //post.fish_image=post.fish_image.substring(0,100);
     //console.log(post);
+
     let box = new FormData();
     box.append("user_id", post.user_id);
     box.append("length", post.length);

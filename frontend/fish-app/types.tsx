@@ -24,17 +24,17 @@ export type CollectionParamList = {
 
 export type RankingParamList = {
   RankingScreen: undefined;
+  OtherCollectionItemScreen: undefined;
 };
 
 export type ProfileParamList = {
   ProfileScreen: undefined;
 };
 
-export type AddParamList={
-  
-  ShowResultScreen:undefined;
-  CameraScreen:undefined;
-  ImageCheckScreen:undefined;
-  WaitResponseScreen:undefined;
-  InputDetailScreen:undefined
+export type AddParamList = {
+  ShowResultScreen: undefined;
+  CameraScreen: undefined;
+  ImageCheckScreen: undefined;
+  WaitResponseScreen: undefined;
+  InputDetailScreen: undefined;
 };
