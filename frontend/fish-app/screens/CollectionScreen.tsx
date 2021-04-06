@@ -14,11 +14,11 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri2 =
     "https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d";
   const [data, setData] = useState([]);
-  
+
   const reduxState = useSelector((state: any) => state);
-  const user = useSelector((state:any) => state.user);
+  const user = useSelector((state: any) => state.user);
   const userObj = JSON.parse(user.user);
-  
+
   //아이디값
   //console.log(userObj.user_id);
   //토큰값
@@ -35,7 +35,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   // }, []);
 
   useEffect(() => {
-    collectionApi.userToken(userObj).then((response: any) => {
+    collectionApi.getCollection(userObj.id).then((response: any) => {
       let count = 3 - (response.data.length % 3);
       let data = [...response.data, ...new Array(count)];
       setData(data);
