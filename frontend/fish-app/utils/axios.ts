@@ -20,26 +20,17 @@ const request: AxiosInstance = axios.create({
 
 // 유저 Api
 export const userApi: Record<string, any> = {
-  async signup(): Promise<void | AxiosResponse<any>> {
-    const appData = await getData("auth");
-    const jsonData = JSON.parse(appData);
-    const { access_token } = jsonData;
-    if (await kakaoApi.validateToken()) {
-      const {
-        id,
-        properties: { nickname, profile_image },
-      } = await kakaoApi.kakaoUserInfo();
-      const postData = {
-        id,
-        nickname,
-        profile_image,
-        access_token,
-      };
-      console.log(postData);
-      const response = await request.post("login/signup", postData);
-      console.log(resposne);
-      return response.data;
-    }
+  async signup(
+    userData: Record<string, any>
+  ): Promise<void | AxiosResponse<any>> {
+    const response = await request.post("/user/", userData);
+    console.log(response.data);
+    return response.data;
+  },
+  async checkUser(id: number): Promise<void | AxiosResponse<any>> {
+    const response = await request.get(`/user/${id}`);
+    console.log(response.data);
+    return response.data;
   },
 };
 
@@ -61,6 +52,24 @@ export const kakaoApi: Record<string, any> = {
     );
     await saveData("auth", "");
     console.log("logout");
+    return response.data;
+  },
+  async kakaoSignout(): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    const response = await axios.post(
+      "https://kapi.kakao.com/v1/user/unlink",
+      "",
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    await saveData("auth", "");
+    console.log("signout");
     return response.data;
   },
   async kakaoUserInfo(): Promise<void | AxiosResponse<any>> {
@@ -108,41 +117,100 @@ export const rankingApi: Record<string, any> = {
 // 보관함 Api
 export const collectionApi: Record<string, any> = {
   async getCollection(user_id: number): Promise<void | AxiosResponse<any>> {
-    const response = await request.get(`collection/user/${String(user_id)}`);
-    console.log(response);
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    console.log("access_token");
+    console.log(access_token);
+    const response = await request.post(`collection/user/${String(user_id)}`, {
+      user_token: access_token,
+    });
+    console.log(response.data);
+    return response.data;
+  },
+  //JSON 형식으로 보내는 형식!
+  async userToken(user: any): Promise<void | AxiosResponse<any>> {
+    console.log(user);
+
+    // let box = new FormData();
+    // box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
+    // const response = await request.post(`collection/user/1682556852`, box, {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+
+    //let box = new FormData();
+    //box.append("user_id", user.user_id);
+
+    //원래 써야하는 것
+    // const response = await request.post(`collection/user/${String(user.user_id)}`, {'user_token': user.access_token}, {
+    //   headers: { "Content-Type": "application/JSON" },
+    // });
+
+    //대체 하드코딩
+    const response = await request.post(`collection/user/1682556852`, {
+      user_token: "kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug",
+    });
+    //axios.get('url', {data: {id:1682556852}})
+    console.log("!!" + response.data);
     return response.data;
   },
 };
 
 // 게시글 Api
 export const collectionItemApi: Record<string, any> = {
-  async getCollectionItem(collection_id: number): Promise<void | AxiosResponse<any>> {
+  async getCollectionItem(
+    collection_id: number
+  ): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`collection/${String(collection_id)}`);
     console.log(response);
     return response.data;
   },
 };
 
-// 분석 Api
-export async function analysisApi(img: any) {
-  console.log("api");
-  //const dispatch=useDispatch();
+// Add Api
+export const AddApi: Record<string, any> = {
+  async getAnalysis(img: any): Promise<void | AxiosResponse<any>> {
+    console.log("analysis api");
+    const response = await axios.post(
+      `https://j4a202.p.ssafy.io/ai/`,
+      JSON.stringify({ file: img }),
+      { headers: { "Content-Type": "application/JSON" } }
+    );
+    //const response = await request.post(`ai`,JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
+    console.log(response.data);
+    return response.data;
+  },
+  async getFishInformation(num: number): Promise<void | AxiosResponse<any>> {
+    console.log("fish information api");
+    const response = await request.get(`fish/${String(num)}`);
+    //console.log(response);
+    return response.data;
+  },
+  async saveFish(post: any): Promise<void | AxiosResponse<any>> {
+    console.log("fish save api");
+    //post.fish_image=post.fish_image.substring(0,100);
+    //console.log(post);
+ 
+    let box = new FormData();
+    box.append("user_id",post.user_id);
+    box.append("length", post.length);
+    box.append("location", post.location);
+    box.append("fish_id", post.fish_id);
+    box.append("memo", post.memo);
+    box.append("bait", post.bait);
+    box.append("fishing_info", post.fishing_info);
+    box.append("fish_image", post.fish_image);
+    box.append("user_token", post.user_token);
+    //console.log(post.user_id);
+    //console.log(post.user_token);
+    const response = await request.post(`collection`, box, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-  const result = await axios.post(
-    `http://skeldtcan.iptime.org:5000`,
-    JSON.stringify({ file: img }),
-    { headers: { "Content-Type": "application/JSON" } }
-  );
-  // .then(
-  //   (res)=>{
-  //     console.log(res.data);
-  //     return res.data;
-  //   }
-  // )
-  // .catch((Error)=>{console.log(Error);});
-  console.log(result.data);
-  return result.data;
-}
+    //console.log("------------------"+JSON.stringify(response.data));
+    return response.data;
+  },
+};
 
 // 로그인 Api
 // export const userApi: Record<string, any> = {

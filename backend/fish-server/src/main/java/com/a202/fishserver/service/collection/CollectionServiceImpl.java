@@ -9,24 +9,30 @@ import com.a202.fishserver.domain.fishImage.FishImageRepository;
 import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTokenIDRequestDto;
+import com.a202.fishserver.dto.collection.CollectionPostTokenRequestDto;
+import com.a202.fishserver.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +41,7 @@ public class CollectionServiceImpl implements CollectionService{
     private final FishImageRepository fishImageRepository;
     private final FishRepository fishRepository;
     private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     // 랭킹 등록
     @Autowired
@@ -44,7 +51,15 @@ public class CollectionServiceImpl implements CollectionService{
     /**
      * 내 보관함 조회
      */
-    public List<HashMap<String, Object>> getMyCollections(long userId){
+    public List<HashMap<String, Object>> getMyCollections(long userId, CollectionPostTokenRequestDto dto) throws Exception{
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != userId) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         List<Collection> list = collectionRepository.findByUser(new User(userId));
         List<HashMap<String, Object>> result = new ArrayList<>();
 
@@ -83,8 +98,11 @@ public class CollectionServiceImpl implements CollectionService{
             }
         }
 
+        Optional<User> user = userRepository.findById(collection.get().getUser().getId());
         HashMap<String, Object> map = new HashMap<>();
         map.put("collectionId", collectionId);
+        map.put("userNick", user.get().getNickname());
+        map.put("userProfile", user.get().getPicture());
         map.put("fishName", collection.get().getFish().getName());
         map.put("fishImage", imagePath);
         map.put("fishLength", collection.get().getLength());
@@ -102,29 +120,47 @@ public class CollectionServiceImpl implements CollectionService{
      */
     public void postCollection(CollectionPostRequestDto dto) throws Exception{
 
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != dto.getUser_id()) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         Optional<User> user = userRepository.findById(dto.getUser_id());
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
-
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
         if (!fish.isPresent()) throw new Exception("해당 물고기가 존재하지 않습니다.");
 
-        // 랭킹 등록
-        System.out.println("== 랭킹 등록==");
-        ZSetOperations<String, String> zset = template.opsForZSet();
-        System.out.println("zset created");
-        zset.add("fish"+fish.get().getId(), user.get().getNickname(), dto.getLength());
-        System.out.println("zset added");
-
-        System.out.println(FilenameUtils.getBaseName(dto.getFish_image().getOriginalFilename()) + "_small");
-
         String rootPath = "/root/data/images/collection/";
         String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
-        String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + "_" + dto.getFish_image().getOriginalFilename();
-
+        String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + ".jpeg";
         String filePath = rootPath + fileName;
-        File dest = new File(filePath);
-        MultipartFile file = dto.getFish_image();
-        file.transferTo(dest);
+
+
+        // 저장할 파일 경로를 지정
+        File file = new File(filePath);
+
+        // BASE64를 일반 파일로 변환하고 저장
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] decodedBytes = decoder.decode(dto.getFish_image().getBytes(StandardCharsets.UTF_8));
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(decodedBytes);
+        fileOutputStream.close();
+
+        // File을 MultipartFile로 변환
+        FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+        try {
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+            IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+        } catch (IOException ex) {
+            System.out.println("이미지 변환 오류: " + ex.getMessage());
+        }
+        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+        multipartFile.transferTo(file);
 
         Collection c;
         try {
@@ -140,6 +176,13 @@ public class CollectionServiceImpl implements CollectionService{
                     .flag(false)
                     .build());
 
+            // 랭킹 등록
+            System.out.println("== 랭킹 등록==");
+            ZSetOperations<String, String> zset = template.opsForZSet();
+            System.out.println("zset created");
+            zset.add("fish"+fish.get().getId(), user.get().getNickname(), dto.getLength());
+            System.out.println("zset added");
+
         } catch (Exception e) {
             throw new Exception("보관함 저장 중 오류 발생");
         }
@@ -153,30 +196,25 @@ public class CollectionServiceImpl implements CollectionService{
             try{
                 String imgOriginalPath= rootPath + fileName; // 원본 이미지 파일명
                 String imgTargetPath= rootPath + "small_" + fileName; // 새 이미지 파일명
-                String imgFormat = FilenameUtils.getExtension(dto.getFish_image().getOriginalFilename()); // 새 이미지 포맷. jpg, gif 등
-
-                int newWidth = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2; // 변경 할 넓이
-                int newHeigt = ImageIO.read(dto.getFish_image().getInputStream()).getWidth() / 2;
 
                 Image image = ImageIO.read(new File(imgOriginalPath)); // 원본 이미지 가져오기
-                Image resizeImage = image.getScaledInstance(newWidth, newHeigt, Image.SCALE_DEFAULT);
+                Image resizeImage = image.getScaledInstance(300, 300, Image.SCALE_DEFAULT);
 
                 // 새 이미지  저장하기
-                File newFile = new File(imgTargetPath + "." + imgFormat);
-                BufferedImage newImage = new BufferedImage(newWidth, newHeigt, BufferedImage.TYPE_INT_RGB);
+                File newFile = new File(imgTargetPath);
+                BufferedImage newImage = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
                 Graphics g = newImage.getGraphics();
                 g.drawImage(resizeImage, 0, 0, null);
                 g.dispose();
-                ImageIO.write(newImage, imgFormat, newFile);
+                ImageIO.write(newImage, "jpeg", newFile);
 
                 // FishImage테이블에 small size image 저장
                 fishImageRepository.save(FishImage.builder()
                         .collection(c)
-                        .imagePath(imgTargetPath + "." + imgFormat)
+                        .imagePath(apiPath + "small_" + fileName)
                         .build());
-
             }catch (Exception e){
-                throw new Exception("이미지 리사이즈 오류: " + e.getMessage());
+                throw new Exception("이미지 리사이징 오류: " + e.getMessage());
             }
         }
     }
@@ -185,6 +223,14 @@ public class CollectionServiceImpl implements CollectionService{
      * 도감 정보 수정
      */
     public void putCollection(CollectionPostRequestDto dto, long collectionId) throws Exception{
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != dto.getUser_id()) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         Optional<Collection> collection = collectionRepository.findById(collectionId);
         Optional<User> user = userRepository.findById(dto.getUser_id());
         Optional<Fish> fish = fishRepository.findById(dto.getFish_id());
@@ -210,7 +256,15 @@ public class CollectionServiceImpl implements CollectionService{
      * 도감 정보 삭제
      */
     @Override
-    public void putCollectionFlag(long collectionID) throws Exception {
+    public void putCollectionFlag(long collectionID, CollectionPostTokenIDRequestDto dto) throws Exception {
+        long id;
+        try {
+            id = userService.getUserIdByAccessToken(dto.user_token);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        if (id != dto.getUser_id()) throw new Exception("유저 아이디가 일치하지 않습니다.");
+
         Optional<Collection> collection = collectionRepository.findById(collectionID);
         if (!collection.isPresent()) throw new Exception("해당 도감 정보가 존재하지 않습니다.");
 
