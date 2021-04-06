@@ -86,11 +86,10 @@ export default function ShowResultScreen({navigation}:{ navigation:any}) {
               style={{marginVertical:10, padding:1}}
                 onPress={async ()=>{
                   //console.log(selectState);
-                  let box={user_token:"",user_id:1,length:0,location:"한국",fish_id:0, memo:"",bait:"",fishing_info:"",fish_image:""};
-                  //console.log(selectState);
+                  let box={user_token:"",user_id:0,length:0,location:"한국",fish_id:KoreanToNumber(selectState), memo:"",bait:"",fishing_info:"",fish_image:""};
                   let name=selectState;
-                  box.fish_id=KoreanToNumber(selectState);
-                  navigation.navigate('InputDetailScreen', {box,name});
+                  let type="add";
+                  navigation.navigate('InputDetailScreen', {box,name,type});
                 }   
               }>
                 <Text>저장하기</Text>

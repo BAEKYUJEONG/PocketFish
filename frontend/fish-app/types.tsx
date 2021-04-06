@@ -18,6 +18,7 @@ export type HomeParamList = {
 
 export type CollectionParamList = {
   CollectionScreen: undefined;
+  InputDetailScreen:undefined;
   CollectionItemScreen: undefined;
   CommentScreen: undefined;
 };
@@ -31,7 +32,7 @@ export type ProfileParamList = {
 };
 
 export type AddParamList={
-  
+  CollectionScreen: undefined;
   ShowResultScreen:undefined;
   CameraScreen:undefined;
   ImageCheckScreen:undefined;
