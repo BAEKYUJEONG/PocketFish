@@ -1,47 +1,97 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { userApi } from "../../utils/axios";
 
+import { StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import { Col, Row, Grid } from "react-native-easy-grid";
+import { Left, Thumbnail } from "native-base";
 import { Text, View } from "../Themed";
 
 export default function RankerView(props: any) {
-  const { rankers } = props;
+  const { rankers, navigation } = props;
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
         <TouchableOpacity
-          style={styles.silver}
-          onPress={() => alert("clicked")}
+          style={styles.rank}
+          onPress={() =>
+            navigation.navigate("OtherCollectionItemScreen", {
+              id: rankers[0].collection_id,
+            })
+          }
         >
-          <Text style={{ textAlign: "center" }}>2등</Text>
-          {rankers.length > 1 ? (
-            <>
-              <Text style={{ textAlign: "center" }}>{rankers[1].nickname}</Text>
-              <Text style={{ textAlign: "center" }}>{rankers[1].length}cm</Text>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.gold} onPress={() => alert("clicked")}>
-          <Text style={{ textAlign: "center" }}>1등</Text>
+          <Col>
+            <Image
+              style={{ marginTop: 5, height: 50, width: 50 }}
+              resizeMode="contain"
+              source={require("../../assets/images/rank1.png")}
+            />
+          </Col>
           {rankers.length > 0 ? (
             <>
-              <Text style={{ textAlign: "center" }}>{rankers[0].nickname}</Text>
-              <Text style={{ textAlign: "center" }}>{rankers[0].length}cm</Text>
+              <Col style={{ marginTop: -25 }}>
+                <Text style={styles.textStyle}>{rankers[0].nickname}</Text>
+                <Text style={styles.textStyle}>{rankers[0].length}cm</Text>
+              </Col>
             </>
           ) : (
             <></>
           )}
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.bronze}
-          onPress={() => alert("clicked")}
+          style={styles.rank}
+          onPress={() =>
+            navigation.navigate("OtherCollectionItemScreen", {
+              id: rankers[1].collection_id,
+            })
+          }
         >
-          <Text style={{ textAlign: "center" }}>3등</Text>
+          <Row>
+            <Image
+              style={{ marginTop: 5, height: 50, width: 50 }}
+              resizeMode="contain"
+              source={require("../../assets/images/rank2.png")}
+            />
+            <Thumbnail
+              style={{ alignContent: "center" }}
+              small
+              source={{
+                uri:
+                  "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg",
+              }}
+            />
+          </Row>
+          {rankers.length > 1 ? (
+            <>
+              <Col style={{ marginTop: -25 }}>
+                <Text style={styles.textStyle}>{rankers[1].nickname}</Text>
+                <Text style={styles.textStyle}>{rankers[1].length}cm</Text>
+              </Col>
+            </>
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.rank}
+          onPress={() =>
+            navigation.navigate("OtherCollectionItemScreen", {
+              id: rankers[2].collection_id,
+            })
+          }
+        >
+          <Col>
+            <Image
+              style={{ marginTop: 5, height: 50, width: 50 }}
+              resizeMode="contain"
+              source={require("../../assets/images/rank3.png")}
+            />
+          </Col>
           {rankers.length > 2 ? (
             <>
-              <Text style={{ textAlign: "center" }}>{rankers[2].nickname}</Text>
-              <Text style={{ textAlign: "center" }}>{rankers[2].length}cm</Text>
+              <Col style={{ marginTop: -25 }}>
+                <Text style={styles.textStyle}>{rankers[2].nickname}</Text>
+                <Text style={styles.textStyle}>{rankers[2].length}cm</Text>
+              </Col>
             </>
           ) : (
             <></>
@@ -55,7 +105,11 @@ export default function RankerView(props: any) {
             .map((ranker: Record<string, any>, index: number) => (
               <TouchableOpacity
                 key={index + 4}
-                onPress={() => alert("clicked")}
+                onPress={() =>
+                  navigation.navigate("OtherCollectionItemScreen", {
+                    id: ranker.collection_id,
+                  })
+                }
               >
                 <Text
                   style={{
@@ -83,33 +137,20 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 5,
   },
+  textStyle: {
+    textAlign: "center",
+
+    color: "black",
+  },
   top3: {
-    flex: 1,
-    flexDirection: "row",
-    marginBottom: 5,
+    flex: 2,
+    flexDirection: "column",
   },
   top50: {
     flex: 3,
   },
-  gold: {
-    flex: 1,
-    marginHorizontal: 5,
-    backgroundColor: "#C9B037",
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-  },
-  silver: {
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    marginTop: 15,
-    flex: 1,
-    backgroundColor: "#D7D7D7",
-  },
-  bronze: {
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    marginTop: 30,
-    flex: 1,
-    backgroundColor: "#AD8A56",
+  rank: {
+    height: 60,
+    backgroundColor: "#FFFFFF",
   },
 });

@@ -3,7 +3,6 @@ package com.a202.fishserver.dto.collection;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter

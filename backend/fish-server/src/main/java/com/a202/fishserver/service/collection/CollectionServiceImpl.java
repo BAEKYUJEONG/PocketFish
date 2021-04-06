@@ -10,15 +10,16 @@ import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
 import com.a202.fishserver.dto.collection.CollectionPostTokenIDRequestDto;
-import com.a202.fishserver.dto.collection.CollectionPostTokenRequestDto;
 import com.a202.fishserver.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.imageio.ImageIO;
@@ -29,8 +30,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -41,18 +42,15 @@ public class CollectionServiceImpl implements CollectionService{
     private final UserRepository userRepository;
     private final UserServiceImpl userService;
 
+    // 랭킹 등록
+    @Autowired
+    StringRedisTemplate template;
+
+
     /**
      * 내 보관함 조회
      */
-    public List<HashMap<String, Object>> getMyCollections(long userId, CollectionPostTokenRequestDto dto) throws Exception{
-        long id;
-        try {
-            id = userService.getUserIdByAccessToken(dto.user_token);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-        if (id != userId) throw new Exception("유저 아이디가 일치하지 않습니다.");
-
+    public List<HashMap<String, Object>> getMyCollections(long userId) throws Exception{
         List<Collection> list = collectionRepository.findByUser(new User(userId));
         List<HashMap<String, Object>> result = new ArrayList<>();
 
@@ -112,6 +110,7 @@ public class CollectionServiceImpl implements CollectionService{
      * 물고기 등록
      */
     public void postCollection(CollectionPostRequestDto dto) throws Exception{
+
         long id;
         try {
             id = userService.getUserIdByAccessToken(dto.user_token);
@@ -125,10 +124,18 @@ public class CollectionServiceImpl implements CollectionService{
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
         if (!fish.isPresent()) throw new Exception("해당 물고기가 존재하지 않습니다.");
 
+        // 랭킹 등록
+//        System.out.println("== 랭킹 등록==");
+//        ZSetOperations<String, String> zset = template.opsForZSet();
+//        System.out.println("zset created");
+//        zset.add("fish"+fish.get().getId(), user.get().getNickname() +";"+user.get().getId(), dto.getLength());
+//        System.out.println("zset added");
+
         String rootPath = "/root/data/images/collection/";
         String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
         String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + ".jpeg";
         String filePath = rootPath + fileName;
+
 
         // 저장할 파일 경로를 지정
         File file = new File(filePath);
@@ -166,6 +173,14 @@ public class CollectionServiceImpl implements CollectionService{
                     .regDate(LocalDateTime.now())
                     .flag(false)
                     .build());
+
+            // 랭킹 등록
+            System.out.println("== 랭킹 등록==");
+            ZSetOperations<String, String> zset = template.opsForZSet();
+            System.out.println("zset created");
+            zset.add("fish"+fish.get().getId(), c.getId()+";"+user.get().getNickname()+";"+user.get().getId(), dto.getLength());
+            System.out.println("zset added: "+ c.getId()+";"+user.get().getNickname()+";"+user.get().getId()+ "=" + dto.getLength());
+
         } catch (Exception e) {
             throw new Exception("보관함 저장 중 오류 발생");
         }
@@ -254,5 +269,4 @@ public class CollectionServiceImpl implements CollectionService{
         collection.get().setFlag(true);
         collectionRepository.save(collection.get());
     }
-
 }

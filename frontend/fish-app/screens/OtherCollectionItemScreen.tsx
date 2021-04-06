@@ -20,11 +20,9 @@ import {
   Text,
 } from "native-base";
 
-export default function CollectionItemScreen({ route, navigation }) {
+export default function OtherCollectionItemScreen({ route, navigation }) {
   const { id } = route.params;
   const [item, setItem] = useState({});
-  const user = useSelector((state: any) => state.user);
-  const userObj = JSON.parse(user.user);
 
   useEffect(() => {
     const get = async () => {
@@ -39,19 +37,6 @@ export default function CollectionItemScreen({ route, navigation }) {
     };
   }, []);
 
-  const deleteItem = async () => {
-    let box = {
-      user_token: userObj.access_token,
-      user_id: userObj.id,
-      item_id: item.collectionId,
-    };
-    console.log(box);
-    await collectionItemApi.deleteItem(box).then((res: any) => {
-      console.log(res.data);
-      navigation.navigate("CollectionScreen");
-    });
-  };
-
   return (
     <View>
       <Card>
@@ -60,28 +45,8 @@ export default function CollectionItemScreen({ route, navigation }) {
             <Thumbnail source={{ uri: item.userProfile }} />
             <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
               <View>
-                <Text>백유정</Text>
+                <Text>{item.userNick}</Text>
                 <Text>{item.regDate}</Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <IconButton
-                  icon="pencil"
-                  style={{ marginLeft: "15%" }}
-                  color="black"
-                  size={20}
-                  onPress={() => console.log("Pressed")}
-                />
-                <IconButton
-                  icon="delete"
-                  color="black"
-                  size={20}
-                  onPress={() => {
-                    Alert.alert("", "정망 삭제하시나요?", [
-                      { text: "No" },
-                      { text: "Yes", onPress: deleteItem },
-                    ]);
-                  }}
-                />
               </View>
             </Body>
           </Left>

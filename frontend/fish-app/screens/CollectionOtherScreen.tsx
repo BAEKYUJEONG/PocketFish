@@ -7,19 +7,19 @@ import { Text, View } from "../components/Themed";
 import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { useSelector } from "react-redux";
-import MainLoginScreen from "./auth/MainLoginScreen";
-import { useFocusEffect } from "@react-navigation/core";
-import { useCallback } from "react";
 
-export default function CollectionScreen({ navigation }: { navigation: any }) {
+export default function CollectionOtherScreen({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
   const uri1 =
     "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&w=1000&q=80";
   const uri2 =
     "https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d";
   const [data, setData] = useState([]);
-
-  const reduxState = useSelector((state: any) => state);
-  const user = useSelector((state: any) => state.user);
 
   //아이디값
   //console.log(userObj.user_id);
@@ -35,39 +35,20 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   //     console.log(data);
   //   });
   // }, []);
-  useFocusEffect(
-    useCallback(() => {
-      // Do something when the screen is focused
-      if (user.user) {
-        const userObj = JSON.parse(user.user);
-        collectionApi.getCollection(userObj.id).then((response: any) => {
-          let count = 3 - (response.data.length % 3);
-          let data = [...response.data, ...new Array(count)];
-          setData(data);
-          //alert(JSON.stringify(response.data));
-          console.log(data);
-        });
-      }
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-      };
-    }, [user])
-  );
-  // useEffect(() => {
-  //   if (user.user) {
-  //     const userObj = JSON.parse(user.user);
-  //     collectionApi.getCollection(userObj.id).then((response: any) => {
-  //       let count = 3 - (response.data.length % 3);
-  //       let data = [...response.data, ...new Array(count)];
-  //       setData(data);
-  //       //alert(JSON.stringify(response.data));
-  //       console.log(data);
-  //     });
-  //   }
-  // }, [user]);
 
-  return user.user ? (
+  useEffect(() => {
+    console.log(route.params.id);
+    console.log(typeof route.params.id);
+    collectionApi.getCollection(route.params.id).then((response: any) => {
+      let count = 3 - (response.data.length % 3);
+      let data = [...response.data, ...new Array(count)];
+      setData(data);
+      //alert(JSON.stringify(response.data));
+      console.log(data);
+    });
+  }, []);
+
+  return (
     <View style={styles.container}>
       <View style={{ width: "100%", height: "100%" }}>
         <View style={styles.headerView}>
@@ -151,8 +132,6 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
         </View>
       </View>
     </View>
-  ) : (
-    <MainLoginScreen />
   );
 }
 

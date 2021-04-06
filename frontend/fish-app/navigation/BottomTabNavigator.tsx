@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 
-import Colors from "../constants/Colors";
+import colors from "../colors";
 import useColorScheme from "../hooks/useColorScheme";
 import CollectionScreen from "../screens/CollectionScreen";
 import CollectionItemScreen from "../screens/CollectionItemScreen";
@@ -26,6 +26,7 @@ import {
   ProfileParamList,
   AddParamList,
 } from "../types";
+import OtherCollectionItemScreen from "../screens/OtherCollectionItemScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -34,23 +35,26 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      initialRouteName="Ranking"
+      tabBarOptions={{
+        activeTintColor: colors.default,
+        inactiveTintColor: "white",
+        inactiveBackgroundColor: colors.dark,
+        activeBackgroundColor: "white",
+      }}
     >
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Home"
         component={HomeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
-      />
+      /> */}
       <BottomTab.Screen
-        name="Collection"
-        component={CollectionNavigator}
+        name="Ranking"
+        component={RankingNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIconFontAwesome5 name="fish" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -64,10 +68,12 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Ranking"
-        component={RankingNavigator}
+        name="Collection"
+        component={CollectionNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIconFontAwesome5 name="fish" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -128,8 +134,11 @@ function CollectionNavigator() {
         component={CollectionScreen}
         options={{ headerTitle: "Collection" }}
       />
-      <CollectionStack.Screen name="CollectionItemScreen" component={CollectionItemScreen} />
-      <CollectionStack.Screen name="CommentScreen" component={CommentScreen}/>
+      <CollectionStack.Screen
+        name="CollectionItemScreen"
+        component={CollectionItemScreen}
+      />
+      <CollectionStack.Screen name="CommentScreen" component={CommentScreen} />
     </CollectionStack.Navigator>
   );
 }
@@ -141,10 +150,7 @@ function AddNavigator() {
     <AddStack.Navigator>
       <AddStack.Screen name="CameraScreen" component={CameraScreen} />
       <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
-      <AddStack.Screen
-        name="ShowResultScreen"
-        component={ShowResultScreen}
-      />
+      <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
       <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </AddStack.Navigator>
   );
@@ -159,6 +165,11 @@ function RankingNavigator() {
         name="RankingScreen"
         component={RankingScreen}
         options={{ headerTitle: "Ranking" }}
+      />
+      <RankingStack.Screen
+        name="OtherCollectionItemScreen"
+        component={OtherCollectionItemScreen}
+        options={{ headerTitle: "Detail" }}
       />
     </RankingStack.Navigator>
   );

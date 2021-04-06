@@ -24,11 +24,12 @@ export const userApi: Record<string, any> = {
     userData: Record<string, any>
   ): Promise<void | AxiosResponse<any>> {
     const response = await request.post("/user/", userData);
-    return response;
+    console.log(response.data);
+    return response.data;
   },
   async checkUser(id: number): Promise<void | AxiosResponse<any>> {
-    console.log("checkUser");
     const response = await request.get(`/user/${id}`);
+    console.log(response.data);
     return response.data;
   },
 };
@@ -116,8 +117,16 @@ export const rankingApi: Record<string, any> = {
 // 보관함 Api
 export const collectionApi: Record<string, any> = {
   async getCollection(user_id: number): Promise<void | AxiosResponse<any>> {
-    const response = await request.get(`collection/user/${String(user_id)}`);
-    console.log(response);
+    // const appData = await getData("auth");
+    // const jsonData = JSON.parse(appData);
+    // const { access_token } = jsonData;
+    // console.log("access_token");
+    // console.log(access_token);
+    const response = await request.post(
+      `collection/user/${String(user_id)}`,
+      {}
+    );
+    console.log(response.data);
     return response.data;
   },
 };
@@ -129,6 +138,18 @@ export const collectionItemApi: Record<string, any> = {
   ): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`collection/${String(collection_id)}`);
     console.log(response);
+    return response.data;
+  },
+  async deleteItem(user: any): Promise<void | AxiosResponse<any>> {
+    let box = { user_token: user.user_token, user_id: user.user_id };
+    console.log(box);
+    console.log(user.item_id);
+    const response = await request.delete(`collection/${user.item_id}`, {
+      data: box,
+    });
+    console.log(
+      "-----------------------------" + JSON.stringify(response.data)
+    );
     return response.data;
   },
 };
@@ -156,6 +177,7 @@ export const AddApi: Record<string, any> = {
     console.log("fish save api");
     //post.fish_image=post.fish_image.substring(0,100);
     //console.log(post);
+
     let box = new FormData();
     box.append("user_id", post.user_id);
     box.append("length", post.length);
@@ -166,10 +188,16 @@ export const AddApi: Record<string, any> = {
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
     box.append("user_token", post.user_token);
+<<<<<<< HEAD
+=======
+    console.log(post.user_id);
+    console.log(post.user_token);
+>>>>>>> 4fdbf3af9d63fa79ce853dbd67611044551b3900
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    //console.log(response.data);
+
+    //console.log("------------------"+JSON.stringify(response.data));
     return response.data;
   },
 };

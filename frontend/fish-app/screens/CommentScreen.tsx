@@ -7,7 +7,7 @@ import { StyleSheet, Image } from 'react-native';
 import { View } from '../components/Themed';
 import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon, Text } from 'native-base';
 
-export default function CommentScreen({navigation}:{navigation:any}) {
-
+export default function CommentScreen() {
+    
     <Text>hi</Text>
 }

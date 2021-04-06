@@ -29,10 +29,16 @@ img_height = 112
 img_width = 112
 
 # load model
-model_path = "./model/test_model2.h5"
-pred_model = load_model(model_path)
+
+model_original = "./model/augmented_model_with_originals.h5"
+model_nobg = "./model/augmented_model_without_bg.h5"
+
+# load both models
+prediction1 = load_model(model_original)
+prediction2 = load_model(model_nobg)
 
 app = Flask(__name__)
+
 
 @app.route('/ai/', methods=['POST'])
 def predict():
@@ -67,10 +73,18 @@ def Dataization(image_bytes, img_w, img_h):
     pred_data = np.array(pred_data)
 
     # predict
-    pred_result = pred_model.predict(pred_data)[0]
-    pred_result = list(pred_result)
-    result_percentage = [round(p*100,3) for p in pred_result]
-    
+    result1 = prediction1.predict(pred_data)[0]
+    result1 = list(result1)
+    result2 = prediction2.predict(pred_data)[0]
+    result2 = list(result2)
+
+    avg_result = []
+    # average of prediction
+    for i in range(len(class_names)):
+        avg_result.append(((result1[i] + result2[i]) / 2) * 100)
+
+    result_percentage = [round(p,3) for p in avg_result]
+
     # save dict
     fish = collections.OrderedDict()
     for k, v in zip(class_names, result_percentage):

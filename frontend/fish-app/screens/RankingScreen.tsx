@@ -8,7 +8,7 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 
 import RankerView from "../components/ranking/RankerView";
 
-export default function Home() {
+export default function RankingScreen({ navigation }) {
   const [rankers, setRankers] = useState([]);
   const [cache, setCache] = useState({});
   const [tab1Index, setTab1Index] = useState(0);
@@ -100,7 +100,11 @@ export default function Home() {
         />
       </View>
       <View style={styles.contentView}>
-        {rankers ? <RankerView rankers={rankers} /> : <></>}
+        {rankers ? (
+          <RankerView rankers={rankers} navigation={navigation} />
+        ) : (
+          <></>
+        )}
       </View>
     </View>
   );

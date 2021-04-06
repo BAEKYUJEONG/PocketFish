@@ -63,9 +63,6 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                     properties: { nickname, profile_image },
                   } = response;
                   userApi.checkUser(id).then((result: any) => {
-                    console.log("id type");
-                    console.log(id);
-                    console.log(typeof id);
                     if (!result.status) {
                       const userData = {
                         id,

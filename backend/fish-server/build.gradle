@@ -54,7 +54,7 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-test
 	testImplementation group: 'org.springframework', name: 'spring-test', version: '5.3.3'
-
+	
 }
 
 test {
