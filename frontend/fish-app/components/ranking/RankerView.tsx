@@ -11,7 +11,14 @@ export default function RankerView(props: any) {
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
-        <TouchableOpacity style={styles.rank} onPress={() => alert("clicked")}>
+        <TouchableOpacity
+          style={styles.rank}
+          onPress={() =>
+            navigation.navigate("OtherCollectionItemScreen", {
+              id: rankers[0].collection_id,
+            })
+          }
+        >
           <Col>
             <Image
               style={{ marginTop: 5, height: 50, width: 50 }}
@@ -30,7 +37,14 @@ export default function RankerView(props: any) {
             <></>
           )}
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rank} onPress={() => alert("clicked")}>
+        <TouchableOpacity
+          style={styles.rank}
+          onPress={() =>
+            navigation.navigate("OtherCollectionItemScreen", {
+              id: rankers[1].collection_id,
+            })
+          }
+        >
           <Row>
             <Image
               style={{ marginTop: 5, height: 50, width: 50 }}
@@ -57,7 +71,14 @@ export default function RankerView(props: any) {
             <></>
           )}
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rank} onPress={() => alert("clicked")}>
+        <TouchableOpacity
+          style={styles.rank}
+          onPress={() =>
+            navigation.navigate("OtherCollectionItemScreen", {
+              id: rankers[2].collection_id,
+            })
+          }
+        >
           <Col>
             <Image
               style={{ marginTop: 5, height: 50, width: 50 }}
@@ -85,8 +106,8 @@ export default function RankerView(props: any) {
               <TouchableOpacity
                 key={index + 4}
                 onPress={() =>
-                  navigation.navigate("CollectionOtherScreen", {
-                    id: 1686835822,
+                  navigation.navigate("OtherCollectionItemScreen", {
+                    id: ranker.collection_id,
                   })
                 }
               >
