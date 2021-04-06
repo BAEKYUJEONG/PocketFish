@@ -1,13 +1,17 @@
 import React from "react";
-import { userApi } from "../../utils/axios";
 
 import { StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Left, Thumbnail } from "native-base";
 import { Text, View } from "../Themed";
 
-export default function RankerView(props: any) {
-  const { rankers, navigation } = props;
+export default function RankerView({
+  rankers,
+  navigation,
+}: {
+  rankers: Record<string, any>;
+  navigation: any;
+}) {
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
