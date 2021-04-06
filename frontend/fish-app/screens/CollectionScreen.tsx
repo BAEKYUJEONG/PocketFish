@@ -8,6 +8,8 @@ import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { useSelector } from "react-redux";
 import MainLoginScreen from "./auth/MainLoginScreen";
+import { useFocusEffect } from "@react-navigation/core";
+import { useCallback } from "react";
 
 export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri1 =
@@ -33,34 +35,56 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   //     console.log(data);
   //   });
   // }, []);
-
-  useEffect(() => {
-    if (user.user) {
-      const userObj = JSON.parse(user.user);
-      collectionApi.getCollection(userObj.id).then((response: any) => {
-        let count = 3 - (response.data.length % 3);
-        let data = [...response.data, ...new Array(count)];
-        setData(data);
-        //alert(JSON.stringify(response.data));
-        console.log(data);
-      });
-    }
-  }, [user]);
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
+      if (user.user) {
+        const userObj = JSON.parse(user.user);
+        collectionApi.getCollection(userObj.id).then((response: any) => {
+          let count = 3 - (response.data.length % 3);
+          let data = [...response.data, ...new Array(count)];
+          setData(data);
+          //alert(JSON.stringify(response.data));
+          console.log(data);
+        });
+      }
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [user])
+  );
+  // useEffect(() => {
+  //   if (user.user) {
+  //     const userObj = JSON.parse(user.user);
+  //     collectionApi.getCollection(userObj.id).then((response: any) => {
+  //       let count = 3 - (response.data.length % 3);
+  //       let data = [...response.data, ...new Array(count)];
+  //       setData(data);
+  //       //alert(JSON.stringify(response.data));
+  //       console.log(data);
+  //     });
+  //   }
+  // }, [user]);
 
   return user.user ? (
     <View style={styles.container}>
-      <View style={{width:'100%', height:'100%'}}>
+      <View style={{ width: "100%", height: "100%" }}>
         <View style={styles.headerView}>
           <Text style={styles.instructions}>내 수조</Text>
         </View>
-        <View style={{width:'100%', height:'100%'}}>
+        <View style={{ width: "100%", height: "100%" }}>
           <View style={styles.contentView}>
             <View style={styles.collectionAll}>
-              <Grid style={{ marginTop: 30}}>
+              <Grid style={{ marginTop: 30 }}>
                 {Array.from({ length: 2 }, (_, i) => i + 1).map((idx) => (
                   <Row
                     key={idx}
-                    style={{ marginBottom: 10, justifyContent: "center",  height:'20%' }}
+                    style={{
+                      marginBottom: 10,
+                      justifyContent: "center",
+                      height: "20%",
+                    }}
                   >
                     {data.slice((idx - 1) * 3, idx * 3).map((d, index) => (
                       <Col
@@ -68,41 +92,45 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                         style={{
                           justifyContent: "center",
                           alignItems: "center",
-                          alignContent:'center',
+                          alignContent: "center",
                         }}
                       >
                         {d === undefined ? null : (
                           <View
                             style={[
-                              { width: '100%' },
-                              { height: '100%' },
-                              {alignItems:'center'},
-                              { marginBottom: 2 }]}
+                              { width: "100%" },
+                              { height: "100%" },
+                              { alignItems: "center" },
+                              { marginBottom: 2 },
+                            ]}
                           >
                             {/* { index % 3 == 0 ? <br></br> : null } */}
                             <View
-                             key={index}
-                             style={[
-                               { width: '80%' },
-                               { height: '80%' },
-                               { marginBottom: 2 },
-                               { alignItems: "center" },
-                               index % 3 !== 0
-                                 ? { paddingLeft: 2 }
-                                 : { paddingLeft: 0 },
-                             ]}>
+                              key={index}
+                              style={[
+                                { width: "80%" },
+                                { height: "80%" },
+                                { marginBottom: 2 },
+                                { alignItems: "center" },
+                                index % 3 !== 0
+                                  ? { paddingLeft: 2 }
+                                  : { paddingLeft: 0 },
+                              ]}
+                            >
                               <TouchableOpacity
                                 style={styles.collectionImg}
-                                onPress={() =>{
+                                onPress={() => {
                                   console.log("touch");
                                   console.log(d.collectionId);
                                   navigation.navigate("CollectionItemScreen", {
                                     id: d.collectionId,
-                                  })
-                                }
-                              }
+                                  });
+                                }}
                               >
-                                <Thumbnail large source={{ uri: d.fishImage }} />
+                                <Thumbnail
+                                  large
+                                  source={{ uri: d.fishImage }}
+                                />
                               </TouchableOpacity>
                             </View>
                           </View>
@@ -135,7 +163,7 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
   },
   headerView: {
-    height:'10%',
+    height: "10%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -164,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     borderTopWidth: 1,
     borderTopColor: "#eae5e5",
-    height:'100%',
+    height: "100%",
   },
   collectionImg: {
     borderRadius: 50,
