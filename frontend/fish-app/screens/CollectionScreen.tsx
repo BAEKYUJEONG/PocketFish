@@ -7,6 +7,7 @@ import { Text, View } from "../components/Themed";
 import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { useSelector } from "react-redux";
+import MainLoginScreen from "./auth/MainLoginScreen";
 
 export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri1 =
@@ -17,7 +18,6 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
 
   const reduxState = useSelector((state: any) => state);
   const user = useSelector((state: any) => state.user);
-  const userObj = JSON.parse(user.user);
 
   //아이디값
   //console.log(userObj.user_id);
@@ -35,16 +35,19 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   // }, []);
 
   useEffect(() => {
-    collectionApi.getCollection(userObj.id).then((response: any) => {
-      let count = 3 - (response.data.length % 3);
-      let data = [...response.data, ...new Array(count)];
-      setData(data);
-      //alert(JSON.stringify(response.data));
-      console.log(data);
-    });
-  }, []);
+    if (user.user) {
+      const userObj = JSON.parse(user.user);
+      collectionApi.getCollection(userObj.id).then((response: any) => {
+        let count = 3 - (response.data.length % 3);
+        let data = [...response.data, ...new Array(count)];
+        setData(data);
+        //alert(JSON.stringify(response.data));
+        console.log(data);
+      });
+    }
+  }, [user]);
 
-  return (
+  return user.user ? (
     <View style={styles.container}>
       <View style={{width:'100%', height:'100%'}}>
         <View style={styles.headerView}>
@@ -120,6 +123,8 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
         </View>
       </View>
     </View>
+  ) : (
+    <MainLoginScreen />
   );
 }
 
