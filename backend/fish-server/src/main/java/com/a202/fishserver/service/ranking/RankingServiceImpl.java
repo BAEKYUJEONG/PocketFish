@@ -1,5 +1,7 @@
 package com.a202.fishserver.service.ranking;
 
+import com.a202.fishserver.domain.user.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -9,7 +11,10 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class RankingServiceImpl implements RankingService{
+
+    private final UserRepository userRepository;
 
     @Autowired
     private RedisTemplate<String, String> template;
@@ -28,7 +33,13 @@ public class RankingServiceImpl implements RankingService{
         while (iterator.hasNext()) {
             ZSetOperations.TypedTuple<String> current = iterator.next();
             HashMap<String, Object> map = new HashMap<>();
-            map.put(current.getValue(), current.getScore());
+
+            String[] user_info = current.getValue().split(";");
+
+            map.put("user_id", user_info[0]);
+            map.put("nickname", user_info[1]);
+            map.put("length", current.getScore());
+
             ranks.add(map);
         }
 

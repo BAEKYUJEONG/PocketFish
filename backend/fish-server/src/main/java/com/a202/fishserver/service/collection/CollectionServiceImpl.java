@@ -133,6 +133,13 @@ public class CollectionServiceImpl implements CollectionService{
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
         if (!fish.isPresent()) throw new Exception("해당 물고기가 존재하지 않습니다.");
 
+        // 랭킹 등록
+//        System.out.println("== 랭킹 등록==");
+//        ZSetOperations<String, String> zset = template.opsForZSet();
+//        System.out.println("zset created");
+//        zset.add("fish"+fish.get().getId(), user.get().getNickname() +";"+user.get().getId(), dto.getLength());
+//        System.out.println("zset added");
+
         String rootPath = "/root/data/images/collection/";
         String apiPath = "https://j4a202.p.ssafy.io/images/collection/";
         String fileName = user.get().getId() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSSS")) + ".jpeg";
@@ -180,7 +187,7 @@ public class CollectionServiceImpl implements CollectionService{
             System.out.println("== 랭킹 등록==");
             ZSetOperations<String, String> zset = template.opsForZSet();
             System.out.println("zset created");
-            zset.add("fish"+fish.get().getId(), user.get().getNickname(), dto.getLength());
+            zset.add("fish"+fish.get().getId(), user.get().getNickname() +";"+user.get().getId(), dto.getLength());
             System.out.println("zset added");
 
         } catch (Exception e) {
