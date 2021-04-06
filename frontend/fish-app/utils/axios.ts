@@ -20,26 +20,17 @@ const request: AxiosInstance = axios.create({
 
 // 유저 Api
 export const userApi: Record<string, any> = {
-  async signup(): Promise<void | AxiosResponse<any>> {
-    const appData = await getData("auth");
-    const jsonData = JSON.parse(appData);
-    const { access_token } = jsonData;
-    if (await kakaoApi.validateToken()) {
-      const {
-        id,
-        properties: { nickname, profile_image },
-      } = await kakaoApi.kakaoUserInfo();
-      const postData = {
-        id,
-        nickname,
-        profile_image,
-        access_token,
-      };
-      console.log(postData);
-      const response = await request.post("login/signup", postData);
-      console.log(resposne);
-      return response.data;
-    }
+  async signup(
+    userData: Record<string, any>
+  ): Promise<void | AxiosResponse<any>> {
+    const response = await request.post("/user/", userData);
+    console.log(response.data);
+    return response.data;
+  },
+  async checkUser(id: number): Promise<void | AxiosResponse<any>> {
+    const response = await request.get(`/user/${id}`);
+    console.log(response.data);
+    return response.data;
   },
 };
 
@@ -149,18 +140,20 @@ export const collectionApi: Record<string, any> = {
 
     //let box = new FormData();
     //box.append("user_id", user.user_id);
-    
+
     //원래 써야하는 것
     // const response = await request.post(`collection/user/${String(user.user_id)}`, {'user_token': user.access_token}, {
     //   headers: { "Content-Type": "application/JSON" },
     // });
 
     //대체 하드코딩
-    const response = await request.post(`collection/user/1682556852`, {"user_token": "kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug"});
+    const response = await request.post(`collection/user/1682556852`, {
+      user_token: "kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug",
+    });
     //axios.get('url', {data: {id:1682556852}})
-    console.log("!!"+response.data);
+    console.log("!!" + response.data);
     return response.data;
-  }
+  },
 };
 
 // 게시글 Api
@@ -215,10 +208,6 @@ export const AddApi: Record<string, any> = {
     return response.data;
   },
 };
-
-
-
-
 
 // 로그인 Api
 // export const userApi: Record<string, any> = {
