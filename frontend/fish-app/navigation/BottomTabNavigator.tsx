@@ -26,6 +26,7 @@ import {
   ProfileParamList,
   AddParamList,
 } from "../types";
+import CollectionOtherScreen from "../screens/CollectionOtherScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -164,6 +165,11 @@ function RankingNavigator() {
         name="RankingScreen"
         component={RankingScreen}
         options={{ headerTitle: "Ranking" }}
+      />
+      <RankingStack.Screen
+        name="CollectionOtherScreen"
+        component={CollectionOtherScreen}
+        options={{ headerTitle: "Detail" }}
       />
     </RankingStack.Navigator>
   );

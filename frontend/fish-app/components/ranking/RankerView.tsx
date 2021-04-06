@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { userApi } from "../../utils/axios";
 
 import { Text, View } from "../Themed";
 
 export default function RankerView(props: any) {
-  const { rankers } = props;
+  const { rankers, navigation } = props;
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
@@ -55,7 +56,11 @@ export default function RankerView(props: any) {
             .map((ranker: Record<string, any>, index: number) => (
               <TouchableOpacity
                 key={index + 4}
-                onPress={() => alert("clicked")}
+                onPress={() =>
+                  navigation.navigate("CollectionOtherScreen", {
+                    id: 1686835822,
+                  })
+                }
               >
                 <Text
                   style={{
