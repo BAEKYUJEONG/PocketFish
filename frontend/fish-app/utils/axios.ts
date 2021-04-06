@@ -188,11 +188,8 @@ export const AddApi: Record<string, any> = {
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
     box.append("user_token", post.user_token);
-<<<<<<< HEAD
-=======
     console.log(post.user_id);
     console.log(post.user_token);
->>>>>>> 4fdbf3af9d63fa79ce853dbd67611044551b3900
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
