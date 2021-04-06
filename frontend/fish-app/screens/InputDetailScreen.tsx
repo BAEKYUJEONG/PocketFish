@@ -94,7 +94,7 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
             box.bait=bait;
             box.fishing_info=fishing_info;
             box.memo=memo;
-            //console.log(userObj.access_token);
+            console.log(userObj.access_token);
             let result= await AddApi.saveFish(box);
             //console.log(result);
             navigation.navigate('Home');
