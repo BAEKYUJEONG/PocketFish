@@ -28,14 +28,14 @@ export default function InputDetailScreen({
   const userObj = JSON.parse(user.user);
   const dispatch = useDispatch();
   
-  useEffect(async() => {
+  useEffect(() => {
     const authCheck=async()=>{
       if (userObj == null) {
         alert("저장하실려면 로그인이 필요합니다.");
         navigation.navigate("Collection");
       }
     };
-    await authCheck();
+    authCheck();
   }, []);
 
 
