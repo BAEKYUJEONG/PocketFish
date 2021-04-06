@@ -4,7 +4,7 @@ import com.a202.fishserver.dto.Response;
 import com.a202.fishserver.dto.comment.CommentPostRequestDto;
 import com.a202.fishserver.dto.comment.CommentPutRequestDto;
 import com.a202.fishserver.service.comment.CommentService;
-import org.json.simple.JSONObject;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -13,14 +13,10 @@ import java.util.List;
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/collection/comment")
+@AllArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
-    
-    // 생성자 주입
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     /**
      *
