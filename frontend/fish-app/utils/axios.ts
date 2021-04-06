@@ -130,6 +130,30 @@ export const collectionApi: Record<string, any> = {
     console.log(response);
     return response.data;
   },
+  //JSON 형식으로 보내는 형식!
+  async userToken(user: any): Promise<void | AxiosResponse<any>> {
+    console.log(user);
+
+    // let box = new FormData();
+    // box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
+    // const response = await request.post(`collection/user/1682556852`, box, {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+
+    //let box = new FormData();
+    //box.append("user_id", user.user_id);
+    
+    //원래 써야하는 것
+    // const response = await request.post(`collection/user/${String(user.user_id)}`, {'user_token': user.access_token}, {
+    //   headers: { "Content-Type": "application/JSON" },
+    // });
+
+    //대체 하드코딩
+    const response = await request.post(`collection/user/1682556852`, {"user_token": "kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug"});
+    //axios.get('url', {data: {id:1682556852}})
+    console.log("!!"+response.data);
+    return response.data;
+  }
 };
 
 // 게시글 Api
@@ -167,7 +191,7 @@ export const AddApi: Record<string, any> = {
     //post.fish_image=post.fish_image.substring(0,100);
     //console.log(post);
     let box = new FormData();
-    box.append("user_id", post.user_id);
+    box.append("user_id", "1682556852");
     box.append("length", post.length);
     box.append("location", post.location);
     box.append("fish_id", post.fish_id);
@@ -175,14 +199,19 @@ export const AddApi: Record<string, any> = {
     box.append("bait", post.bait);
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
-    box.append('user_token',post.user_token);
+    box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
     //console.log(response.data);
     return response.data;
   },
 };
+
+
+
+
 
 // 로그인 Api
 // export const userApi: Record<string, any> = {
