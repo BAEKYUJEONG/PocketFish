@@ -25,12 +25,12 @@ public class CollectionController {
     /**
      * 내 보관함 조회
      */
-    @GetMapping("/user/{id}")
+    @PostMapping("/user/{id}")
     @ApiOperation(value = "내 보관함 조회")
-    public Response getMyCollection(@PathVariable("id") long userId, @RequestBody CollectionPostTokenRequestDto dto) {
+    public Response getMyCollection(@PathVariable("id") long userId) {
         List<HashMap<String, Object>> result;
         try {
-            result = collectionService.getMyCollections(userId, dto);
+            result = collectionService.getMyCollections(userId);
         } catch (Exception e) {
             return Response.builder()
                     .status(false)

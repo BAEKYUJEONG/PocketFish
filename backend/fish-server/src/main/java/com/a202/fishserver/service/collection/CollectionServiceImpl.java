@@ -51,15 +51,7 @@ public class CollectionServiceImpl implements CollectionService{
     /**
      * 내 보관함 조회
      */
-    public List<HashMap<String, Object>> getMyCollections(long userId, CollectionPostTokenRequestDto dto) throws Exception{
-        long id;
-        try {
-            id = userService.getUserIdByAccessToken(dto.user_token);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-        if (id != userId) throw new Exception("유저 아이디가 일치하지 않습니다.");
-
+    public List<HashMap<String, Object>> getMyCollections(long userId) throws Exception{
         List<Collection> list = collectionRepository.findByUser(new User(userId));
         List<HashMap<String, Object>> result = new ArrayList<>();
 

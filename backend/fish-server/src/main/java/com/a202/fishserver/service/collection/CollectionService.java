@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface CollectionService {
-    List<HashMap<String, Object>> getMyCollections(long userId, CollectionPostTokenRequestDto dto) throws Exception;
+    List<HashMap<String, Object>> getMyCollections(long userId) throws Exception;
     HashMap<String,Object> getCollectionDetail(long collectionId) throws Exception;
     void postCollection(CollectionPostRequestDto dto) throws Exception;
     void putCollection(CollectionPostRequestDto dto, long collectionId) throws Exception;

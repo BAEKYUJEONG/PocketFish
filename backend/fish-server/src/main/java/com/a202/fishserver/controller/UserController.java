@@ -26,7 +26,7 @@ public class UserController {
      */
     @PostMapping("/")
     @ApiOperation(value = "사용자 등록")
-    public Response postUser(@ModelAttribute UserPostRequestDto userDto) {
+    public Response postUser(@RequestBody UserPostRequestDto userDto) {
 
         try {
             userService.postUser(userDto);
