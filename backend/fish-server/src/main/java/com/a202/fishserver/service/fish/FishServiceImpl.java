@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class FishServiceImpl implements FishService{
+public class FishServiceImpl implements FishService {
 
     private final FishRepository fishRepository;
 
