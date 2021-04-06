@@ -36,8 +36,9 @@ public class RankingServiceImpl implements RankingService{
 
             String[] user_info = current.getValue().split(";");
 
-            map.put("user_id", user_info[0]);
-            map.put("nickname", user_info[1]);
+            map.put("collection_id", user_info[0]);
+            map.put("user_id", user_info[1]);
+            map.put("nickname", user_info[2]);
             map.put("length", current.getScore());
 
             ranks.add(map);

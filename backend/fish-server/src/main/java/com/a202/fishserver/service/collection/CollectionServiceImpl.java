@@ -10,7 +10,6 @@ import com.a202.fishserver.domain.user.User;
 import com.a202.fishserver.domain.user.UserRepository;
 import com.a202.fishserver.dto.collection.CollectionPostRequestDto;
 import com.a202.fishserver.dto.collection.CollectionPostTokenIDRequestDto;
-import com.a202.fishserver.dto.collection.CollectionPostTokenRequestDto;
 import com.a202.fishserver.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.fileupload.FileItem;
@@ -179,8 +178,8 @@ public class CollectionServiceImpl implements CollectionService{
             System.out.println("== 랭킹 등록==");
             ZSetOperations<String, String> zset = template.opsForZSet();
             System.out.println("zset created");
-            zset.add("fish"+fish.get().getId(), user.get().getNickname() +";"+user.get().getId(), dto.getLength());
-            System.out.println("zset added");
+            zset.add("fish"+fish.get().getId(), c.getId()+";"+user.get().getNickname()+";"+user.get().getId(), dto.getLength());
+            System.out.println("zset added: "+ c.getId()+";"+user.get().getNickname()+";"+user.get().getId()+ "=" + dto.getLength());
 
         } catch (Exception e) {
             throw new Exception("보관함 저장 중 오류 발생");
