@@ -34,7 +34,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Collection"
       tabBarOptions={{
         activeTintColor: colors.default,
         inactiveTintColor: "white",
@@ -42,20 +42,18 @@ export default function BottomTabNavigator() {
         activeBackgroundColor: "white",
       }}
     >
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Home"
         component={HomeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
-      />
+      /> */}
       <BottomTab.Screen
-        name="Collection"
-        component={CollectionNavigator}
+        name="Ranking"
+        component={RankingNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIconFontAwesome5 name="fish" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -69,10 +67,12 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Ranking"
-        component={RankingNavigator}
+        name="Collection"
+        component={CollectionNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIconFontAwesome5 name="fish" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
