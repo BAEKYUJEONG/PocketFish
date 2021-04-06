@@ -197,8 +197,9 @@ export const AddApi: Record<string, any> = {
     console.log("fish save api");
     //post.fish_image=post.fish_image.substring(0,100);
     //console.log(post);
+ 
     let box = new FormData();
-    box.append("user_id", "1682556852");
+    box.append("user_id",post.user_id);
     box.append("length", post.length);
     box.append("location", post.location);
     box.append("fish_id", post.fish_id);

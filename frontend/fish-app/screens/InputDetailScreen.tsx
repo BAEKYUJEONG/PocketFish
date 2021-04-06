@@ -37,9 +37,10 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
   // }, []);
   // let box={user_token:userObj.asscess_token,user_id:1,length:0,location:" ",fish_id:0, memo:" ",bait:" ",fishing_info:" ",fish_image:" "};
   // box.fish_id=KoreanToNumber(name);
-  box.user_token=userObj.asscess_token;
+  box.user_id=userObj.id;
+  box.user_token=userObj.access_token;
   box.fish_image=reduxState.fish.fishImage;
-  //console.log(box);
+  //console.log(route.params);
 
   const [length, setlength] = useState(box.length);
   const [location, setlocation] = useState(box.location);
@@ -93,8 +94,9 @@ export default function InputDetailScreen({route, navigation}:{route:any, naviga
             box.bait=bait;
             box.fishing_info=fishing_info;
             box.memo=memo;
+            //console.log(userObj.access_token);
             let result= await AddApi.saveFish(box);
-            console.log(result);
+            //console.log(result);
             navigation.navigate('Home');
           }}>
           <Text  style={styles.btn} >저장하기</Text>
