@@ -142,8 +142,8 @@ export const collectionItemApi: Record<string, any> = {
   },
   async deleteItem(user: any): Promise<void | AxiosResponse<any>> {
     let box = { user_token: user.user_token, user_id: user.user_id };
-    console.log(box);
-    console.log(user.item_id);
+    // console.log(box);
+    // console.log(user.item_id);
     const response = await request.delete(`collection/${user.item_id}`, {
       data: box,
     });
@@ -164,8 +164,8 @@ export const collectionItemApi: Record<string, any> = {
       fishing_info:user.fishing_info, 
       fish_image: user.fish_image
     };
-    console.log(box);
-    console.log(user.collectionId);
+    // console.log(box);
+    // console.log(user.collectionId);
     const response = await request.put(`collection/${user.collectionId}`,box);
     return response.data;
   }

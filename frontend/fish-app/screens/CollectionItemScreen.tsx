@@ -45,7 +45,7 @@ export default function CollectionItemScreen({ route, navigation }) {
       user_id: userObj.id,
       item_id: item.collectionId,
     };
-    console.log(box);
+    //console.log(box);
     await collectionItemApi.deleteItem(box).then((res: any) => {
       console.log(res.data);
       navigation.navigate("CollectionScreen");
@@ -74,7 +74,7 @@ export default function CollectionItemScreen({ route, navigation }) {
             <Thumbnail source={{ uri: item.userProfile }} />
             <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
               <View>
-                <Text>백유정</Text>
+                <Text>{item.userNick}</Text>
                 <Text>{item.regDate}</Text>
               </View>
               <View style={{ flexDirection: "row", width: "100%" }}>
@@ -130,7 +130,7 @@ export default function CollectionItemScreen({ route, navigation }) {
         </CardItem>
         <CardItem style={{ marginTop: -10 }}>
           <Text>
-            <Text style={{ fontWeight: "900" }}>{item.userNick}</Text>
+            {/* <Text style={{ fontWeight: "900" }}>{item.userNick}</Text> */}
             <View>
               <Text style={{ marginLeft: 5 }}>{item.fishMemo}</Text>
               <Text>길이 : {item.fishLength}</Text>
