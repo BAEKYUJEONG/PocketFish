@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 
-import Colors from "../constants/Colors";
+import colors from "../colors";
 import useColorScheme from "../hooks/useColorScheme";
 import CollectionScreen from "../screens/CollectionScreen";
 import CollectionItemScreen from "../screens/CollectionItemScreen";
@@ -35,7 +35,12 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{
+        activeTintColor: colors.default,
+        inactiveTintColor: "white",
+        inactiveBackgroundColor: colors.dark,
+        activeBackgroundColor: "white",
+      }}
     >
       <BottomTab.Screen
         name="Home"
@@ -128,8 +133,11 @@ function CollectionNavigator() {
         component={CollectionScreen}
         options={{ headerTitle: "Collection" }}
       />
-      <CollectionStack.Screen name="CollectionItemScreen" component={CollectionItemScreen} />
-      <CollectionStack.Screen name="CommentScreen" component={CommentScreen}/>
+      <CollectionStack.Screen
+        name="CollectionItemScreen"
+        component={CollectionItemScreen}
+      />
+      <CollectionStack.Screen name="CommentScreen" component={CommentScreen} />
     </CollectionStack.Navigator>
   );
 }
@@ -141,10 +149,7 @@ function AddNavigator() {
     <AddStack.Navigator>
       <AddStack.Screen name="CameraScreen" component={CameraScreen} />
       <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
-      <AddStack.Screen
-        name="ShowResultScreen"
-        component={ShowResultScreen}
-      />
+      <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
       <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
     </AddStack.Navigator>
   );
