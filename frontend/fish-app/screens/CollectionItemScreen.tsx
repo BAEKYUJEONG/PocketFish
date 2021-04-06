@@ -12,11 +12,17 @@ export default function CollectionItemScreen({ route, navigation }) {
   const { id } = route.params;
   const [item, setItem] = useState({});
 
-  useEffect(() => {
-    collectionItemApi.getCollectionItem(id).then((response: any) => {
-      setItem(response.data);
-      console.log(item);
-    });
+  useEffect(async () => {
+    const get= async()=>{
+      await collectionItemApi.getCollectionItem(id).then((response: any) => {
+        setItem(response.data);
+        console.log(item);
+      });
+    };
+    get();
+    return ()=>{
+      console.log();
+    }
   }, []);
 
   return (
@@ -67,14 +73,14 @@ export default function CollectionItemScreen({ route, navigation }) {
         <CardItem style={{ marginTop: -10 }}>
           <Text>
             <Text style={{ fontWeight: '900' }}>백유정</Text>
-            <span>
-              <span style={{ marginLeft: 5 }}>{item.fishMemo}</span>
-              <div>길이 : {item.fishLength}</div>
-              <div>어종 : {item.fishName}</div>
-              <div>장소 : {item.fishLocation}</div>
-              <div>장비 : {item.fishingInfo}</div>
-              <div>미끼 : {item.fishBait}</div>
-            </span>
+            <View>
+              <Text style={{ marginLeft: 5 }}>{item.fishMemo}</Text>
+              <Text>길이 : {item.fishLength}</Text>
+              <Text>어종 : {item.fishName}</Text>
+              <Text>장소 : {item.fishLocation}</Text>
+              <Text>장비 : {item.fishingInfo}</Text>
+              <Text>미끼 : {item.fishBait}</Text>
+            </View>
           </Text>
         </CardItem>
       </Card>

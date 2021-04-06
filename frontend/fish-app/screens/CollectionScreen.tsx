@@ -92,6 +92,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                                 style={styles.collectionImg}
                                 onPress={() =>{
                                   console.log("touch");
+                                  console.log(d.collectionId);
                                   navigation.navigate("CollectionItemScreen", {
                                     id: d.collectionId,
                                   })
