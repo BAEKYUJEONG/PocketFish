@@ -34,7 +34,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Collection"
+      initialRouteName="Ranking"
       tabBarOptions={{
         activeTintColor: colors.default,
         inactiveTintColor: "white",
