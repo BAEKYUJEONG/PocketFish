@@ -83,7 +83,7 @@ def Dataization(image_bytes, img_w, img_h):
     for i in range(len(class_names)):
         avg_result.append(((result1[i] + result2[i]) / 2) * 100)
 
-    result_percentage = [round(p*100,3) for p in avg_result]
+    result_percentage = [round(p,3) for p in avg_result]
 
     # save dict
     fish = collections.OrderedDict()
