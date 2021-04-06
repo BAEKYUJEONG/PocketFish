@@ -49,18 +49,18 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
 
   return user.user ? (
     <View style={styles.container}>
-      <View>
+      <View style={{width:'100%', height:'100%'}}>
         <View style={styles.headerView}>
           <Text style={styles.instructions}>내 수조</Text>
         </View>
-        <View>
+        <View style={{width:'100%', height:'100%'}}>
           <View style={styles.contentView}>
             <View style={styles.collectionAll}>
-              <Grid style={{ marginTop: 30 }}>
+              <Grid style={{ marginTop: 30}}>
                 {Array.from({ length: 2 }, (_, i) => i + 1).map((idx) => (
                   <Row
                     key={idx}
-                    style={{ marginBottom: 100, justifyContent: "center" }}
+                    style={{ marginBottom: 10, justifyContent: "center",  height:'20%' }}
                   >
                     {data.slice((idx - 1) * 3, idx * 3).map((d, index) => (
                       <Col
@@ -68,32 +68,43 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                         style={{
                           justifyContent: "center",
                           alignItems: "center",
+                          alignContent:'center',
                         }}
                       >
                         {d === undefined ? null : (
                           <View
-                            key={index}
                             style={[
-                              { width: Dimensions.get("window").width / 18 },
-                              { height: Dimensions.get("window").width / 18 },
-                              { marginBottom: 2 },
-                              { alignItems: "center" },
-                              index % 3 !== 0
-                                ? { paddingLeft: 2 }
-                                : { paddingLeft: 0 },
-                            ]}
+                              { width: '100%' },
+                              { height: '100%' },
+                              {alignItems:'center'},
+                              { marginBottom: 2 }]}
                           >
                             {/* { index % 3 == 0 ? <br></br> : null } */}
-                            <TouchableOpacity
-                              style={styles.collectionImg}
-                              onPress={() =>
-                                navigation.navigate("CollectionItemScreen", {
-                                  id: d.collectionId,
-                                })
+                            <View
+                             key={index}
+                             style={[
+                               { width: '80%' },
+                               { height: '80%' },
+                               { marginBottom: 2 },
+                               { alignItems: "center" },
+                               index % 3 !== 0
+                                 ? { paddingLeft: 2 }
+                                 : { paddingLeft: 0 },
+                             ]}>
+                              <TouchableOpacity
+                                style={styles.collectionImg}
+                                onPress={() =>{
+                                  console.log("touch");
+                                  console.log(d.collectionId);
+                                  navigation.navigate("CollectionItemScreen", {
+                                    id: d.collectionId,
+                                  })
+                                }
                               }
-                            >
-                              <Thumbnail large source={{ uri: d.fishImage }} />
-                            </TouchableOpacity>
+                              >
+                                <Thumbnail large source={{ uri: d.fishImage }} />
+                              </TouchableOpacity>
+                            </View>
                           </View>
                         )}
                       </Col>
@@ -124,6 +135,7 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
   },
   headerView: {
+    height:'10%',
     alignItems: "center",
     justifyContent: "center",
   },
@@ -135,13 +147,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   contentView: {
-    flex: 5,
+    flex: 1,
     marginBottom: 30,
-  },
-  button: {
-    flex: 0.2,
-    alignSelf: "flex-end",
-    alignItems: "center",
   },
   title: {
     fontSize: 20,
@@ -157,6 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     borderTopWidth: 1,
     borderTopColor: "#eae5e5",
+    height:'100%',
   },
   collectionImg: {
     borderRadius: 50,
