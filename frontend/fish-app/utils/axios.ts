@@ -129,32 +129,6 @@ export const collectionApi: Record<string, any> = {
     console.log(response.data);
     return response.data;
   },
-  //JSON 형식으로 보내는 형식!
-  async userToken(user: any): Promise<void | AxiosResponse<any>> {
-    console.log(user);
-
-    // let box = new FormData();
-    // box.append('user_token',"kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug");
-    // const response = await request.post(`collection/user/1682556852`, box, {
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // });
-
-    //let box = new FormData();
-    //box.append("user_id", user.user_id);
-
-    //원래 써야하는 것
-    // const response = await request.post(`collection/user/${String(user.user_id)}`, {'user_token': user.access_token}, {
-    //   headers: { "Content-Type": "application/JSON" },
-    // });
-
-    //대체 하드코딩
-    const response = await request.post(`collection/user/1682556852`, {
-      user_token: "kRH3BeOq1rx8HnK_n1i--59jFhFT2kPyLG3TLAorDNMAAAF4oSW6ug",
-    });
-    //axios.get('url', {data: {id:1682556852}})
-    console.log("!!" + response.data);
-    return response.data;
-  },
 };
 
 // 게시글 Api
@@ -164,6 +138,18 @@ export const collectionItemApi: Record<string, any> = {
   ): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`collection/${String(collection_id)}`);
     console.log(response);
+    return response.data;
+  },
+  async deleteItem(user: any): Promise<void | AxiosResponse<any>> {
+    let box = { user_token: user.user_token, user_id: user.user_id };
+    console.log(box);
+    console.log(user.item_id);
+    const response = await request.delete(`collection/${user.item_id}`, {
+      data: box,
+    });
+    console.log(
+      "-----------------------------" + JSON.stringify(response.data)
+    );
     return response.data;
   },
 };
@@ -202,8 +188,8 @@ export const AddApi: Record<string, any> = {
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
     box.append("user_token", post.user_token);
-    //console.log(post.user_id);
-    //console.log(post.user_token);
+    console.log(post.user_id);
+    console.log(post.user_token);
     const response = await request.post(`collection`, box, {
       headers: { "Content-Type": "multipart/form-data" },
     });
