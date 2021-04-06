@@ -2,11 +2,11 @@ import * as React from "react";
 import { Component } from "react";
 import { useState, useEffect } from "react";
 import { collectionApi } from "../utils/axios";
-import axios from "axios";
 import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Text, View } from "../components/Themed";
 import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { useSelector } from "react-redux";
 
 export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri1 =
@@ -14,9 +14,12 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri2 =
     "https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d";
   const [data, setData] = useState([]);
+  const user = useSelector((state) => state.user);
+  const userObj = JSON.parse(user.user);
 
   useEffect(() => {
-    collectionApi.getCollection(1).then((response: any) => {
+    console.log(userObj.id);
+    collectionApi.getCollection(userObj.id).then((response: any) => {
       let count = 3 - (response.data.length % 3);
       let data = [...response.data, ...new Array(count)];
       setData(data);
