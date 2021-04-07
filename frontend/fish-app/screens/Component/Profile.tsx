@@ -19,19 +19,22 @@ export default function Profile() {
               </Text>
             </View>
             <View
-              style={{
-                width: "100%",
-              }}
+              style={{ flexDirection: "row", width: "100%", right: "-35%" }}
             >
               <IconButton
                 icon="pencil"
-                style={{ marginLeft: "15%", right: "-50%" }}
+                style={{ marginLeft: "15%" }}
                 color="black"
                 size={20}
-                onPress={() =>
-                  Alert.alert("", "", [
+                onPress={() => {
+                  Alert.alert("로그아웃", "로그아웃 하시겠습니까?", [
                     {
-                      text: "로그아웃",
+                      text: "아니오",
+                      onPress: () => console.log("no"),
+                      style: "cancel",
+                    },
+                    {
+                      text: "예",
                       onPress: () => {
                         kakaoApi
                           .kakaoLogout()
@@ -43,10 +46,23 @@ export default function Profile() {
                           })
                           .catch((e) => console.error(e));
                       },
+                    },
+                  ]);
+                }}
+              />
+              <IconButton
+                icon="delete"
+                color="black"
+                size={20}
+                onPress={() => {
+                  Alert.alert("계정 탈퇴", "진짜 탈퇴하시겠습니까?", [
+                    {
+                      text: "아니오",
+                      onPress: () => console.log("no"),
                       style: "cancel",
                     },
                     {
-                      text: "회원탈퇴",
+                      text: "예",
                       onPress: () => {
                         kakaoApi
                           .kakaoSignout()
@@ -54,12 +70,13 @@ export default function Profile() {
                             setIsLoggedIn(false);
                             dispatch(SetUser(null));
                             console.log(state.user);
+                            console.log;
                           })
                           .catch((e) => console.error(e));
                       },
                     },
-                  ])
-                }
+                  ]);
+                }}
               />
             </View>
           </Body>
