@@ -1,13 +1,8 @@
-import * as React from "react";
-import { Component } from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { collectionItemApi } from "../utils/axios";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, Image, Alert } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { View } from "../components/Themed";
 
-import { IconButton } from "react-native-paper";
 import {
   Card,
   CardItem,
@@ -20,7 +15,13 @@ import {
   Text,
 } from "native-base";
 
-export default function OtherCollectionItemScreen({ route, navigation }) {
+export default function OtherCollectionItemScreen({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) {
   const { id } = route.params;
   const [item, setItem] = useState({});
 

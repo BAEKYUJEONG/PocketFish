@@ -14,22 +14,37 @@ export default function RankerView({
 }: {
   rankers: Record<string, any>;
   navigation: any;
-  }) {
-  const [topImage, setTopImage] = useState(["", "", ""]);
+}) {
+  const [top1Image, setTop1Image] = useState("");
+  const [top2Image, setTop2Image] = useState("");
+  const [top3Image, setTop3Image] = useState("");
   useEffect(() => {
-    rankers.slice(0, 3).forEach(ranker => {
-      userApi.getUser(Number(ranker.nickname)).then(response => {
-        console.log(response.data);
+    rankers.slice(0, 3).forEach((ranker: any, index: any) => {
+      userApi.getUser(Number(ranker.nickname)).then((response) => {
+        switch (index) {
+          case 0:
+            setTop1Image(response.data.picture);
+            break;
+          case 1:
+            setTop2Image(response.data.picture);
+            break;
+          case 2:
+            setTop3Image(response.data.picture);
+            break;
+          default:
+            break;
+        }
       });
-     })
-  }, [])
-  return (
+    });
+  }, [rankers]);
+  return rankers.length > 0 ? (
     <View style={styles.container}>
       <View style={styles.top3}>
         {rankers
           .slice(0, 3)
           .map((ranker: Record<string, any>, index: number) => (
             <TouchableOpacity
+              key={index}
               style={styles.rank}
               onPress={() =>
                 navigation.navigate("OtherCollectionItemScreen", {
@@ -56,7 +71,11 @@ export default function RankerView({
                     source={{
                       uri:
                         // 사용자 프사 또는 물고기 사진 필요
-                        userApi.getUser(Number(ranker.nickname)).picture
+                        index === 0
+                          ? top1Image
+                          : index === 1
+                          ? top2Image
+                          : top3Image,
                     }}
                   />
                 </Row>
@@ -67,92 +86,6 @@ export default function RankerView({
               </Row>
             </TouchableOpacity>
           ))}
-        {/* <TouchableOpacity
-          style={styles.rank}
-          onPress={() =>
-            navigation.navigate("OtherCollectionItemScreen", {
-              id: rankers[0].collection_id,
-            })
-          }
-        >
-          <Col>
-            <Image
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              resizeMode="contain"
-              source={require("../../assets/images/rank1.png")}
-            />
-          </Col>
-          {rankers.length > 0 ? (
-            <>
-              <Col style={{ marginTop: -25 }}>
-                <Text style={styles.textStyle}>{rankers[0].nickname}</Text>
-                <Text style={styles.textStyle}>{rankers[0].length}cm</Text>
-              </Col>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.rank}
-          onPress={() =>
-            navigation.navigate("OtherCollectionItemScreen", {
-              id: rankers[1].collection_id,
-            })
-          }
-        >
-          <Row>
-            <Image
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              resizeMode="contain"
-              source={require("../../assets/images/rank2.png")}
-            />
-            <Thumbnail
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              small
-              source={{
-                uri:
-                  "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg",
-              }}
-            />
-          </Row>
-          {rankers.length > 1 ? (
-            <>
-              <Col style={{ marginTop: -25 }}>
-                <Text style={styles.textStyle}>{rankers[1].nickname}</Text>
-                <Text style={styles.textStyle}>{rankers[1].length}cm</Text>
-              </Col>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.rank}
-          onPress={() =>
-            navigation.navigate("OtherCollectionItemScreen", {
-              id: rankers[2].collection_id,
-            })
-          }
-        >
-          <Col>
-            <Image
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              resizeMode="contain"
-              source={require("../../assets/images/rank3.png")}
-            />
-          </Col>
-          {rankers.length > 2 ? (
-            <>
-              <Col style={{ marginTop: -25 }}>
-                <Text style={styles.textStyle}>{rankers[2].nickname}</Text>
-                <Text style={styles.textStyle}>{rankers[2].length}cm</Text>
-              </Col>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity> */}
       </View>
       <View style={styles.top50}>
         <ScrollView>
@@ -167,23 +100,43 @@ export default function RankerView({
                   })
                 }
               >
-                <Text
+                <Row
                   style={{
-                    backgroundColor: "skyblue",
-                    height: 15,
-                    fontSize: 15,
-                    marginBottom: 3,
-                    marginLeft: 3,
-                    borderRadius: 3,
-                    padding: 3,
+                    alignItems: "center",
+                    backgroundColor: colors.light,
                   }}
                 >
-                  {index + 4}등 {ranker.nickname} {ranker.length}cm
-                </Text>
+                  <Row>
+                    <Text
+                      style={{
+                        height: 50,
+                        marginBottom: 3,
+                        borderRadius: 3,
+                        padding: 18,
+                      }}
+                    >
+                      {index + 4}등
+                    </Text>
+                  </Row>
+                  <Col>
+                    <Text>
+                      {ranker.user_id} {ranker.length}cm
+                    </Text>
+                  </Col>
+                </Row>
               </TouchableOpacity>
             ))}
         </ScrollView>
       </View>
+    </View>
+  ) : (
+    <View>
+      <Text style={{ color: colors.default }}>
+        잡은 물고기를 등록하고 영광의 첫 주인공이 되어보세요!
+      </Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
     </View>
   );
 }
@@ -210,7 +163,7 @@ const styles = StyleSheet.create({
   rank: {
     height: 60,
     // 스타일 전체 수정 후 색상 변경 필요
-    backgroundColor: colors.light,
+    backgroundColor: "white",
     marginBottom: 5,
   },
 });

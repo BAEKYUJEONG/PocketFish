@@ -22,7 +22,7 @@ export default function Profile() {
               style={{ flexDirection: "row", width: "100%", right: "-35%" }}
             >
               <IconButton
-                icon="pencil"
+                icon="logout"
                 style={{ marginLeft: "15%" }}
                 color="black"
                 size={20}
