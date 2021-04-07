@@ -33,6 +33,11 @@ export const userApi: Record<string, any> = {
     console.log(response.data);
     return response.data;
   },
+  async getUser(id: number): Promise<void | AxiosResponse<any>> {
+    const response = await request.get(`/user/${id}`);
+    console.log(response.data);
+    return response.data;
+  },
 };
 
 // 카카오 인증 Api
