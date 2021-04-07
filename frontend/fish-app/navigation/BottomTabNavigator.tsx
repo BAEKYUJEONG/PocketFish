@@ -131,11 +131,15 @@ function ProfileNavigator() {
         component={CollectionItemScreen}
         options={{ headerTitle: "상세보기" }}
       />
-      <ProfileStack.Screen name="CommentScreen" component={CommentScreen} />
+      <ProfileStack.Screen
+        name="CommentScreen"
+        component={CommentScreen}
+        options={{ headerTitle: "댓글" }}
+      />
       <ProfileStack.Screen
         name="InputDetailScreen"
         component={InputDetailScreen}
-        options={{ headerTitle: "댓글" }}
+        options={{ headerTitle: "세부 내용 입력" }}
       />
     </ProfileStack.Navigator>
   );
