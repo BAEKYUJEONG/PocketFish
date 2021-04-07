@@ -14,15 +14,12 @@ import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
-import WaitResponseScreen from "../screens/WaitResponseScreen";
 import InputDetailScreen from "../screens/InputDetailScreen";
 import ShowResultScreen from "../screens/ShowResultScreen";
 
 import {
   BottomTabParamList,
-  CollectionParamList,
   RankingParamList,
-  HomeParamList,
   ProfileParamList,
   AddParamList,
 } from "../types";
@@ -68,15 +65,6 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Collection"
-        component={CollectionNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIconFontAwesome5 name="fish" color={color} />
-          ),
-        }}
-      />
-      <BottomTab.Screen
         name="Profile"
         component={ProfileNavigator}
         options={{
@@ -105,59 +93,6 @@ function TabBarIconFontAwesome5(props: {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const HomeStack = createStackNavigator<HomeParamList>();
-
-function HomeNavigator() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerTitle: "Home" }}
-      />
-      <HomeStack.Screen
-        name="KakaoLoginScreen"
-        component={KakaoLoginScreen}
-        options={{ headerTitle: "Home" }}
-      />
-    </HomeStack.Navigator>
-  );
-}
-
-const CollectionStack = createStackNavigator<CollectionParamList>();
-
-function CollectionNavigator() {
-  return (
-    <CollectionStack.Navigator>
-      <CollectionStack.Screen
-        name="CollectionScreen"
-        component={CollectionScreen}
-        options={{ headerTitle: "Collection" }}
-      />
-      <CollectionStack.Screen
-        name="CollectionItemScreen"
-        component={CollectionItemScreen}
-      />
-      <CollectionStack.Screen name="CommentScreen" component={CommentScreen} />
-      
-      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
-    </CollectionStack.Navigator>
-  );
-}
-
-const AddStack = createStackNavigator<AddParamList>();
-
-function AddNavigator() {
-  return (
-    <AddStack.Navigator>
-      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
-      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
-      <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
-      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
-      <AddStack.Screen name="CollectionScreen" component={CollectionScreen}/>
-    </AddStack.Navigator>
-  );
-}
 
 const RankingStack = createStackNavigator<RankingParamList>();
 
@@ -184,10 +119,37 @@ function ProfileNavigator() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
+        name="CollectionScreen"
+        component={CollectionScreen}
+        options={{ headerTitle: "Collection" }}
+      />
+      <ProfileStack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={{ headerTitle: "Profile" }}
       />
+      <ProfileStack.Screen
+        name="CollectionItemScreen"
+        component={CollectionItemScreen}
+      />
+      <ProfileStack.Screen name="CommentScreen" component={CommentScreen} />
+      <ProfileStack.Screen
+        name="InputDetailScreen"
+        component={InputDetailScreen}
+      />
     </ProfileStack.Navigator>
+  );
+}
+
+const AddStack = createStackNavigator<AddParamList>();
+
+function AddNavigator() {
+  return (
+    <AddStack.Navigator>
+      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
+      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
+      <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
+      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
+    </AddStack.Navigator>
   );
 }

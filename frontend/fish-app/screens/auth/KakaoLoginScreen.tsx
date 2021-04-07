@@ -34,9 +34,9 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
           // console.log("data");
           // console.log(data);
           const jsonObj = JSON.parse(data);
-          console.log("jsonObj");
-          console.log(jsonObj);
-          console.log(jsonObj.location.origin);
+          // console.log("jsonObj");
+          // console.log(jsonObj);
+          // console.log(jsonObj.location.origin);
           if (jsonObj.location.origin == "https://j4a202.p.ssafy.io") {
             const auth_code = jsonObj.location.search.split("=")[1];
             const params = new URLSearchParams();
