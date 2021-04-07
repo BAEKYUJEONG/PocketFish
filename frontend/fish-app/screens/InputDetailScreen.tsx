@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { KoreanToNumber } from "../utils/fish";
-import { AddApi,collectionItemApi } from "../utils/axios";
+import { AddApi, collectionItemApi } from "../utils/axios";
 import * as Location from "expo-location";
 import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { SetUser } from "../redux/user";
@@ -27,9 +27,9 @@ export default function InputDetailScreen({
   const user = useSelector((state: any) => state.user);
   const userObj = JSON.parse(user.user);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    const authCheck=async()=>{
+    const authCheck = async () => {
       if (userObj == null) {
         alert("저장하실려면 로그인이 필요합니다.");
         navigation.navigate("Collection");
@@ -38,17 +38,16 @@ export default function InputDetailScreen({
     authCheck();
   }, []);
 
-
-  const add=async()=>{
+  const add = async () => {
     console.log("Add");
     box.fish_image = reduxState.fish.fishImage;
     await AddApi.saveFish(box);
-  }
-  const update=async()=>{
+  };
+  const update = async () => {
     console.log("update");
     await collectionItemApi.updateItem(box);
-  }
-  let { box, name,type } = route.params;
+  };
+  let { box, name, type } = route.params;
   //console.log("------"+box);
   // const [location, setLocation] = useState({});
 
@@ -164,7 +163,7 @@ export default function InputDetailScreen({
             />
           }
           onChangeText={(text) => {
-            setmemo(box);
+            setmemo(text);
           }}
         />
         <Button
@@ -178,10 +177,9 @@ export default function InputDetailScreen({
             box.fishing_info = fishing_info;
             box.memo = memo;
             //console.log(userObj.access_token);
-            if(type=="add"){
+            if (type == "add") {
               add();
-            }
-            else if(type=="update"){
+            } else if (type == "update") {
               update();
             }
             navigation.navigate("CollectionScreen");
