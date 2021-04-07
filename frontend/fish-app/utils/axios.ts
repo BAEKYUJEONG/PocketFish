@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { userState } from "../redux/user";
 import { saveData, getData } from "./storage";
 
 // 인증 헤더
@@ -25,17 +24,14 @@ export const userApi: Record<string, any> = {
     userData: Record<string, any>
   ): Promise<void | AxiosResponse<any>> {
     const response = await request.post("/user/", userData);
-    console.log(response.data);
     return response.data;
   },
   async checkUser(id: number): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`/user/${id}`);
-    console.log(response.data);
     return response.data;
   },
   async getUser(id: number): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`/user/${id}`);
-    console.log(response.data);
     return response.data;
   },
 };
@@ -115,7 +111,6 @@ export const kakaoApi: Record<string, any> = {
 export const rankingApi: Record<string, any> = {
   async getRanking(fish_id: number): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`ranking/${String(fish_id)}`);
-    console.log(response);
     return response.data;
   },
 };
@@ -132,7 +127,6 @@ export const collectionApi: Record<string, any> = {
       `collection/user/${String(user_id)}`,
       {}
     );
-    console.log(response.data);
     return response.data;
   },
 };
@@ -143,7 +137,6 @@ export const collectionItemApi: Record<string, any> = {
     collection_id: number
   ): Promise<void | AxiosResponse<any>> {
     const response = await request.get(`collection/${String(collection_id)}`);
-    console.log(response);
     return response.data;
   },
   async deleteItem(user: any): Promise<void | AxiosResponse<any>> {
@@ -160,21 +153,21 @@ export const collectionItemApi: Record<string, any> = {
   },
   async updateItem(user: any): Promise<void | AxiosResponse<any>> {
     let box = {
-      user_token:user.user_token,
-      user_id:user.user_id,
-      length:user.length,
-      location:user.location,
-      fish_id:user.fish_id, 
-      memo:user.memo,
-      bait:user.bait,
-      fishing_info:user.fishing_info, 
-      fish_image: user.fish_image
+      user_token: user.user_token,
+      user_id: user.user_id,
+      length: user.length,
+      location: user.location,
+      fish_id: user.fish_id,
+      memo: user.memo,
+      bait: user.bait,
+      fishing_info: user.fishing_info,
+      fish_image: user.fish_image,
     };
     // console.log(box);
     // console.log(user.collectionId);
-    const response = await request.put(`collection/${user.collectionId}`,box);
+    const response = await request.put(`collection/${user.collectionId}`, box);
     return response.data;
-  }
+  },
 };
 
 // Add Api
@@ -187,13 +180,11 @@ export const AddApi: Record<string, any> = {
       { headers: { "Content-Type": "application/JSON" } }
     );
     //const response = await request.post(`ai`,JSON.stringify({file:img}),{headers: {'Content-Type': 'application/JSON'}});
-    console.log(response.data);
     return response.data;
   },
   async getFishInformation(num: number): Promise<void | AxiosResponse<any>> {
     console.log("fish information api");
     const response = await request.get(`fish/${String(num)}`);
-    //console.log(response);
     return response.data;
   },
   async saveFish(post: any): Promise<void | AxiosResponse<any>> {
