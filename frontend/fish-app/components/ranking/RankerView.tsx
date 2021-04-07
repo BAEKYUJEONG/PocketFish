@@ -5,6 +5,8 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { Left, Thumbnail } from "native-base";
 import { Text, View } from "../Themed";
 import colors from "../../colors";
+import { userApi } from "../../utils/axios";
+import { useState, useEffect } from "react";
 
 export default function RankerView({
   rankers,
@@ -12,7 +14,15 @@ export default function RankerView({
 }: {
   rankers: Record<string, any>;
   navigation: any;
-}) {
+  }) {
+  const [topImage, setTopImage] = useState(["", "", ""]);
+  useEffect(() => {
+    rankers.slice(0, 3).forEach(ranker => {
+      userApi.getUser(Number(ranker.nickname)).then(response => {
+        console.log(response.data);
+      });
+     })
+  }, [])
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
@@ -46,7 +56,7 @@ export default function RankerView({
                     source={{
                       uri:
                         // 사용자 프사 또는 물고기 사진 필요
-                        "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg",
+                        userApi.getUser(Number(ranker.nickname)).picture
                     }}
                   />
                 </Row>
@@ -160,7 +170,10 @@ export default function RankerView({
                 <Text
                   style={{
                     backgroundColor: "skyblue",
+                    height: 15,
+                    fontSize: 15,
                     marginBottom: 3,
+                    marginLeft: 3,
                     borderRadius: 3,
                     padding: 3,
                   }}
