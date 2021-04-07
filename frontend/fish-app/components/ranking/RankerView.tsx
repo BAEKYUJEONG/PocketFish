@@ -18,6 +18,7 @@ export default function RankerView({
   const [top1Image, setTop1Image] = useState("");
   const [top2Image, setTop2Image] = useState("");
   const [top3Image, setTop3Image] = useState("");
+  const backimg = { uri : "https://us.123rf.com/450wm/lilu330/lilu3301507/lilu330150700104/42515276-%EC%88%98%EC%A4%91-%EC%9B%90%ED%99%9C%ED%95%9C-%ED%92%8D%EA%B2%BD-%EB%84%A4%EB%B2%84-%EC%95%A4%EB%94%A9-%EB%B2%A1%ED%84%B0-%EB%B0%94%EB%8B%A5-%EA%B7%B8%E2%80%8B%E2%80%8B%EB%A6%BC-%EA%B2%8C%EC%9E%84-%EB%94%94%EC%9E%90%EC%9D%B8%EC%97%90-%EB%8C%80%ED%95%9C-%EB%A7%8C%ED%99%94-%EB%B0%B0%EA%B2%BD.jpg?ver=6"};
   useEffect(() => {
     rankers.slice(0, 3).forEach((ranker: any, index: any) => {
       userApi.getUser(Number(ranker.nickname)).then((response) => {
