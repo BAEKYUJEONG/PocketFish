@@ -1,5 +1,9 @@
 package com.a202.fishserver.service.ranking;
 
+import com.a202.fishserver.domain.collection.Collection;
+import com.a202.fishserver.domain.collection.CollectionRepository;
+import com.a202.fishserver.domain.fish.Fish;
+import com.a202.fishserver.domain.fish.FishRepository;
 import com.a202.fishserver.domain.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ import java.util.*;
 public class RankingServiceImpl implements RankingService{
 
     private final UserRepository userRepository;
+    private final CollectionRepository collectionRepository;
+    private final FishRepository fishRepository;
 
     @Autowired
     private RedisTemplate<String, String> template;
@@ -45,5 +51,25 @@ public class RankingServiceImpl implements RankingService{
         }
 
         return ranks;
+    }
+
+    @Override
+    public void reEnrollRanks() {
+
+        List<HashMap<String, Object>> ranks = new ArrayList<>();
+        List<Fish> fishes = fishRepository.findAll();
+        for (Fish fish : fishes) {
+            List<Collection> collections = collectionRepository.findByFish(fish);
+
+            for (Collection c : collections) {
+                System.out.println("== 랭킹 재등록==");
+                ZSetOperations<String, String> zset = template.opsForZSet();
+                System.out.println("zset created");
+
+                zset.add("fish"+fish.getId(), c.getId()+";"+c.getUser().getNickname()+";"+c.getUser().getId(), c.getLength());
+                System.out.println("zset added: "+ c.getId()+";"+c.getUser().getNickname()+";"+c.getUser().getId() + "= " +c.getLength());
+            }
+        }
+
     }
 }
