@@ -2,11 +2,14 @@ import { IconButton, Title } from "react-native-paper";
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Alert } from "react-native";
 import { Body, CardItem, Left, Thumbnail } from "native-base";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { kakaoApi } from "../../utils/axios";
+import { SetUser } from "../../redux/user";
 
 export default function Profile() {
   const user = useSelector((state: any) => state.user);
   const userObj = JSON.parse(user.user);
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <CardItem style={{ flex: 1 }}>
@@ -39,10 +42,7 @@ export default function Profile() {
                         kakaoApi
                           .kakaoLogout()
                           .then((result) => {
-                            setIsLoggedIn(false);
                             dispatch(SetUser(null));
-                            console.log(state.user);
-                            console.log;
                           })
                           .catch((e) => console.error(e));
                       },
@@ -67,10 +67,7 @@ export default function Profile() {
                         kakaoApi
                           .kakaoSignout()
                           .then((result) => {
-                            setIsLoggedIn(false);
                             dispatch(SetUser(null));
-                            console.log(state.user);
-                            console.log;
                           })
                           .catch((e) => console.error(e));
                       },
