@@ -100,19 +100,25 @@ export default function RankerView({
                   })
                 }
               >
-                <Text
-                  style={{
-                    backgroundColor: "skyblue",
-                    height: 15,
-                    fontSize: 15,
-                    marginBottom: 3,
-                    marginLeft: 3,
-                    borderRadius: 3,
-                    padding: 3,
-                  }}
-                >
-                  {index + 4}등 {ranker.nickname} {ranker.length}cm
-                </Text>
+                <Row style={{ alignItems: 'center', backgroundColor: colors.light }}>
+                  <Row>
+                    <Text
+                      style={{
+                        height: 50,
+                        marginBottom: 3,
+                        borderRadius: 3,
+                        padding: 18,
+                      }}
+                    >
+                      {index + 4}등
+                    </Text>
+                  </Row>
+                  <Col>
+                    <Text>
+                      {ranker.user_id} {ranker.length}cm
+                    </Text>
+                  </Col>
+                </Row>
               </TouchableOpacity>
             ))}
         </ScrollView>
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
   rank: {
     height: 60,
     // 스타일 전체 수정 후 색상 변경 필요
-    backgroundColor: colors.light,
+    backgroundColor: 'white',
     marginBottom: 5,
   },
 });
