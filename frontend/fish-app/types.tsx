@@ -20,7 +20,6 @@ export type ProfileParamList = {
   CollectionItemScreen: undefined;
   InputDetailScreen: undefined;
   CommentScreen: undefined;
-  KakaoLoginScreen: undefined;
 };
 
 export type AddParamList = {
