@@ -9,8 +9,6 @@ import CollectionScreen from "../screens/CollectionScreen";
 import CollectionItemScreen from "../screens/CollectionItemScreen";
 import CommentScreen from "../screens/CommentScreen";
 import RankingScreen from "../screens/RankingScreen";
-import HomeScreen from "../screens/HomeScreen";
-import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
@@ -102,12 +100,12 @@ function RankingNavigator() {
       <RankingStack.Screen
         name="RankingScreen"
         component={RankingScreen}
-        options={{ headerTitle: "Ranking" }}
+        options={{ headerTitle: "랭킹" }}
       />
       <RankingStack.Screen
         name="OtherCollectionItemScreen"
         component={OtherCollectionItemScreen}
-        options={{ headerTitle: "Detail" }}
+        options={{ headerTitle: "상세보기" }}
       />
     </RankingStack.Navigator>
   );
@@ -121,21 +119,27 @@ function ProfileNavigator() {
       <ProfileStack.Screen
         name="CollectionScreen"
         component={CollectionScreen}
-        options={{ headerTitle: "Collection" }}
+        options={{ headerTitle: "도감" }}
       />
       <ProfileStack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ headerTitle: "Profile" }}
+        options={{ headerTitle: "프로필" }}
       />
       <ProfileStack.Screen
         name="CollectionItemScreen"
         component={CollectionItemScreen}
+        options={{ headerTitle: "상세보기" }}
       />
-      <ProfileStack.Screen name="CommentScreen" component={CommentScreen} />
+      <ProfileStack.Screen
+        name="CommentScreen"
+        component={CommentScreen}
+        options={{ headerTitle: "댓글" }}
+      />
       <ProfileStack.Screen
         name="InputDetailScreen"
         component={InputDetailScreen}
+        options={{ headerTitle: "세부 내용 입력" }}
       />
     </ProfileStack.Navigator>
   );
@@ -146,10 +150,26 @@ const AddStack = createStackNavigator<AddParamList>();
 function AddNavigator() {
   return (
     <AddStack.Navigator>
-      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
-      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
-      <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
-      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
+      <AddStack.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+        options={{ headerTitle: "사진 촬영" }}
+      />
+      <AddStack.Screen
+        name="ImageCheckScreen"
+        component={ImageCheckScreen}
+        options={{ headerTitle: "분석 요청" }}
+      />
+      <AddStack.Screen
+        name="ShowResultScreen"
+        component={ShowResultScreen}
+        options={{ headerTitle: "분석 결과" }}
+      />
+      <AddStack.Screen
+        name="InputDetailScreen"
+        component={InputDetailScreen}
+        options={{ headerTitle: "세부 내용 입력" }}
+      />
     </AddStack.Navigator>
   );
 }

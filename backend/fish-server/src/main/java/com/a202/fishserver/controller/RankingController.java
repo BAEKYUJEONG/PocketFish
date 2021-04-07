@@ -28,4 +28,9 @@ public class RankingController {
                 .build();
     }
 
+    @GetMapping()
+    public void reEnrollRanks() {
+        rankingService.reEnrollRanks();
+    }
+
 }

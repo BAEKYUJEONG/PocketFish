@@ -14,15 +14,29 @@ export default function RankerView({
 }: {
   rankers: Record<string, any>;
   navigation: any;
-  }) {
-  const [topImage, setTopImage] = useState(["", "", ""]);
+}) {
+  const [top1Image, setTop1Image] = useState("");
+  const [top2Image, setTop2Image] = useState("");
+  const [top3Image, setTop3Image] = useState("");
   useEffect(() => {
-    rankers.slice(0, 3).forEach(ranker => {
-      userApi.getUser(Number(ranker.nickname)).then(response => {
-        console.log(response.data);
+    rankers.slice(0, 3).forEach((ranker: any, index: any) => {
+      userApi.getUser(Number(ranker.nickname)).then((response) => {
+        switch (index) {
+          case 0:
+            setTop1Image(response.data.picture);
+            break;
+          case 1:
+            setTop2Image(response.data.picture);
+            break;
+          case 2:
+            setTop3Image(response.data.picture);
+            break;
+          default:
+            break;
+        }
       });
-     })
-  }, [])
+    });
+  }, [rankers]);
   return (
     <View style={styles.container}>
       <View style={styles.top3}>
@@ -30,6 +44,7 @@ export default function RankerView({
           .slice(0, 3)
           .map((ranker: Record<string, any>, index: number) => (
             <TouchableOpacity
+              key={index}
               style={styles.rank}
               onPress={() =>
                 navigation.navigate("OtherCollectionItemScreen", {
@@ -56,8 +71,11 @@ export default function RankerView({
                     source={{
                       uri:
                         // 사용자 프사 또는 물고기 사진 필요
-                        "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg"
-                        //userApi.getUser(Number(ranker.nickname)).picture
+                        index === 0
+                          ? top1Image
+                          : index === 1
+                          ? top2Image
+                          : top3Image,
                     }}
                   />
                 </Row>
@@ -68,92 +86,6 @@ export default function RankerView({
               </Row>
             </TouchableOpacity>
           ))}
-        {/* <TouchableOpacity
-          style={styles.rank}
-          onPress={() =>
-            navigation.navigate("OtherCollectionItemScreen", {
-              id: rankers[0].collection_id,
-            })
-          }
-        >
-          <Col>
-            <Image
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              resizeMode="contain"
-              source={require("../../assets/images/rank1.png")}
-            />
-          </Col>
-          {rankers.length > 0 ? (
-            <>
-              <Col style={{ marginTop: -25 }}>
-                <Text style={styles.textStyle}>{rankers[0].nickname}</Text>
-                <Text style={styles.textStyle}>{rankers[0].length}cm</Text>
-              </Col>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.rank}
-          onPress={() =>
-            navigation.navigate("OtherCollectionItemScreen", {
-              id: rankers[1].collection_id,
-            })
-          }
-        >
-          <Row>
-            <Image
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              resizeMode="contain"
-              source={require("../../assets/images/rank2.png")}
-            />
-            <Thumbnail
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              small
-              source={{
-                uri:
-                  "http://www.siminsori.com/news/photo/201907/213852_63106_2246.jpg",
-              }}
-            />
-          </Row>
-          {rankers.length > 1 ? (
-            <>
-              <Col style={{ marginTop: -25 }}>
-                <Text style={styles.textStyle}>{rankers[1].nickname}</Text>
-                <Text style={styles.textStyle}>{rankers[1].length}cm</Text>
-              </Col>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.rank}
-          onPress={() =>
-            navigation.navigate("OtherCollectionItemScreen", {
-              id: rankers[2].collection_id,
-            })
-          }
-        >
-          <Col>
-            <Image
-              style={{ marginTop: 5, height: 50, width: 50 }}
-              resizeMode="contain"
-              source={require("../../assets/images/rank3.png")}
-            />
-          </Col>
-          {rankers.length > 2 ? (
-            <>
-              <Col style={{ marginTop: -25 }}>
-                <Text style={styles.textStyle}>{rankers[2].nickname}</Text>
-                <Text style={styles.textStyle}>{rankers[2].length}cm</Text>
-              </Col>
-            </>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity> */}
       </View>
       <View style={styles.top50}>
         <ScrollView>
