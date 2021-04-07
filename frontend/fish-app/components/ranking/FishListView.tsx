@@ -16,7 +16,7 @@ export default class FishListView extends Component {
   }
   render() {
     return (
-      <Form>
+      <Form style={{ width: "90%", alignSelf: "center" }}>
         <Picker
           mode="dropdown"
           iosHeader="어종을 선택해주세요."

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { collectionApi } from "../utils/axios";
 import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Text, View } from "../components/Themed";
-import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { useSelector } from "react-redux";
 import MainLoginScreen from "./auth/MainLoginScreen";
@@ -12,6 +11,7 @@ import { useFocusEffect } from "@react-navigation/core";
 import { useCallback } from "react";
 import Profile from "./Component/Profile";
 import { ScrollView } from "react-native-gesture-handler";
+import { Thumbnail } from "native-base";
 
 export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri1 =
@@ -85,7 +85,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                       <Row
                         key={idx}
                         style={{
-                          marginBottom: 10,
+                          marginBottom: 3,
                           justifyContent: "center",
                           height: "20%",
                         }}
@@ -133,7 +133,9 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                                     }}
                                   >
                                     <Thumbnail
-                                      large
+                                      small
+                                      style={{ height: 90, width: 90 }}
+                                      // resizeMode="contain"
                                       source={{ uri: d.fishImage }}
                                     />
                                   </TouchableOpacity>
@@ -183,7 +185,6 @@ const styles = StyleSheet.create({
   },
   contentView: {
     flex: 1,
-    marginBottom: 30,
   },
   title: {
     fontSize: 20,

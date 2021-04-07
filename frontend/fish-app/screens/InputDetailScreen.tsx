@@ -182,7 +182,7 @@ export default function InputDetailScreen({
             } else if (type == "update") {
               update();
             }
-            navigation.navigate("CollectionScreen");
+            navigation.navigate("CameraScreen");
           }}
         >
           <Text style={styles.btn}>저장하기</Text>

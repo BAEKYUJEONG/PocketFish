@@ -19,6 +19,7 @@ import {
   Icon,
   Text,
 } from "native-base";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function CollectionItemScreen({ route, navigation }) {
   const { id } = route.params;
@@ -51,28 +52,28 @@ export default function CollectionItemScreen({ route, navigation }) {
       navigation.navigate("CollectionScreen");
     });
   };
-  const updateItem =async () =>{
-    let box={
+  const updateItem = async () => {
+    let box = {
       bait: item.fishBait,
       fish_id: KoreanToNumber(item.fishName),
       fishing_info: item.fishingInfo,
       length: item.fishLength,
       location: item.fishLocation,
       memo: item.fishMemo,
-      fish_image:item.fishImage,
-      collectionId: item.collectionId
+      fish_image: item.fishImage,
+      collectionId: item.collectionId,
     };
-    let name=item.fishName;
-    let type="update";
-    navigation.navigate("InputDetailScreen",{box,name,type});
-  }
+    let name = item.fishName;
+    let type = "update";
+    navigation.navigate("InputDetailScreen", { box, name, type });
+  };
   return (
-    <View>
-      <Card>
+    <View style={{ flex: 1 }}>
+      <Card style={{ height: "100%", marginTop: 0 }}>
         <CardItem>
           <Left>
             <Thumbnail source={{ uri: item.userProfile }} />
-            <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
+            <Body style={{ flexDirection: "row" }}>
               <View>
                 <Text>{item.userNick}</Text>
                 <Text>{item.regDate}</Text>
@@ -80,11 +81,11 @@ export default function CollectionItemScreen({ route, navigation }) {
               <View style={{ flexDirection: "row", width: "100%" }}>
                 <IconButton
                   icon="pencil"
-                  style={{ marginLeft: "15%" }}
+                  style={{ marginLeft: "20%" }}
                   color="black"
                   size={20}
                   onPress={() => {
-                    updateItem()
+                    updateItem();
                   }}
                 />
                 <IconButton
@@ -92,9 +93,9 @@ export default function CollectionItemScreen({ route, navigation }) {
                   color="black"
                   size={20}
                   onPress={() => {
-                    Alert.alert("", "정망 삭제하시나요?", [
-                      { text: "No" },
-                      { text: "Yes", onPress: deleteItem },
+                    Alert.alert("", "정말 삭제하시나요?", [
+                      { text: "아니오" },
+                      { text: "네", onPress: deleteItem },
                     ]);
                   }}
                 />
@@ -102,18 +103,21 @@ export default function CollectionItemScreen({ route, navigation }) {
             </Body>
           </Left>
         </CardItem>
-        <CardItem cardBody>
-          <Image
-            source={{ uri: item.fishImage }}
-            style={{ height: 250, width: undefined, flex: 1 }}
-          />
-        </CardItem>
-        <CardItem style={{ height: 45 }}>
-          <Left>
-            {/* <Button transparent>
+        <View style={{ flex: 1 }}>
+          <CardItem style={{ flex: 2, backgroundColor: "lightgrey" }} cardBody>
+            <Image
+              resizeMode="contain"
+              source={{ uri: item.fishImage }}
+              style={{ flex: 1, height: "100%" }}
+            />
+          </CardItem>
+          {/* 댓글 안녕! */}
+          {/* <CardItem style={{ height: 45 }}>
+          <Left> */}
+          {/* <Button transparent>
               <Icon name="ios-heart" style={{ color: 'black' }} />
             </Button> */}
-            <Button
+          {/* <Button
               transparent
               onPress={() =>
                 navigation.navigate("CommentScreen", { id: item.collectionId })
@@ -125,25 +129,59 @@ export default function CollectionItemScreen({ route, navigation }) {
               >
                 댓글
               </Text>
-            </Button>
-          </Left>
-        </CardItem>
-        <CardItem style={{ marginTop: -10 }}>
-          <Text>
-            {/* <Text style={{ fontWeight: "900" }}>{item.userNick}</Text> */}
-            <View>
-              <Text style={{ marginLeft: 5 }}>{item.fishMemo}</Text>
-              <Text>길이 : {item.fishLength}</Text>
-              <Text>어종 : {item.fishName}</Text>
-              <Text>장소 : {item.fishLocation}</Text>
-              <Text>장비 : {item.fishingInfo}</Text>
-              <Text>미끼 : {item.fishBait}</Text>
-            </View>
-          </Text>
-        </CardItem>
+            </Button> */}
+          {/* </Left>
+        </CardItem> */}
+          <CardItem
+            style={{
+              // backgroundColor: "lightgrey",
+              marginTop: -10,
+              flexDirection: "column",
+              alignItems: "flex-start",
+              flex: 1,
+            }}
+          >
+            <ScrollView
+              style={{ flex: 1, marginTop: 5 }}
+              contentContainerStyle={{ justifyContent: "center" }}
+            >
+              {item.memo ? <Text style={styles.text}>{item.memo}</Text> : <></>}
+              {item.fishLength ? (
+                <Text style={styles.text}>길이 : {item.fishLength}cm</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishName ? (
+                <Text style={styles.text}>어종 : {item.fishName}</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishLocation ? (
+                <Text style={styles.text}>장소 : {item.fishLocation}</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishingInfo ? (
+                <Text style={styles.text}>장비 : {item.fishingInfo}</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishBait ? (
+                <Text style={styles.text}>미끼 : {item.fishBait}</Text>
+              ) : (
+                <></>
+              )}
+            </ScrollView>
+          </CardItem>
+        </View>
       </Card>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 20,
+    // fontWeight: "bold",
+  },
+});

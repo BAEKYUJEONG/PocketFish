@@ -14,15 +14,17 @@ export default function Profile() {
     <View style={styles.container}>
       <CardItem style={{ flex: 1 }}>
         <Left style={{ width: "100%", height: "100%" }}>
-          <Thumbnail source={{ uri: userObj.profile_image }} />
+          <Thumbnail large source={{ uri: userObj.profile_image }} />
           <Body style={{ flexDirection: "row" }}>
             <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+              <Text
+                style={{ paddingLeft: 10, fontSize: 25, fontWeight: "bold" }}
+              >
                 {userObj.nickname}
               </Text>
             </View>
             <View
-              style={{ flexDirection: "row", width: "100%", right: "-35%" }}
+              style={{ flexDirection: "row", width: "100%", right: "-27.5%" }}
             >
               <IconButton
                 icon="logout"

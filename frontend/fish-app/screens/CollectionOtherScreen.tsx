@@ -1,186 +1,165 @@
 import * as React from "react";
 import { Component } from "react";
 import { useState, useEffect } from "react";
-import { collectionApi } from "../utils/axios";
-import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
-import { Text, View } from "../components/Themed";
-import { Icon, Container, Content, Thumbnail, Image } from "native-base";
-import { Col, Row, Grid } from "react-native-easy-grid";
-import { useSelector } from "react-redux";
+import { collectionItemApi } from "../utils/axios";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { StyleSheet, Image, Alert } from "react-native";
+import { View } from "../components/Themed";
+import { KoreanToNumber } from "../utils/fish";
+import { IconButton } from "react-native-paper";
+import {
+  Card,
+  CardItem,
+  Thumbnail,
+  Body,
+  Left,
+  Right,
+  Button,
+  Icon,
+  Text,
+} from "native-base";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function CollectionOtherScreen({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) {
-  const uri1 =
-    "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&w=1000&q=80";
-  const uri2 =
-    "https://c.pxhere.com/photos/75/0c/blue_devils_clownfish_aquarium_nemo_underwater_sea_reeve_coral-605474.jpg!d";
-  const [data, setData] = useState([]);
-
-  //아이디값
-  //console.log(userObj.user_id);
-  //토큰값
-  //console.log(userObj.asscess_token);
-
-  // useEffect(() => {
-  //   collectionApi.getCollection(1).then((response: any) => {
-  //     let count = 3 - (response.data.length % 3);
-  //     let data = [...response.data, ...new Array(count)];
-  //     setData(data);
-  //     //alert(JSON.stringify(response.data));
-  //     console.log(data);
-  //   });
-  // }, []);
+export default function CollectionOtherScreen({ route, navigation }) {
+  const { id } = route.params;
+  const [item, setItem] = useState({});
+  const user = useSelector((state: any) => state.user);
+  const userObj = JSON.parse(user.user);
 
   useEffect(() => {
-    console.log(route.params.id);
-    console.log(typeof route.params.id);
-    collectionApi.getCollection(route.params.id).then((response: any) => {
-      let count = 3 - (response.data.length % 3);
-      let data = [...response.data, ...new Array(count)];
-      setData(data);
-      //alert(JSON.stringify(response.data));
-      console.log(data);
-    });
+    const get = async () => {
+      await collectionItemApi.getCollectionItem(id).then((response: any) => {
+        setItem(response.data);
+        console.log(item);
+      });
+    };
+    get();
+    return () => {
+      console.log();
+    };
   }, []);
 
+  const deleteItem = async () => {
+    let box = {
+      user_token: userObj.access_token,
+      user_id: userObj.id,
+      item_id: item.collectionId,
+    };
+    //console.log(box);
+    await collectionItemApi.deleteItem(box).then((res: any) => {
+      console.log(res.data);
+      navigation.navigate("CollectionScreen");
+    });
+  };
+  const updateItem = async () => {
+    let box = {
+      bait: item.fishBait,
+      fish_id: KoreanToNumber(item.fishName),
+      fishing_info: item.fishingInfo,
+      length: item.fishLength,
+      location: item.fishLocation,
+      memo: item.fishMemo,
+      fish_image: item.fishImage,
+      collectionId: item.collectionId,
+    };
+    let name = item.fishName;
+    let type = "update";
+    navigation.navigate("InputDetailScreen", { box, name, type });
+  };
   return (
-    <View style={styles.container}>
-      <View style={{ width: "100%", height: "100%" }}>
-        <View style={styles.headerView}>
-          <Text style={styles.instructions}>내 수조</Text>
+    <View style={{ flex: 1 }}>
+      <Card style={{ height: "100%", marginTop: 0 }}>
+        <CardItem>
+          <Left>
+            <Thumbnail source={{ uri: item.userProfile }} />
+            <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
+              <View>
+                <Text>{item.userNick}</Text>
+                <Text>{item.regDate}</Text>
+              </View>
+            </Body>
+          </Left>
+        </CardItem>
+        <View style={{ flex: 1 }}>
+          <CardItem style={{ flex: 2, backgroundColor: "lightgrey" }} cardBody>
+            <Image
+              resizeMode="contain"
+              source={{ uri: item.fishImage }}
+              style={{ flex: 1, height: "100%" }}
+            />
+          </CardItem>
+          {/* 댓글 안녕! */}
+          {/* <CardItem style={{ height: 45 }}>
+          <Left> */}
+          {/* <Button transparent>
+              <Icon name="ios-heart" style={{ color: 'black' }} />
+            </Button> */}
+          {/* <Button
+              transparent
+              onPress={() =>
+                navigation.navigate("CommentScreen", { id: item.collectionId })
+              }
+            >
+              <Icon name="ios-chatbubbles" style={{ color: "black" }} />
+              <Text
+                style={{ color: "black", fontSize: 15, alignContent: "center" }}
+              >
+                댓글
+              </Text>
+            </Button> */}
+          {/* </Left>
+        </CardItem> */}
+          <CardItem
+            style={{
+              // backgroundColor: "lightgrey",
+              marginTop: -10,
+              flexDirection: "column",
+              alignItems: "flex-start",
+              flex: 1,
+            }}
+          >
+            <ScrollView
+              style={{ flex: 1, marginTop: 5 }}
+              contentContainerStyle={{ justifyContent: "center" }}
+            >
+              {item.memo ? <Text style={styles.text}>{item.memo}</Text> : <></>}
+              {item.fishLength ? (
+                <Text style={styles.text}>길이 : {item.fishLength}cm</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishName ? (
+                <Text style={styles.text}>어종 : {item.fishName}</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishLocation ? (
+                <Text style={styles.text}>장소 : {item.fishLocation}</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishingInfo ? (
+                <Text style={styles.text}>장비 : {item.fishingInfo}</Text>
+              ) : (
+                <></>
+              )}
+              {item.fishBait ? (
+                <Text style={styles.text}>미끼 : {item.fishBait}</Text>
+              ) : (
+                <></>
+              )}
+            </ScrollView>
+          </CardItem>
         </View>
-        <View style={{ width: "100%", height: "100%" }}>
-          <View style={styles.contentView}>
-            <View style={styles.collectionAll}>
-              <Grid style={{ marginTop: 30 }}>
-                {Array.from({ length: 2 }, (_, i) => i + 1).map((idx) => (
-                  <Row
-                    key={idx}
-                    style={{
-                      marginBottom: 10,
-                      justifyContent: "center",
-                      height: "20%",
-                    }}
-                  >
-                    {data.slice((idx - 1) * 3, idx * 3).map((d, index) => (
-                      <Col
-                        key={index}
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                          alignContent: "center",
-                        }}
-                      >
-                        {d === undefined ? null : (
-                          <View
-                            style={[
-                              { width: "100%" },
-                              { height: "100%" },
-                              { alignItems: "center" },
-                              { marginBottom: 2 },
-                            ]}
-                          >
-                            {/* { index % 3 == 0 ? <br></br> : null } */}
-                            <View
-                              key={index}
-                              style={[
-                                { width: "80%" },
-                                { height: "80%" },
-                                { marginBottom: 2 },
-                                { alignItems: "center" },
-                                index % 3 !== 0
-                                  ? { paddingLeft: 2 }
-                                  : { paddingLeft: 0 },
-                              ]}
-                            >
-                              <TouchableOpacity
-                                style={styles.collectionImg}
-                                onPress={() => {
-                                  console.log("touch");
-                                  console.log(d.collectionId);
-                                  navigation.navigate("CollectionItemScreen", {
-                                    id: d.collectionId,
-                                  });
-                                }}
-                              >
-                                <Thumbnail
-                                  large
-                                  source={{ uri: d.fishImage }}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                        )}
-                      </Col>
-                    ))}
-                  </Row>
-                ))}
-              </Grid>
-              {/*               
-              <Thumbnail large source={{ uri: uri1 }} />
-              <Thumbnail large source={{ uri: uri2 }} />
-              <Thumbnail large source={{ uri: uri1 }} />
-              <Thumbnail large source={{ uri: uri2 }} />
-              */}
-            </View>
-          </View>
-        </View>
-      </View>
+      </Card>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //alignItems: 'center',
-    //justifyContent: 'center',
-  },
-  headerView: {
-    height: "10%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  instructions: {
-    color: "#0476D9",
-    fontSize: 15,
-    marginTop: 30,
-    marginHorizontal: 150,
-    marginBottom: 30,
-  },
-  contentView: {
-    flex: 1,
-    marginBottom: 30,
-  },
-  title: {
+  text: {
     fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  collectionAll: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    borderTopWidth: 1,
-    borderTopColor: "#eae5e5",
-    height: "100%",
-  },
-  collectionImg: {
-    borderRadius: 50,
-    //backgroundColor: '#ffffff', //배경색이 없으면 그림자가 안보일 수 있음.
-    //IOS
-    shadowColor: "#000000", //그림자색
-    shadowOpacity: 0.3, //그림자 투명도
-    shadowOffset: { width: 2, height: 2 }, //그림자 위치
-    //ANDROID
-    elevation: 3,
+    // fontWeight: "bold",
   },
 });
