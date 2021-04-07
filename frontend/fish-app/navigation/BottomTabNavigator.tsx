@@ -1,4 +1,8 @@
-import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -32,6 +36,7 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Ranking"
       tabBarOptions={{
+        style: { height: 50 },
         activeTintColor: colors.default,
         inactiveTintColor: "white",
         inactiveBackgroundColor: colors.dark,
@@ -53,20 +58,22 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Add"
+        name="Camera"
         component={AddNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="camera" color={color} size={30} />
+            <MaterialIcons name="camera" color={color} size={25} />
           ),
           unmountOnBlur: true, // 클릭 시 새로고침.
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name="Collection"
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIconMaterialCommunityIcons name="fishbowl" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -79,14 +86,16 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
 }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons size={25} style={{ marginBottom: -3 }} {...props} />;
 }
 
-function TabBarIconFontAwesome5(props: {
-  name: React.ComponentProps<typeof FontAwesome5>["name"];
+function TabBarIconMaterialCommunityIcons(props: {
+  name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   color: string;
 }) {
-  return <FontAwesome5 size={30} style={{ marginBottom: -3 }} {...props} />;
+  return (
+    <MaterialCommunityIcons size={25} style={{ marginBottom: -3 }} {...props} />
+  );
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
