@@ -1,8 +1,7 @@
-import { resolveUri } from 'expo-asset/build/AssetSources';
-import React from 'react';
+import { resolveUri } from "expo-asset/build/AssetSources";
+import React from "react";
 
-
-export function NumberToStringKorean(number : number){
+export function NumberToStringKorean(number: number) {
   switch (number) {
     case 1:
       return "광어";
@@ -18,7 +17,7 @@ export function NumberToStringKorean(number : number){
       return "배스";
   }
 }
-export function NumberToStringEnglish(number:number){
+export function NumberToStringEnglish(number: number) {
   switch (number) {
     case 1:
       return "flatfish";
@@ -27,14 +26,14 @@ export function NumberToStringEnglish(number:number){
     case 3:
       return "rockfish";
     case 4:
-      return "crucian carp";
+      return "carpfish";
     case 5:
       return "golden mandarin fish";
     default:
       return "bass";
   }
 }
-export function EnglishToKorean(name: string){
+export function EnglishToKorean(name: string) {
   switch (name) {
     case "flatfish":
       return "광어";
@@ -42,32 +41,32 @@ export function EnglishToKorean(name: string){
       return "참돔";
     case "rockfish":
       return "우럭";
-    case "crucian carp":
+    case "carpfish":
       return "붕어";
-    case  "golden mandarin fish":
+    case "golden mandarin fish":
       return "쏘가리";
     default:
       return "배스";
   }
 }
-export async function EnglishToNumber(name: string){
+export async function EnglishToNumber(name: string) {
   //console.log("!!!!!!!!!!!!!!!"+name);
   switch (name) {
-    case 'flatfish':
+    case "flatfish":
       return 1;
-    case 'red snapper':
+    case "red snapper":
       return 2;
-    case 'rockfish':
+    case "rockfish":
       return 3;
-    case 'crucian carp':
+    case "carpfish":
       return 4;
-    case 'golden mandarin fish':
+    case "golden mandarin fish":
       return 5;
     default:
       return 6;
   }
 }
-export function KoreanToNumber(name:string){
+export function KoreanToNumber(name: string) {
   //console.log("&&&&&&&&&&&&&&&"+name);
   switch (name) {
     case "광어":
