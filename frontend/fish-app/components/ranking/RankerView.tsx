@@ -37,7 +37,7 @@ export default function RankerView({
       });
     });
   }, [rankers]);
-  return (
+  return rankers.length > 0 ? (
     <View style={styles.container}>
       <View style={styles.top3}>
         {rankers
@@ -100,7 +100,12 @@ export default function RankerView({
                   })
                 }
               >
-                <Row style={{ alignItems: 'center', backgroundColor: colors.light }}>
+                <Row
+                  style={{
+                    alignItems: "center",
+                    backgroundColor: colors.light,
+                  }}
+                >
                   <Row>
                     <Text
                       style={{
@@ -123,6 +128,15 @@ export default function RankerView({
             ))}
         </ScrollView>
       </View>
+    </View>
+  ) : (
+    <View>
+      <Text style={{ color: colors.default }}>
+        잡은 물고기를 등록하고 영광의 첫 주인공이 되어보세요!
+      </Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
     </View>
   );
 }
@@ -149,7 +163,7 @@ const styles = StyleSheet.create({
   rank: {
     height: 60,
     // 스타일 전체 수정 후 색상 변경 필요
-    backgroundColor: 'white',
+    backgroundColor: "white",
     marginBottom: 5,
   },
 });
