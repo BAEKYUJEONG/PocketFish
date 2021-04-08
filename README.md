@@ -48,6 +48,36 @@
 - **도감 댓글**
   - 댓글 CRUD 개발 진행 중
 
+<br>
+
+## 🛠️Install & Usage
+
+//사용방법
+
+
+
+
+
+## 📑 기술 스택
+
+<img src="./resources/development.png" alt="1" style="zoom:100%;" />
+
+
+
+- **Communication commons**
+
+<img src="./resources/jira_git.png" alt="1" style="zoom:40%;" />
+
+## :fish: 페이지 소개
+
+//캡처 화면 넣어주세요
+
+
+
+
+
+
+
 
 
 [아키텍처](#아키텍처)
