@@ -143,30 +143,4 @@ public class UserController {
                 .data(null)
                 .build();
     }
-
-    /**
-     * 오큰 유효성 검사
-     * 배포시 삭제 예정
-     */
-    @PostMapping("/chkAccess")
-    @ApiOperation(value = "토큰 유효성 검사")
-    public Response getUserIdByAccessToken(@RequestBody String accessToken) {
-        long id;
-
-        try {
-            id = userService.getUserIdByAccessToken(accessToken);
-        } catch (Exception e) {
-            return Response.builder()
-                    .status(false)
-                    .message(e.getMessage())
-                    .data(null)
-                    .build();
-        }
-
-        return Response.builder()
-                .status(true)
-                .message("토큰 유효성 검사 성공")
-                .data(id)
-                .build();
-    }
 }
