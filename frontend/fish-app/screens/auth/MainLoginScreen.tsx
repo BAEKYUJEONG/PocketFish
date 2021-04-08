@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Text, View } from "../../components/Themed";
 import KakaoLoginScreen from "../auth/KakaoLoginScreen";
 
@@ -25,9 +25,11 @@ export default function MainLoginScreen() {
       <View style={styles.footerView}>
         <TouchableOpacity
           onPress={() => setKakaoLoginBtn(true)}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>카카오톡으로 로그인</Text>
+          >
+            <Image
+              style={{ height: 60, width: 240 }}
+              resizeMode="contain"
+              source={require("../../assets/images/kakao_login_large_narrow.png")} />
         </TouchableOpacity>
       </View>
     </View>
