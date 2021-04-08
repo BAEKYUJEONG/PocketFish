@@ -2,6 +2,15 @@
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,java,java-web,vscode,gradle,reactnative,python,pycharm,react,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,java-web,vscode,gradle,reactnative,python,pycharm,react,windows,visualstudiocode
 
+# dataset
+dataset/
+test_data/
+training_data/
+
+# model
+*.h5
+*.hdf5
+
 # application.properties
 backend/fish-server/src/main/resources/
 
