@@ -47,7 +47,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
           let data = [...response.data, ...new Array(count)];
           setData(data);
           //alert(JSON.stringify(response.data));
-          console.log(data);
+          // console.log(data);
         });
       }
       return () => {

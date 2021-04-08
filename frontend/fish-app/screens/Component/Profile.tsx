@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Alert } from "react-native";
 import { Body, CardItem, Left, Thumbnail } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
-import { kakaoApi } from "../../utils/axios";
+import { kakaoApi, userApi } from "../../utils/axios";
 import { SetUser } from "../../redux/user";
+import { saveData } from "../../utils/storage";
 
 export default function Profile() {
   const user = useSelector((state: any) => state.user);
@@ -44,6 +45,7 @@ export default function Profile() {
                         kakaoApi
                           .kakaoLogout()
                           .then((result) => {
+                            saveData("auth", "");
                             dispatch(SetUser(null));
                           })
                           .catch((e) => console.error(e));
@@ -66,12 +68,15 @@ export default function Profile() {
                     {
                       text: "예",
                       onPress: () => {
-                        kakaoApi
-                          .kakaoSignout()
-                          .then((result) => {
-                            dispatch(SetUser(null));
-                          })
-                          .catch((e) => console.error(e));
+                        userApi.signout(userObj.id).then((result) => {
+                          kakaoApi
+                            .kakaoSignout()
+                            .then((result) => {
+                              saveData("auth", "");
+                              dispatch(SetUser(null));
+                            })
+                            .catch((e) => console.error(e));
+                        });
                       },
                     },
                   ]);

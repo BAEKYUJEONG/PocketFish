@@ -62,6 +62,7 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                     properties: { nickname, profile_image },
                   } = response;
                   userApi.checkUser(id).then((result: any) => {
+                    console.log(result.data);
                     if (!result.status) {
                       const userData = {
                         id,
@@ -72,6 +73,9 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                         .signup(userData)
                         .then((res: any) => console.log(res))
                         .catch((e: any) => console.log(e));
+                    } else {
+                      console.log("userApi.profile_update");
+                      userApi.profile_update(id, profile_image);
                     }
                   });
                   dispatch(
