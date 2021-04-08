@@ -80,7 +80,6 @@
 다운 받은 apk 설치 시, 무시하고 설치하기를 터치하여 설치를 진행해주세요.
 
 ![KakaoTalk_20210408_142516225_01](README.assets/KakaoTalk_20210408_142516225_01.jpg)
-
 ![KakaoTalk_20210408_142516225_02](README.assets/KakaoTalk_20210408_142516225_02.jpg)
 
 
