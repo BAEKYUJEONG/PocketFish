@@ -79,17 +79,19 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
           <View style={styles.contentView}>
             <ScrollView style={{flex:1}}>
               <View style={styles.collectionAll}>
-                <Grid style={{ marginTop: 30 }}>
-                  {Array.from({ length: data.length }, (_, i) => i + 1).map(
+                <Grid >
+                  {Array.from({ length: data.length/3+1 }, (_, i) => i + 1).map(
                     (idx) => (
                       <Row
                         key={idx}
                         style={{
-                          marginBottom: 3,
+                          marginBottom: 10,
                           justifyContent: "center",
-                          height: "20%",
+                          
+                          // backgroundColor:'red',
                         }}
                       >
+                        {/* <Text>{idx}</Text> */}
                         {data.slice((idx - 1) * 3, idx * 3).map((d, index) => (
                           <Col
                             key={index}
@@ -97,24 +99,27 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                               justifyContent: "center",
                               alignItems: "center",
                               alignContent: "center",
+                              // backgroundColor:'gray',
                             }}
                           >
                             {d === undefined ? null : (
                               <View
                                 style={[
                                   { width: "100%" },
-                                  { height: "100%" },
                                   { alignItems: "center" },
+                                  //{backgroundColor:'blue'},
                                   { marginBottom: 2 },
                                 ]}
                               >
+                                {/* <Text>{index}   {index-1*3}  {idx*3}</Text> */}
                                 <View
                                   key={index}
                                   style={[
                                     { width: "80%" },
-                                    { height: "80%" },
+                                    { height: "40%" },
                                     { marginBottom: 2 },
                                     { alignItems: "center" },
+                                    // {backgroundColor:'black'},
                                     index % 3 !== 0
                                       ? { paddingLeft: 2 }
                                       : { paddingLeft: 0 },
