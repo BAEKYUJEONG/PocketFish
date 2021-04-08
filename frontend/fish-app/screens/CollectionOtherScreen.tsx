@@ -21,7 +21,7 @@ import {
 } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function CollectionItemScreen({ route, navigation }) {
+export default function CollectionOtherScreen({ route, navigation }) {
   const { id } = route.params;
   const [item, setItem] = useState({});
   const user = useSelector((state: any) => state.user);
@@ -73,32 +73,10 @@ export default function CollectionItemScreen({ route, navigation }) {
         <CardItem>
           <Left>
             <Thumbnail source={{ uri: item.userProfile }} />
-            <Body style={{ flexDirection: "row" }}>
+            <Body style={{ flexDirection: "row", backgroundColor: "red" }}>
               <View>
                 <Text>{item.userNick}</Text>
                 <Text>{item.regDate}</Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <IconButton
-                  icon="pencil"
-                  style={{ marginLeft: "20%" }}
-                  color="black"
-                  size={20}
-                  onPress={() => {
-                    updateItem();
-                  }}
-                />
-                <IconButton
-                  icon="delete"
-                  color="black"
-                  size={20}
-                  onPress={() => {
-                    Alert.alert("", "정말 삭제하시나요?", [
-                      { text: "아니오" },
-                      { text: "네", onPress: deleteItem },
-                    ]);
-                  }}
-                />
               </View>
             </Body>
           </Left>

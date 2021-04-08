@@ -1,4 +1,8 @@
-import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -9,23 +13,19 @@ import CollectionScreen from "../screens/CollectionScreen";
 import CollectionItemScreen from "../screens/CollectionItemScreen";
 import CommentScreen from "../screens/CommentScreen";
 import RankingScreen from "../screens/RankingScreen";
-import HomeScreen from "../screens/HomeScreen";
-import KakaoLoginScreen from "../screens/auth/KakaoLoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
-import WaitResponseScreen from "../screens/WaitResponseScreen";
 import InputDetailScreen from "../screens/InputDetailScreen";
 import ShowResultScreen from "../screens/ShowResultScreen";
 
 import {
   BottomTabParamList,
-  CollectionParamList,
   RankingParamList,
-  HomeParamList,
   ProfileParamList,
   AddParamList,
 } from "../types";
+import OtherCollectionItemScreen from "../screens/OtherCollectionItemScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -36,6 +36,7 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Ranking"
       tabBarOptions={{
+        style: { height: 50 },
         activeTintColor: colors.default,
         inactiveTintColor: "white",
         inactiveBackgroundColor: colors.dark,
@@ -57,29 +58,22 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Add"
+        name="Camera"
         component={AddNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="camera" color={color} size={30} />
+            <MaterialIcons name="camera" color={color} size={25} />
           ),
           unmountOnBlur: true, // 클릭 시 새로고침.
         }}
       />
       <BottomTab.Screen
         name="Collection"
-        component={CollectionNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIconFontAwesome5 name="fish" color={color} />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name="Profile"
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIconMaterialCommunityIcons name="fishbowl" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -92,68 +86,20 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
 }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons size={25} style={{ marginBottom: -3 }} {...props} />;
 }
 
-function TabBarIconFontAwesome5(props: {
-  name: React.ComponentProps<typeof FontAwesome5>["name"];
+function TabBarIconMaterialCommunityIcons(props: {
+  name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   color: string;
 }) {
-  return <FontAwesome5 size={30} style={{ marginBottom: -3 }} {...props} />;
+  return (
+    <MaterialCommunityIcons size={25} style={{ marginBottom: -3 }} {...props} />
+  );
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const HomeStack = createStackNavigator<HomeParamList>();
-
-function HomeNavigator() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerTitle: "Home" }}
-      />
-      <HomeStack.Screen
-        name="KakaoLoginScreen"
-        component={KakaoLoginScreen}
-        options={{ headerTitle: "Home" }}
-      />
-    </HomeStack.Navigator>
-  );
-}
-
-const CollectionStack = createStackNavigator<CollectionParamList>();
-
-function CollectionNavigator() {
-  return (
-    <CollectionStack.Navigator>
-      <CollectionStack.Screen
-        name="CollectionScreen"
-        component={CollectionScreen}
-        options={{ headerTitle: "Collection" }}
-      />
-      <CollectionStack.Screen
-        name="CollectionItemScreen"
-        component={CollectionItemScreen}
-      />
-      <CollectionStack.Screen name="CommentScreen" component={CommentScreen} />
-    </CollectionStack.Navigator>
-  );
-}
-
-const AddStack = createStackNavigator<AddParamList>();
-
-function AddNavigator() {
-  return (
-    <AddStack.Navigator>
-      <AddStack.Screen name="CameraScreen" component={CameraScreen} />
-      <AddStack.Screen name="ImageCheckScreen" component={ImageCheckScreen} />
-      <AddStack.Screen name="ShowResultScreen" component={ShowResultScreen} />
-      <AddStack.Screen name="InputDetailScreen" component={InputDetailScreen} />
-    </AddStack.Navigator>
-  );
-}
 
 const RankingStack = createStackNavigator<RankingParamList>();
 
@@ -163,7 +109,12 @@ function RankingNavigator() {
       <RankingStack.Screen
         name="RankingScreen"
         component={RankingScreen}
-        options={{ headerTitle: "Ranking" }}
+        options={{ headerTitle: "랭킹" }}
+      />
+      <RankingStack.Screen
+        name="OtherCollectionItemScreen"
+        component={OtherCollectionItemScreen}
+        options={{ headerTitle: "상세보기" }}
       />
     </RankingStack.Navigator>
   );
@@ -175,10 +126,59 @@ function ProfileNavigator() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
+        name="CollectionScreen"
+        component={CollectionScreen}
+        options={{ headerTitle: "도감" }}
+      />
+      <ProfileStack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ headerTitle: "Profile" }}
+        options={{ headerTitle: "프로필" }}
+      />
+      <ProfileStack.Screen
+        name="CollectionItemScreen"
+        component={CollectionItemScreen}
+        options={{ headerTitle: "상세보기" }}
+      />
+      <ProfileStack.Screen
+        name="CommentScreen"
+        component={CommentScreen}
+        options={{ headerTitle: "댓글" }}
+      />
+      <ProfileStack.Screen
+        name="InputDetailScreen"
+        component={InputDetailScreen}
+        options={{ headerTitle: "세부 내용 입력" }}
       />
     </ProfileStack.Navigator>
+  );
+}
+
+const AddStack = createStackNavigator<AddParamList>();
+
+function AddNavigator() {
+  return (
+    <AddStack.Navigator>
+      <AddStack.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+        options={{ headerTitle: "사진 촬영" }}
+      />
+      <AddStack.Screen
+        name="ImageCheckScreen"
+        component={ImageCheckScreen}
+        options={{ headerTitle: "분석 요청" }}
+      />
+      <AddStack.Screen
+        name="ShowResultScreen"
+        component={ShowResultScreen}
+        options={{ headerTitle: "분석 결과" }}
+      />
+      <AddStack.Screen
+        name="InputDetailScreen"
+        component={InputDetailScreen}
+        options={{ headerTitle: "세부 내용 입력" }}
+      />
+    </AddStack.Navigator>
   );
 }

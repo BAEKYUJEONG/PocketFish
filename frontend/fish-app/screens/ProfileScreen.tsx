@@ -10,7 +10,7 @@ import { getData } from "../utils/storage";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/user";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }: { navigation: any }) {
   const user = useSelector((state) => state.user);
   const userObj = JSON.parse(user.user);
   const dispatch = useDispatch();

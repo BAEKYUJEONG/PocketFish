@@ -4,37 +4,28 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  Home: undefined;
-  Collection: undefined;
   Ranking: undefined;
   Profile: undefined;
   Add: undefined;
 };
 
-export type HomeParamList = {
-  HomeScreen: undefined;
-  KakaoLoginScreen: undefined;
-};
-
-export type CollectionParamList = {
-  CollectionScreen: undefined;
-  CollectionItemScreen: undefined;
-  CommentScreen: undefined;
-};
-
 export type RankingParamList = {
   RankingScreen: undefined;
+  OtherCollectionItemScreen: undefined;
 };
 
 export type ProfileParamList = {
   ProfileScreen: undefined;
+  CollectionScreen: undefined;
+  CollectionItemScreen: undefined;
+  InputDetailScreen: undefined;
+  CommentScreen: undefined;
 };
 
-export type AddParamList={
-  
-  ShowResultScreen:undefined;
-  CameraScreen:undefined;
-  ImageCheckScreen:undefined;
-  WaitResponseScreen:undefined;
-  InputDetailScreen:undefined
+export type AddParamList = {
+  CollectionScreen: undefined;
+  ShowResultScreen: undefined;
+  CameraScreen: undefined;
+  ImageCheckScreen: undefined;
+  InputDetailScreen: undefined;
 };

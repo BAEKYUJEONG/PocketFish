@@ -2,11 +2,10 @@ import * as React from "react";
 import { WebView } from "react-native-webview";
 import axios from "axios";
 import "../../utils/storage";
-import { getData, saveData } from "../../utils/storage";
+import { saveData } from "../../utils/storage";
 import { kakaoApi, userApi } from "../../utils/axios";
 import { SetUser } from "../../redux/user";
 import { useDispatch } from "react-redux";
-import LoadingScreen from "../common/LoadingScreen";
 import { useState } from "react";
 
 const injectedJS = `
@@ -35,9 +34,9 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
           // console.log("data");
           // console.log(data);
           const jsonObj = JSON.parse(data);
-          console.log("jsonObj");
-          console.log(jsonObj);
-          console.log(jsonObj.location.origin);
+          // console.log("jsonObj");
+          // console.log(jsonObj);
+          // console.log(jsonObj.location.origin);
           if (jsonObj.location.origin == "https://j4a202.p.ssafy.io") {
             const auth_code = jsonObj.location.search.split("=")[1];
             const params = new URLSearchParams();
@@ -62,14 +61,17 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                     id,
                     properties: { nickname, profile_image },
                   } = response;
-                  userApi.checkUser(id).then((result) => {
+                  userApi.checkUser(id).then((result: any) => {
                     if (!result.status) {
                       const userData = {
                         id,
                         nickname,
                         picture: profile_image,
                       };
-                      userApi.signup(userData);
+                      userApi
+                        .signup(userData)
+                        .then((res: any) => console.log(res))
+                        .catch((e: any) => console.log(e));
                     }
                   });
                   dispatch(

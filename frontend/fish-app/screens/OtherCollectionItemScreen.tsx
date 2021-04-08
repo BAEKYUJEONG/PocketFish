@@ -21,11 +21,9 @@ import {
 } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function CollectionItemScreen({ route, navigation }) {
+export default function OtherCollectionItemScreen({ route, navigation }) {
   const { id } = route.params;
   const [item, setItem] = useState({});
-  const user = useSelector((state: any) => state.user);
-  const userObj = JSON.parse(user.user);
 
   useEffect(() => {
     const get = async () => {
@@ -40,33 +38,6 @@ export default function CollectionItemScreen({ route, navigation }) {
     };
   }, []);
 
-  const deleteItem = async () => {
-    let box = {
-      user_token: userObj.access_token,
-      user_id: userObj.id,
-      item_id: item.collectionId,
-    };
-    //console.log(box);
-    await collectionItemApi.deleteItem(box).then((res: any) => {
-      console.log(res.data);
-      navigation.navigate("CollectionScreen");
-    });
-  };
-  const updateItem = async () => {
-    let box = {
-      bait: item.fishBait,
-      fish_id: KoreanToNumber(item.fishName),
-      fishing_info: item.fishingInfo,
-      length: item.fishLength,
-      location: item.fishLocation,
-      memo: item.fishMemo,
-      fish_image: item.fishImage,
-      collectionId: item.collectionId,
-    };
-    let name = item.fishName;
-    let type = "update";
-    navigation.navigate("InputDetailScreen", { box, name, type });
-  };
   return (
     <View style={{ flex: 1 }}>
       <Card style={{ height: "100%", marginTop: 0 }}>
@@ -77,28 +48,6 @@ export default function CollectionItemScreen({ route, navigation }) {
               <View>
                 <Text>{item.userNick}</Text>
                 <Text>{item.regDate}</Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <IconButton
-                  icon="pencil"
-                  style={{ marginLeft: "20%" }}
-                  color="black"
-                  size={20}
-                  onPress={() => {
-                    updateItem();
-                  }}
-                />
-                <IconButton
-                  icon="delete"
-                  color="black"
-                  size={20}
-                  onPress={() => {
-                    Alert.alert("", "정말 삭제하시나요?", [
-                      { text: "아니오" },
-                      { text: "네", onPress: deleteItem },
-                    ]);
-                  }}
-                />
               </View>
             </Body>
           </Left>
