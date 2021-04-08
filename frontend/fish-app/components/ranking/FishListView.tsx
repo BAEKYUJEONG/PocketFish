@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Icon, Picker, Form } from "native-base";
+import { AntDesign } from "@expo/vector-icons";
 
 export default class FishListView extends Component {
   constructor(props: any) {
@@ -16,17 +17,14 @@ export default class FishListView extends Component {
   }
   render() {
     return (
-      <Form style={{ width: "90%", alignSelf: "center" }}>
+      <Form style={{ width: "90%", alignSelf: "center", alignItems: "center" }}>
         <Picker
           mode="dropdown"
           iosHeader="어종을 선택해주세요."
           iosIcon={
-            <Icon
-              name="arrow-dropdown-circle"
-              style={{ color: "#007aff", fontSize: 25 }}
-            />
+            <AntDesign name="down"></AntDesign>
           }
-          style={{ width: undefined }}
+          style={{ width: 300, justifyContent: "center" }}
           selectedValue={this.state.selected}
           onValueChange={this.onValueChange.bind(this)}
         >
