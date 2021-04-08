@@ -11,5 +11,4 @@ public class FishServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FishServerApplication.class, args);
 	}
-
 }
