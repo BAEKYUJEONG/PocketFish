@@ -15,7 +15,6 @@ export type RankingParamList = {
 };
 
 export type ProfileParamList = {
-  ProfileScreen: undefined;
   CollectionScreen: undefined;
   CollectionItemScreen: undefined;
   InputDetailScreen: undefined;
