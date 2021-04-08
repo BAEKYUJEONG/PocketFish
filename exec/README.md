@@ -14,7 +14,7 @@
 
 ### 안드로이드 
 
-1. [피쉬포켓 앱 설치하기](https://drive.google.com/drive/u/0/folders/1TkdXnztBIw8pdcOj089PAjDTKSueH-Nh) 에 접속하여 fishapp_v1.0.4를 다운받습니다.
+1. [피쉬포켓 앱 설치하기](https://drive.google.com/file/d/19zxCEvGPvqWgXtQ87xpkJ7eMqtfTkTM1/view?usp=sharing) 에 접속하여 fishapp_v1.0.4를 다운받습니다.
 2. 다운받은 apk파일을 폰에서 설치합니다. 
 
 ### IOS
