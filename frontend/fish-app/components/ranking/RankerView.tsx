@@ -76,7 +76,6 @@ export default function RankerView({
                       small
                       source={{
                         uri:
-                          // 사용자 프사 또는 물고기 사진 필요
                           index === 0
                             ? top1Image
                             : index === 1
@@ -170,7 +169,6 @@ const styles = StyleSheet.create({
   },
   rank: {
     height: 60,
-    // 스타일 전체 수정 후 색상 변경 필요
     backgroundColor: "white",
     marginBottom: 5,
   },

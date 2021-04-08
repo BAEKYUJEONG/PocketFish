@@ -34,6 +34,42 @@ export const userApi: Record<string, any> = {
     const response = await request.get(`/user/${id}`);
     return response.data;
   },
+  async signout(id: number): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    try {
+      const response = await request.delete(`/user/${id}`, {
+        data: access_token,
+        headers: { "Content-Type": "text/plain" },
+      });
+      console.log("signout");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log("signout error");
+      console.log(error);
+    }
+  },
+  async profile_update(
+    id: number,
+    picture: string
+  ): Promise<void | AxiosResponse<any>> {
+    const appData = await getData("auth");
+    const jsonData = JSON.parse(appData);
+    const { access_token } = jsonData;
+    const body = {
+      accessToken: access_token,
+      picture,
+    };
+    try {
+      const response = await request.post(`/user/picture/${id}`, body);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 // 카카오 인증 Api
@@ -52,8 +88,6 @@ export const kakaoApi: Record<string, any> = {
         },
       }
     );
-    await saveData("auth", "");
-    console.log("logout");
     return response.data;
   },
   async kakaoSignout(): Promise<void | AxiosResponse<any>> {
@@ -70,8 +104,6 @@ export const kakaoApi: Record<string, any> = {
         },
       }
     );
-    await saveData("auth", "");
-    console.log("signout");
     return response.data;
   },
   async kakaoUserInfo(): Promise<void | AxiosResponse<any>> {
