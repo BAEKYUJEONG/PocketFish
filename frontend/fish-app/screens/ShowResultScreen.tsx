@@ -14,7 +14,6 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
 
   let itemList = [];
   let nameList = [];
-
   //console.log("fishResult:"+reduxState.fish.fishResult);
 
   // var result = reduxState.fish.fishResult.replace(/'/g, '"')
@@ -112,7 +111,9 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex:1,
+  },
   img: {
     flex: 0.5,
   },

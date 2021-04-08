@@ -68,7 +68,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   //     });
   //   }
   // }, [user]);
-
+    console.log(data.length);
   return user.user ? (
     <View style={styles.container}>
       <View style={{ height: "20%" }}>
@@ -77,7 +77,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
       <View style={{ width: "100%", height: "80%" }}>
         <View style={{ width: "100%", height: "100%" }}>
           <View style={styles.contentView}>
-            <ScrollView>
+            <ScrollView style={{flex:1}}>
               <View style={styles.collectionAll}>
                 <Grid style={{ marginTop: 30 }}>
                   {Array.from({ length: data.length }, (_, i) => i + 1).map(
@@ -108,7 +108,6 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                                   { marginBottom: 2 },
                                 ]}
                               >
-                                {/* { index % 3 == 0 ? <br></br> : null } */}
                                 <View
                                   key={index}
                                   style={[
