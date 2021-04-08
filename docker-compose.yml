@@ -30,4 +30,3 @@ services:
       - "mode=standalone"
     ports:
       - 6379:6379
-    entrypoint: redis-server --appendonly yes
