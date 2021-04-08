@@ -59,17 +59,25 @@ export default function RankingScreen({ navigation }) {
     });
   }
   function updateRanker(selected: number) {
-    if (cache[selected] === undefined) {
-      rankingApi.getRanking(selected).then((response: []) => {
-        const updatedCache = cache;
-        updatedCache[selected] = response.data;
-        setCache(updatedCache);
-        setRankers(response.data);
-      });
-    } else {
-      console.log("cached data!");
-      setRankers(cache[selected]);
-    }
+    // no cache mode
+    rankingApi.getRanking(selected).then((response: []) => {
+      const updatedCache = cache;
+      updatedCache[selected] = response.data;
+      setCache(updatedCache);
+      setRankers(response.data);
+    });
+    // cache mode
+    // if (cache[selected] === undefined) {
+    //   rankingApi.getRanking(selected).then((response: []) => {
+    //     const updatedCache = cache;
+    //     updatedCache[selected] = response.data;
+    //     setCache(updatedCache);
+    //     setRankers(response.data);
+    //   });
+    // } else {
+    //   console.log("cached data!");
+    //   setRankers(cache[selected]);
+    // }
   }
   return (
     <View style={styles.container}>
