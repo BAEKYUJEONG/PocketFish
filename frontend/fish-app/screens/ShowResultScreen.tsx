@@ -6,6 +6,8 @@ import FishInformation from "./Component/FishInformation";
 import { EnglishToKorean } from "../utils/fish";
 import { Button } from "react-native-paper";
 import { KoreanToNumber } from "../utils/fish";
+
+import colors from "../colors";
 export default function ShowResultScreen({ navigation }: { navigation: any }) {
   //console.log("\n\n");
 
@@ -14,7 +16,6 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
 
   let itemList = [];
   let nameList = [];
-
   //console.log("fishResult:"+reduxState.fish.fishResult);
 
   // var result = reduxState.fish.fishResult.replace(/'/g, '"')
@@ -56,6 +57,7 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
     <View style={styles.container}>
       <Image
         style={styles.img}
+        resizeMode="contain"
         source={{ uri: `data:image/jpeg;base64,${reduxState.fish.fishImage}` }}
       />
       <View style={styles.resultList}>
@@ -83,6 +85,7 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
           <View style={styles.saveBtnContainer}>
             <Button
               mode="contained"
+              color={colors.dark}
               style={{ marginVertical: 10, padding: 1 }}
               onPress={async () => {
                 //console.log(selectState);
@@ -112,12 +115,15 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex:1,
+  },
   img: {
-    flex: 0.5,
+    flex: 1,
+    backgroundColor:'gray'
   },
   resultList: {
-    flex: 0.5,
+    flex: 1,
     //backgroundColor:'pink',
     padding: 10,
   },
@@ -143,7 +149,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   saveBtnContainer: {
-    //backgroundColor:'pink',
     bottom: 0,
     marginTop: 10,
   },

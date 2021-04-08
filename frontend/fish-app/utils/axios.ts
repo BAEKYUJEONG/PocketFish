@@ -174,6 +174,7 @@ export const collectionItemApi: Record<string, any> = {
 export const AddApi: Record<string, any> = {
   async getAnalysis(img: any): Promise<void | AxiosResponse<any>> {
     console.log("analysis api");
+    console.log(img);
     const response = await axios.post(
       `https://j4a202.p.ssafy.io/ai/`,
       JSON.stringify({ file: img }),
@@ -202,6 +203,7 @@ export const AddApi: Record<string, any> = {
     box.append("fishing_info", post.fishing_info);
     box.append("fish_image", post.fish_image);
     box.append("user_token", post.user_token);
+    //console.log("-------------"+post.fish_image)
     console.log(post.user_id);
     console.log(post.user_token);
     const response = await request.post(`collection`, box, {

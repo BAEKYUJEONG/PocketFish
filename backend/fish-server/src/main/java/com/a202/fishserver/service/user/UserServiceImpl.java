@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService{
     public HashMap<String, Object> getUser(long userId) throws Exception {
         Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) throw new Exception("해당 사용자가 존재하지 않습니다.");
+        if (user.get().isFlag()) throw new Exception("탈퇴한 사용자입니다.");
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", user.get().getId());

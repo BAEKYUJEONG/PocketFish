@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fishState, SetFishImage } from "../redux/fish";
 import { AddParamList } from "../types";
 import MainLoginScreen from "./auth/MainLoginScreen";
+import colors from "../colors";
 
 export default function CameraScreen({ navigation }: { navigation: any }) {
   const user = useSelector((state) => state.user);
@@ -44,9 +45,10 @@ export default function CameraScreen({ navigation }: { navigation: any }) {
             onPress={async () => {
               if (cameraRef) {
                 const result = await cameraRef.takePictureAsync({
-                  quality: 0.5,
+                  quality: 0.1,
                   base64: true,
                 });
+                //console.log(result);
                 dispatch(SetFishImage(result.base64));
                 navigation.navigate("ImageCheckScreen");
               }
@@ -102,6 +104,6 @@ const styles = StyleSheet.create({
     left: 95,
     bottom: 0,
     alignItems: "center",
-    backgroundColor: "#b9d",
+    backgroundColor: colors.dark,
   },
 });

@@ -179,10 +179,11 @@ export default function InputDetailScreen({
             //console.log(userObj.access_token);
             if (type == "add") {
               add();
+              navigation.navigate("CameraScreen")
             } else if (type == "update") {
               update();
+              navigation.navigate("CollectionScreen");
             }
-            navigation.navigate("CameraScreen");
           }}
         >
           <Text style={styles.btn}>저장하기</Text>
