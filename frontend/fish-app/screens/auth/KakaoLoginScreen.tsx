@@ -62,8 +62,9 @@ export default function KakaoLoginScreen({ close }: { close: any }) {
                     properties: { nickname, profile_image },
                   } = response;
                   userApi.checkUser(id).then((result: any) => {
-                    console.log(result.data);
-                    if (!result.status) {
+                    console.log("Check User");
+                    console.log(!result.data);
+                    if (!result.status || !result.data) {
                       const userData = {
                         id,
                         nickname,
