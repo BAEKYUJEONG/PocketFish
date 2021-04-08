@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Icon, Picker, Form } from "native-base";
-import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default class FishListView extends Component {
   constructor(props: any) {
@@ -20,9 +20,9 @@ export default class FishListView extends Component {
       <Form style={{ width: "90%", alignSelf: "center", alignItems: "center" }}>
         <Picker
           mode="dropdown"
-          iosHeader="어종을 선택해주세요."
+          iosHeader="어종 선택"
           iosIcon={
-            <AntDesign name="down"></AntDesign>
+            <FontAwesome name="caret-down"></FontAwesome>
           }
           style={{ width: 300, justifyContent: "center" }}
           selectedValue={this.state.selected}
