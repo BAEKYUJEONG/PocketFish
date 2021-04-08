@@ -6,6 +6,7 @@ import { AddApi } from "../utils/axios";
 import { Button } from "react-native-paper";
 import LoadingScreen from "./common/LoadingScreen";
 import { useState } from "react";
+import colors from "../colors";
 
 export default function ImageScreen({ navigation }: { navigation: any }) {
   const reduxState = useSelector((state: any) => state);
@@ -23,6 +24,7 @@ export default function ImageScreen({ navigation }: { navigation: any }) {
       <View style={styles.buttonContainer}>
         <Button
           mode="contained"
+          color={colors.dark}
           style={{ marginVertical: 10, padding: 1 }}
           onPress={async () => {
             setIsLoading(1);
