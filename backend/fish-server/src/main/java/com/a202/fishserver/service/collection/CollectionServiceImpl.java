@@ -101,7 +101,7 @@ public class CollectionServiceImpl implements CollectionService{
         map.put("fishMemo", collection.get().getMemo());
         map.put("fishBait", collection.get().getBait());
         map.put("fishingInfo", collection.get().getFishingInfo());
-        map.put("regDate", collection.get().getRegDate());
+        map.put("regDate", collection.get().getRegDate().plusHours(9));
 
         return map;
     }
