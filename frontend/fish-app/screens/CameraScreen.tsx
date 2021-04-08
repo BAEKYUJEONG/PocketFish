@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fishState, SetFishImage } from "../redux/fish";
 import { AddParamList } from "../types";
 import MainLoginScreen from "./auth/MainLoginScreen";
+import colors from "../colors";
 
 export default function CameraScreen({ navigation }: { navigation: any }) {
   const user = useSelector((state) => state.user);
@@ -102,6 +103,6 @@ const styles = StyleSheet.create({
     left: 95,
     bottom: 0,
     alignItems: "center",
-    backgroundColor: "#b9d",
+    backgroundColor: colors.dark,
   },
 });
