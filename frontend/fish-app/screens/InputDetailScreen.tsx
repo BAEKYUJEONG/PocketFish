@@ -15,6 +15,7 @@ import { AddApi, collectionItemApi } from "../utils/axios";
 import * as Location from "expo-location";
 import { Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { SetUser } from "../redux/user";
+import colors from "../colors";
 
 export default function InputDetailScreen({
   route,
@@ -168,6 +169,7 @@ export default function InputDetailScreen({
         />
         <Button
           mode="contained"
+          color={colors.dark}
           style={{ marginVertical: 10, padding: 1 }}
           onPress={async () => {
             //console.log(dataInformation);

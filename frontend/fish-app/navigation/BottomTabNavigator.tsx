@@ -13,7 +13,6 @@ import CollectionScreen from "../screens/CollectionScreen";
 import CollectionItemScreen from "../screens/CollectionItemScreen";
 import CommentScreen from "../screens/CommentScreen";
 import RankingScreen from "../screens/RankingScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import ImageCheckScreen from "../screens/ImageCheckScreen";
 import InputDetailScreen from "../screens/InputDetailScreen";
@@ -43,13 +42,6 @@ export default function BottomTabNavigator() {
         activeBackgroundColor: "white",
       }}
     >
-      {/* <BottomTab.Screen
-        name="Home"
-        component={HomeNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      /> */}
       <BottomTab.Screen
         name="Ranking"
         component={RankingNavigator}
@@ -129,11 +121,6 @@ function ProfileNavigator() {
         name="CollectionScreen"
         component={CollectionScreen}
         options={{ headerTitle: "도감" }}
-      />
-      <ProfileStack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{ headerTitle: "프로필" }}
       />
       <ProfileStack.Screen
         name="CollectionItemScreen"

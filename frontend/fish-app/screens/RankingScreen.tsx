@@ -1,33 +1,83 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { rankingApi } from "../utils/axios";
+import { kakaoApi, rankingApi } from "../utils/axios";
 
 import { Text, View } from "../components/Themed";
 
 import RankerView from "../components/ranking/RankerView";
 import FishListView from "../components/ranking/FishListView";
+import { getData } from "../utils/storage";
+import { useDispatch } from "react-redux";
+import { SetUser } from "../redux/user";
 
 export default function RankingScreen({ navigation }) {
   const [rankers, setRankers] = useState([]);
   const [cache, setCache] = useState({});
   const [selected, setSelected] = useState(1);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    login();
+  }, []);
+
   useEffect(() => {
     updateRanker(selected);
   }, [selected]);
 
+  function login() {
+    getData("auth").then((data) => {
+      if (data) {
+        kakaoApi
+          .kakaoUserInfo()
+          .then((response) => {
+            const {
+              id,
+              properties: { nickname, profile_image },
+            } = response;
+            getData("auth").then((data) => {
+              const jsonData = JSON.parse(data);
+              const { access_token } = jsonData;
+              dispatch(
+                SetUser(
+                  JSON.stringify({
+                    id,
+                    nickname,
+                    profile_image,
+                    access_token,
+                  })
+                )
+              );
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        console.log("no data");
+      }
+    });
+  }
   function updateRanker(selected: number) {
-    if (cache[selected] === undefined) {
-      rankingApi.getRanking(selected).then((response: []) => {
-        const updatedCache = cache;
-        updatedCache[selected] = response.data;
-        setCache(updatedCache);
-        setRankers(response.data);
-      });
-    } else {
-      console.log("cached data!");
-      setRankers(cache[selected]);
-    }
+    // no cache mode
+    rankingApi.getRanking(selected).then((response: []) => {
+      const updatedCache = cache;
+      updatedCache[selected] = response.data;
+      setCache(updatedCache);
+      setRankers(response.data);
+    });
+    // cache mode
+    // if (cache[selected] === undefined) {
+    //   rankingApi.getRanking(selected).then((response: []) => {
+    //     const updatedCache = cache;
+    //     updatedCache[selected] = response.data;
+    //     setCache(updatedCache);
+    //     setRankers(response.data);
+    //   });
+    // } else {
+    //   console.log("cached data!");
+    //   setRankers(cache[selected]);
+    // }
   }
   return (
     <View style={styles.container}>

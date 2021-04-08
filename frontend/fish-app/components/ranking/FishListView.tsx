@@ -33,7 +33,6 @@ export default class FishListView extends Component {
           <Picker.Item key="3" label="우럭" value={3} />
           <Picker.Item key="4" label="붕어" value={4} />
           <Picker.Item key="5" label="쏘가리" value={5} />
-          <Picker.Item key="6" label="배스" value={6} />
         </Picker>
       </Form>
     );

@@ -47,7 +47,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
           let data = [...response.data, ...new Array(count)];
           setData(data);
           //alert(JSON.stringify(response.data));
-          console.log(data);
+          // console.log(data);
         });
       }
       return () => {
@@ -68,6 +68,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   //     });
   //   }
   // }, [user]);
+
   return user.user ? (
     <View style={styles.container}>
       <View style={{ height: "20%" }}>
@@ -78,19 +79,17 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
           <View style={styles.contentView}>
             <ScrollView style={{flex:1}}>
               <View style={styles.collectionAll}>
-                <Grid >
-                  {Array.from({ length: data.length/3+1 }, (_, i) => i + 1).map(
+                <Grid style={{ marginTop: 30 }}>
+                  {Array.from({ length: data.length }, (_, i) => i + 1).map(
                     (idx) => (
                       <Row
                         key={idx}
                         style={{
-                          marginBottom: 10,
+                          marginBottom: 3,
                           justifyContent: "center",
-                          
-                          // backgroundColor:'red',
+                          height: "30%",
                         }}
                       >
-                        {/* <Text>{idx}</Text> */}
                         {data.slice((idx - 1) * 3, idx * 3).map((d, index) => (
                           <Col
                             key={index}
@@ -98,27 +97,25 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                               justifyContent: "center",
                               alignItems: "center",
                               alignContent: "center",
-                              // backgroundColor:'gray',
                             }}
                           >
                             {d === undefined ? null : (
                               <View
                                 style={[
                                   { width: "100%" },
+                                  { height: "100%" },
                                   { alignItems: "center" },
-                                  //{backgroundColor:'blue'},
                                   { marginBottom: 2 },
                                 ]}
                               >
-                                {/* <Text>{index}   {index-1*3}  {idx*3}</Text> */}
+                                {/* { index % 3 == 0 ? <br></br> : null } */}
                                 <View
                                   key={index}
                                   style={[
                                     { width: "80%" },
-                                    { height: "40%" },
+                                    { height: "80%" },
                                     { marginBottom: 2 },
                                     { alignItems: "center" },
-                                    // {backgroundColor:'black'},
                                     index % 3 !== 0
                                       ? { paddingLeft: 2 }
                                       : { paddingLeft: 0 },
