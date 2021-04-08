@@ -145,7 +145,7 @@ export default function CollectionItemScreen({ route, navigation }) {
               style={{ flex: 1, marginTop: 5 }}
               contentContainerStyle={{ justifyContent: "center" }}
             >
-              {item.memo ? <Text style={styles.text}>{item.memo}</Text> : <></>}
+              {item.fishMemo ? <Text style={styles.text}>{item.fishMemo}</Text> : <></>}
               {item.fishLength ? (
                 <Text style={styles.text}>길이 : {item.fishLength}cm</Text>
               ) : (

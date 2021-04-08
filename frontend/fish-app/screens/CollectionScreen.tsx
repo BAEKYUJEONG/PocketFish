@@ -1,9 +1,10 @@
-import * as React from "react";
-import { Component } from "react";
+import React,{ Component } from "react";
+
 import { useState, useEffect } from "react";
 import { collectionApi } from "../utils/axios";
 import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Text, View } from "../components/Themed";
+import { Icon, Container, Content, Thumbnail, Image } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { useSelector } from "react-redux";
 import MainLoginScreen from "./auth/MainLoginScreen";
@@ -11,7 +12,6 @@ import { useFocusEffect } from "@react-navigation/core";
 import { useCallback } from "react";
 import Profile from "./Component/Profile";
 import { ScrollView } from "react-native-gesture-handler";
-import { Thumbnail } from "native-base";
 
 export default function CollectionScreen({ navigation }: { navigation: any }) {
   const uri1 =
@@ -47,7 +47,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
           let data = [...response.data, ...new Array(count)];
           setData(data);
           //alert(JSON.stringify(response.data));
-          // console.log(data);
+          //console.log(data);
         });
       }
       return () => {
@@ -77,7 +77,7 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
       <View style={{ width: "100%", height: "80%" }}>
         <View style={{ width: "100%", height: "100%" }}>
           <View style={styles.contentView}>
-            <ScrollView style={{flex:1}}>
+            <ScrollView>
               <View style={styles.collectionAll}>
                 <Grid style={{ marginTop: 30 }}>
                   {Array.from({ length: data.length }, (_, i) => i + 1).map(
@@ -85,9 +85,9 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                       <Row
                         key={idx}
                         style={{
-                          marginBottom: 3,
+                          marginBottom: 10,
                           justifyContent: "center",
-                          height: "30%",
+                          height: "20%",
                         }}
                       >
                         {data.slice((idx - 1) * 3, idx * 3).map((d, index) => (
@@ -135,7 +135,6 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
                                     <Thumbnail
                                       small
                                       style={{ height: 90, width: 90 }}
-                                      // resizeMode="contain"
                                       source={{ uri: d.fishImage }}
                                     />
                                   </TouchableOpacity>
@@ -185,6 +184,7 @@ const styles = StyleSheet.create({
   },
   contentView: {
     flex: 1,
+    marginBottom: 30,
   },
   title: {
     fontSize: 20,
