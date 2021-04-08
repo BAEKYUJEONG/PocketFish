@@ -142,7 +142,7 @@ export default function CollectionItemScreen({ route, navigation }) {
             }}
           >
             <ScrollView
-              style={{ flex: 1, marginTop: 5 }}
+              style={{ flex: 1, marginTop: 5, width:'100%' }}
               contentContainerStyle={{ justifyContent: "center" }}
             >
               {item.fishMemo ? <Text style={styles.text}>{item.fishMemo}</Text> : <></>}
