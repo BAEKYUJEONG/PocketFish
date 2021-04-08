@@ -2,7 +2,7 @@
   "expo": {
     "name": "fish-app",
     "slug": "fish-app",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",

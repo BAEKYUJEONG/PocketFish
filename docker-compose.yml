@@ -28,5 +28,5 @@ services:
     labels:
       - "name=redis"
       - "mode=standalone"
-    ports:
-      - 6379:6379
+    expose:
+      - "6379"
