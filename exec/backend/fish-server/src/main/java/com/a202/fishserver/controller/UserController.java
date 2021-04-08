@@ -70,7 +70,7 @@ public class UserController {
 
     /**
      * 닉네임 수정
-     */
+
     @PutMapping("/{id}")
     @ApiOperation(value = "닉네임 정보 수정")
     public Response putNickname(@PathVariable("id") long userId, @RequestBody Map<String, String> map) {
@@ -93,6 +93,7 @@ public class UserController {
                 .data(userId +", " + nickname +", " + accessToken)
                 .build();
     }
+     */
 
     /**
      * 사용자 정보 조회
