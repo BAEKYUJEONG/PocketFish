@@ -68,7 +68,6 @@ export default function CollectionScreen({ navigation }: { navigation: any }) {
   //     });
   //   }
   // }, [user]);
-    console.log(data.length);
   return user.user ? (
     <View style={styles.container}>
       <View style={{ height: "20%" }}>

@@ -45,9 +45,10 @@ export default function CameraScreen({ navigation }: { navigation: any }) {
             onPress={async () => {
               if (cameraRef) {
                 const result = await cameraRef.takePictureAsync({
-                  quality: 0.5,
+                  quality: 0.1,
                   base64: true,
                 });
+                //console.log(result);
                 dispatch(SetFishImage(result.base64));
                 navigation.navigate("ImageCheckScreen");
               }

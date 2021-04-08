@@ -57,6 +57,7 @@ export default function ShowResultScreen({ navigation }: { navigation: any }) {
     <View style={styles.container}>
       <Image
         style={styles.img}
+        resizeMode="contain"
         source={{ uri: `data:image/jpeg;base64,${reduxState.fish.fishImage}` }}
       />
       <View style={styles.resultList}>
@@ -118,10 +119,11 @@ const styles = StyleSheet.create({
     flex:1,
   },
   img: {
-    flex: 0.5,
+    flex: 1,
+    backgroundColor:'gray'
   },
   resultList: {
-    flex: 0.5,
+    flex: 1,
     //backgroundColor:'pink',
     padding: 10,
   },
