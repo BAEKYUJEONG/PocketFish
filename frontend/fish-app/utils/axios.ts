@@ -38,17 +38,14 @@ export const userApi: Record<string, any> = {
     const appData = await getData("auth");
     const jsonData = JSON.parse(appData);
     const { access_token } = jsonData;
-    console.log(id);
-    console.log(access_token);
-    console.log(typeof access_token);
     try {
       const response = await request.delete(`/user/${id}`, {
         data: access_token,
         headers: { "Content-Type": "text/plain" },
       });
       console.log("signout");
-      console.log(response);
-      return response;
+      console.log(response.data);
+      return response.data;
     } catch (error) {
       console.log("signout error");
       console.log(error);
