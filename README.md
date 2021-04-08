@@ -60,7 +60,7 @@
 
 ## 📑 기술 스택
 
-<img src="./resources/development.png" alt="1" style="zoom:100%;" />
+<img src="./resources/development.PNG" alt="1" style="zoom:100%;" />
 
 
 
